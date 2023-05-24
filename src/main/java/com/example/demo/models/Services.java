@@ -1,9 +1,17 @@
 package com.example.demo.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "services")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Services {
 
     @Id
