@@ -24,6 +24,7 @@ public class HomeController {
         return "explore";
     }
 
+    // Testing
     @GetMapping("/test")
     @ResponseBody
     public String test() {
