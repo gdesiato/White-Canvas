@@ -3,6 +3,7 @@
 <head>
     <title>Our Services</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="src/main/resources/static/style.css">
 </head>
 <body>
 <h1>Our Services</h1>
@@ -12,6 +13,7 @@
         <th>Service Name</th>
         <th>Description</th>
         <th>Cost</th>
+        <th>Actions</th> <!-- New column for actions -->
     </tr>
     </thead>
     <tbody>
@@ -19,8 +21,14 @@
         <td th:text="${service.serviceName}"></td>
         <td th:text="${service.description}"></td>
         <td th:text="${service.cost}"></td>
+        <td>
+            <a th:href="@{/services/{id}/update(id=${service.id})}">Update</a>
+            <a th:href="@{/services/__${service.id}__/delete}" onclick="return confirm('Are you sure you want to delete this service?')">Delete</a>
+        </td>
     </tr>
     </tbody>
 </table>
+
+<a href="/services/new" class="button">Add New Service</a>
 </body>
 </html>

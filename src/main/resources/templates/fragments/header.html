@@ -20,12 +20,10 @@
                         <a th:href="@{/}">Home</a>
                         <a th:href="@{/about}">About</a>
                         <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/explore}">Explore</a>
-                        <a th:href="@{/weather}">Weather</a>
                         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">/Admin</a>
                         <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user}">/User</a>
                         <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/cart}">Cart</a>
                         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/list}">User List</a>
-                        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/flowers/new}">Add Flowers</a>
                         <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Log In</a>
                         <a sec:authorize="!isAuthenticated()" th:href="@{/new}">Register</a>
                         <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a>

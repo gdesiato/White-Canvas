@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Update Service</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Update Service</h1>
+<form action="#" th:action="@{/services/{id}/update(id=${service.id})}" method="post" th:object="${service}">
+  <label for="serviceName">Service Name:</label>
+  <input type="text" id="serviceName" name="serviceName" th:field="*{serviceName}" /><br/>
+
+  <label for="description">Description:</label>
+  <input type="text" id="description" name="description" th:field="*{description}" /><br/>
+
+  <label for="cost">Cost:</label>
+  <span>$</span>
+  <input type="number" id="cost" name="cost" th:field="*{cost}" /><br/>
+
+  <input type="submit" value="Update" />
+</form>
+</body>
+</html>
