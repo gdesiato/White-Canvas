@@ -18,6 +18,15 @@ public class UserService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CartService cartService;
+
+
+    public User createUser(User user) {
+        User newUser = userRepository.save(user);
+        cartService.createCart(newUser);
+        return newUser;
+    }
 
     @Transactional
     public User findByUsername(String username) {

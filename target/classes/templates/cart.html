@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Shopping Cart</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="src/main/resources/static/style.css">
+</head>
+<body>
+<h1>Your Shopping Cart</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Item</th>
+    <th>Quantity</th>
+    <th>Price</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${cart.cartItems}" th:if="${cart.cartItems != null}">
+    <td th:text="${item.service.serviceName}"></td>
+    <td th:text="${item.quantity}"></td>
+    <td th:text="${item.service.cost}"></td>
+    <td>
+      <form th:action="@{/cart/remove}" method="post">
+        <input type="hidden" th:value="${item.service.id}" name="itemId"/>
+        <button type="submit">Remove from Cart</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<form th:action="@{/cart/clear}" method="post">
+  <button type="submit">Clear Cart</button>
+</form>
+
+<a href="/services">Continue Shopping</a>
+
+</body>
+</html>
