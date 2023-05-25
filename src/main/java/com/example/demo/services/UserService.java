@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -48,9 +49,17 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public User getUser(String username) throws EntityNotFoundException {
+        return userRepository.findByUsername(username);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        User optionalUser = userRepository.findByUsername(username);
+        if (optionalUser == null) {
+            throw new UsernameNotFoundException(username + " is not a valid username! Check for typos and try again.");
+        }
+        return (UserDetails) optionalUser;
     }
 
 }
