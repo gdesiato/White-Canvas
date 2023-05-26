@@ -45,4 +45,8 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public double getTotalPrice() {
+        return quantity * service.getCost();
+    }
+
 }

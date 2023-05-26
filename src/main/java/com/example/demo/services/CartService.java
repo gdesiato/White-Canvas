@@ -6,78 +6,101 @@ import com.example.demo.models.Services;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CartItemRepository;
 import com.example.demo.repositories.CartRepository;
-import com.example.demo.repositories.ServicesRepository;
+import com.example.demo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class CartService {
 
     @Autowired
-    ServicesRepository servicesRepository;
+    private CartRepository cartRepository;
 
     @Autowired
-    CartRepository cartRepository;
+    private UserService userService;
 
     @Autowired
-    CartItemRepository cartItemRepository;
+    private ServiceRepository serviceRepository;
 
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
-    public Cart getCurrentCart(User user) {
-        // Fetch the cart from the repository using the user
-        Cart cart = cartRepository.findByUser(user);
-        if (cart == null) {
-            cart = createCart(user);
+    @Transactional
+    public Cart getShoppingCartForUser(String username) {
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            return null;
         }
-        return cart;
+        return user.getCart();
     }
 
-    public Cart createCart(User user) {
+    @Transactional
+    public Cart createCart(Long userId) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            return null;
+        }
         Cart cart = new Cart(user);
+        user.setCart(cart);
+        userService.saveUser(user);  // Save the User entity
         return cartRepository.save(cart);
     }
 
-    public void addItemToCart(User user, Long serviceId, int quantity) {
-        Cart cart = getCurrentCart(user);
-        if(cart != null) {
-            CartItem cartItem = cartItemRepository.findCartItemByIdAndCart(serviceId, cart);
-            if (cartItem != null) {
-                cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            } else {
-                Services service = getServiceById(serviceId);
-                cartItem = new CartItem(service, quantity);
-                cart.addCartItem(cartItem);
-            }
+    @Transactional
+    public Cart addToCart(Long userId, String serviceName, Integer quantity) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            return null;
         }
+        Services service = serviceRepository.findByServiceName(serviceName);
+        if (service == null) {
+            return null;
+        }
+        Cart cart = user.getCart();
+        if (cart == null) {
+            cart = createCart(userId);
+        }
+        CartItem cartItem = new CartItem(service, quantity);
+        cartItem.setCart(cart);
+        cart.addCartItem(cartItem);
+        cartRepository.save(cart); // save the Cart in the repository
+        cartItemRepository.save(cartItem); // save the CartItem in the repository
+        return cart;
     }
 
-    public void removeItemFromCart(User user, Long serviceId) {
-        Cart cart = getCurrentCart(user);
-        if(cart != null) {
-            CartItem cartItem = findCartItemById(cart, serviceId);
-            if (cartItem != null) {
-                cart.getCartItems().remove(cartItem);
-            }
-        }
+    @Transactional
+    public void removeItemFromCart(Cart cart, CartItem cartItem) {
+        cart.getCartItems().remove(cartItem);
+        cartItemRepository.delete(cartItem);
+        cartRepository.save(cart);
     }
 
-    public void clearCart(User user) {
-        Cart cart = getCurrentCart(user);
-        if(cart != null) {
-            cart.getCartItems().clear();
+    @Transactional
+    public void clearCart(Cart cart) {
+        for (CartItem item : cart.getCartItems()) {
+            cartItemRepository.delete(item);
         }
+        cart.getCartItems().clear();
+        cartRepository.save(cart);
     }
 
-    private CartItem findCartItemById(Cart cart, Long serviceId) {
-        for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getService().getId().equals(serviceId)) {
-                return cartItem;
-            }
-        }
-        return null;
+    public Cart getCartById(Long cartId) {
+        return cartRepository.findById(cartId).orElse(null);
     }
 
-    private Services getServiceById(Long serviceId) {
-        return servicesRepository.findById(serviceId).orElse(null);
+    public Double getTotalPrice(Cart cart) {
+        return cart.getCartItems().stream()
+                .mapToDouble(item -> item.getService().getCost() * item.getQuantity())
+                .sum();
+    }
+
+    public Cart findCartByUser(User user) {
+        return cartRepository.findByUser(user);
+    }
+
+    public Cart saveCart(Cart cart) {
+        return cartRepository.save(cart);
     }
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Logout Page</title>
+</head>
+
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+    <h1>Logged Out</h1>
+
+    <p>You have been successfully logged out of Allure.</p>
+
+    <a th:href="@{/login}">Click here to log back in</a>
+
+</div>
+</body>
+
+</html>

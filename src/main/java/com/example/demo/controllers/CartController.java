@@ -1,25 +1,19 @@
 package com.example.demo.controllers;
 
-import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.models.Cart;
 import com.example.demo.models.CartItem;
-import com.example.demo.models.Services;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CartItemRepository;
-import com.example.demo.repositories.CartRepository;
-import com.example.demo.repositories.ServiceRepository;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.CartService;
 import com.example.demo.services.ServicesService;
+import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import javax.transaction.Transactional;
 
 @Controller
 @RequestMapping("/cart")
@@ -29,59 +23,107 @@ public class CartController {
     private CartService cartService;
 
     @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
-    private CartItemRepository cartItemRepository;
-
-    @Autowired
-    private ServiceRepository serviceRepository;
+    private UserService userService;
 
     @Autowired
     private ServicesService servicesService;
 
     @Autowired
-    private UserRepository userRepository;
+    private CartItemRepository cartItemRepository;
+
 
     @GetMapping
-    public String viewCart(Model model, Principal principal) {
-        User user = (User) principal;
-        Cart cart = cartService.getCurrentCart(user);
+    @Transactional
+    public String getCart(@AuthenticationPrincipal User user, Model model) {
+        Cart cart = cartService.getShoppingCartForUser(user.getUsername());
         model.addAttribute("cart", cart);
+        if (cart == null) {
+            return "no-cart";
+        }
+        return "cart";
+    }
+
+    @PostMapping("/new/{customerId}")
+    @Transactional
+    public String createNewCart(@PathVariable Long customerId, Model model) {
+        Cart cart = cartService.createCart(customerId);
+        model.addAttribute("cart", cart);
+        return "new-cart";
+    }
+
+    @GetMapping("/{userId}")
+    public String viewCart(@PathVariable("userId") Long userId, Model model) {
+        User user = userService.getUserById(userId);
+
+        if (user == null) {
+            return "error";
+        }
+
+        Cart cart = user.getCart();
+
+        model.addAttribute("cart", cart);
+
         return "cart";
     }
 
     @PostMapping("/add")
-    public void addItemToCart(User user, Long serviceId, int quantity) {
-        // Ensure the user is persisted
-        User persistedUser = userRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found with id " + user.getId()));
+    @Transactional
+    public String addToCart(@RequestParam("userId") Long userId,
+                            @RequestParam("serviceName") String serviceName,
+                            @RequestParam("quantity") Integer quantity,
+                            Model model) {
 
-        Cart cart = cartService.getCurrentCart(persistedUser);
-        if(cart != null) {
-            CartItem cartItem = cartItemRepository.findCartItemByIdAndCart(serviceId, cart);
-            if (cartItem != null) {
-                cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            } else {
-                Services service = servicesService.getServiceById(serviceId);
-                cartItem = new CartItem(service, quantity);
-                cart.getCartItems().add(cartItem);
-            }
-            // Saving cart with updated cart items
-            cartRepository.save(cart);
+        Cart cart = cartService.addToCart(userId, serviceName, quantity);
+
+        if (cart == null) {
+            return "error";
         }
+
+        model.addAttribute("cart", cart);
+        return "cart";
     }
 
-    @PostMapping("/remove")
-    public String removeFromCart(@RequestParam("itemId") Long itemId, Principal principal) {
-        User user = (User) principal;
-        cartService.removeItemFromCart(user, itemId);
+    @PostMapping("/remove/{itemId}")
+    @Transactional
+    public String removeItemFromCart(@PathVariable Long itemId, @AuthenticationPrincipal User user, Model model) {
+        Cart cart = cartService.getShoppingCartForUser(user.getUsername());
+        if (cart == null) {
+            return "error";
+        }
+
+        CartItem cartItem = cartItemRepository.findById(itemId).orElse(null);
+        if (cartItem == null) {
+            return "error";
+        }
+
+        cartService.removeItemFromCart(cart, cartItem);
+        model.addAttribute("cart", cart);
         return "redirect:/cart";
     }
 
     @PostMapping("/clear")
-    public String clearCart(Principal principal) {
-        User user = (User) principal;
-        cartService.clearCart(user);
+    @Transactional
+    public String clearCart(@AuthenticationPrincipal User user, Model model) {
+        Cart cart = cartService.getShoppingCartForUser(user.getUsername());
+        if (cart == null) {
+            return "error";
+        }
+
+        cartService.clearCart(cart);
+        model.addAttribute("cart", cart);
         return "redirect:/cart";
     }
+
+    @GetMapping("/{cartId}/total")
+    @Transactional
+    public String getTotalPrice(@PathVariable Long cartId, Model model) {
+        Cart cart = cartService.getCartById(cartId);
+        if (cart == null) {
+            return "error";
+        }
+        double totalPrice = cart.getTotalPrice();
+        model.addAttribute("totalPrice", totalPrice);
+        return "totalPrice";
+    }
+
 }

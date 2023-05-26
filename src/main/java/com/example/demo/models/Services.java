@@ -4,6 +4,8 @@ package com.example.demo.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "services")
@@ -20,5 +22,8 @@ public class Services {
     private String serviceName;
     private String description;
     private Double cost;
+
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
+    private List<CartItem> cartItems;
 
 }
