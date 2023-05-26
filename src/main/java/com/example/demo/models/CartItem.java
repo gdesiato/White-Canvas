@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
@@ -38,6 +39,10 @@ public class CartItem {
     @JoinColumn(name = "user_id")
     private User user;
 
+
     public CartItem(Services service, int quantity) {
+        this.service = service;
+        this.quantity = quantity;
     }
+
 }

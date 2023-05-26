@@ -4,6 +4,7 @@ import com.example.demo.models.Cart;
 import com.example.demo.models.CartItem;
 import com.example.demo.models.Services;
 import com.example.demo.models.User;
+import com.example.demo.repositories.CartItemRepository;
 import com.example.demo.repositories.CartRepository;
 import com.example.demo.repositories.ServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,9 @@ public class CartService {
     @Autowired
     CartRepository cartRepository;
 
+    @Autowired
+    CartItemRepository cartItemRepository;
 
-    public Cart createCart(User user) {
-        Cart cart = new Cart(user);
-        return cartRepository.save(cart);
-    }
 
     public Cart getCurrentCart(User user) {
         // Fetch the cart from the repository using the user
@@ -33,16 +32,21 @@ public class CartService {
         return cart;
     }
 
+    public Cart createCart(User user) {
+        Cart cart = new Cart(user);
+        return cartRepository.save(cart);
+    }
+
     public void addItemToCart(User user, Long serviceId, int quantity) {
         Cart cart = getCurrentCart(user);
         if(cart != null) {
-            CartItem cartItem = findCartItemById(cart, serviceId);
+            CartItem cartItem = cartItemRepository.findCartItemByIdAndCart(serviceId, cart);
             if (cartItem != null) {
                 cartItem.setQuantity(cartItem.getQuantity() + quantity);
             } else {
                 Services service = getServiceById(serviceId);
                 cartItem = new CartItem(service, quantity);
-                cart.getCartItems().add(cartItem);
+                cart.addCartItem(cartItem);
             }
         }
     }

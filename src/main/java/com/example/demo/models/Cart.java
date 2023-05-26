@@ -1,10 +1,15 @@
 package com.example.demo.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Cart {
 
     @Id
@@ -25,9 +30,12 @@ public class Cart {
 
     }
 
-
     public List<CartItem> getCartItems() {
         return cartItems;
+    }
+
+    public void addCartItem(CartItem cartItem) {
+        cartItems.add(cartItem);
     }
 
 

@@ -39,7 +39,8 @@ public class SecurityConfig {
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/**").permitAll()
                 .and()
-                .formLogin();
+                .formLogin()
+                .defaultSuccessUrl("/home", true);
         return http.build();
     }
 
