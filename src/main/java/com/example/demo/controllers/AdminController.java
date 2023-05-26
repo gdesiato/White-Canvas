@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -25,15 +23,6 @@ public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-
-
-//    @GetMapping
-//    public String getUser(Model model, Authentication authentication) {
-//        User admin = (User) authentication.getPrincipal();
-//        model.addAttribute("username", admin.getUsername());
-//        model.addAttribute("roles", admin.getAuthorities());
-//        return "admin-view";
-//    }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping

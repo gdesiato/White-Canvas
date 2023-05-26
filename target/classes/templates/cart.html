@@ -32,8 +32,8 @@
   </tbody>
 </table>
 
-<form th:action="@{/cart/clear}" method="post">
-  <button type="submit">Clear Cart</button>
+<form th:action="@{/cart/remove/{itemId}(itemId=${item.service.id})}" method="post">
+  <button type="submit">Remove from Cart</button>
 </form>
 
 <a href="/services">Continue Shopping</a>

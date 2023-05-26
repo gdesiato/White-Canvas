@@ -22,11 +22,10 @@
         <td th:text="${service.description}"></td>
         <td th:text="${service.cost}"></td>
         <td>
-            <a th:href="@{/services/{id}/update(id=${service.id})}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Update</a>
-            <a th:href="@{/services/__${service.id}__/delete}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" onclick="return confirm('Are you sure you want to delete this service?')">Delete</a>
             <form th:action="@{/cart/add}" method="post">
-                <input type="hidden" th:value="${service.id}" name="itemId"/>
-                <input type="hidden" value="1" name="quantity"/>
+                <input type="hidden" th:value="${service.id}" name="userId" />
+                <input type="hidden" value="1" name="quantity" />
+                <input type="hidden" th:value="${service.serviceName}" name="serviceName" />
                 <button type="submit">Add to Cart</button>
             </form>
         </td>
