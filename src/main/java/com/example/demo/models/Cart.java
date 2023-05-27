@@ -21,10 +21,8 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CartItem> cartItems;
-    private CartItem[] items;
-
 
     public Cart() {
         this.cartItems = new ArrayList<>();
@@ -39,10 +37,14 @@ public class Cart {
         return cartItems;
     }
 
-    public void addCartItem(CartItem cartItem) {
-        cartItems.add(cartItem);
+    public List<CartItem> getItems() {
+        return new ArrayList<>(this.cartItems); // make a copy of the list to prevent modification
     }
 
+    public void addCartItem(CartItem cartItem) {
+        cartItems.add(cartItem);
+        cartItem.setCart(this); // to establish the bidirectional relationship
+    }
 
     public List<Services> getServices() {
         return cartItems.stream()
@@ -51,12 +53,6 @@ public class Cart {
     }
 
     public double getTotalPrice() {
-        double totalPrice = 0.0;
-        if (this.items != null) {
-            for (CartItem item : this.items) {
-                totalPrice += item.getTotalPrice();
-            }
-        }
-        return totalPrice;
+        return cartItems.stream().mapToDouble(CartItem::getTotalPrice).sum();
     }
 }

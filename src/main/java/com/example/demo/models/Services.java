@@ -26,4 +26,8 @@ public class Services {
     @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
 
+    public Long getId() {
+        return id;
+    }
+
 }

@@ -41,9 +41,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public User saveUser(User user) {
-        User savedUser = userRepository.save(user);
-        cartService.createCart(savedUser.getId());
-        return savedUser;
+        return userRepository.save(user);
     }
 
     @Transactional

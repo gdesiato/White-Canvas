@@ -7,6 +7,7 @@ import com.example.demo.models.User;
 import com.example.demo.repositories.CartItemRepository;
 import com.example.demo.repositories.CartRepository;
 import com.example.demo.repositories.ServiceRepository;
+import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class CartService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -44,7 +48,7 @@ public class CartService {
         }
         Cart cart = new Cart(user);
         user.setCart(cart);
-        userService.saveUser(user);  // Save the User entity
+        userRepository.save(user); // Save the User entity right after its Cart has been set
         return cartRepository.save(cart);
     }
 
@@ -63,8 +67,7 @@ public class CartService {
             cart = createCart(userId);
         }
         CartItem cartItem = new CartItem(service, quantity);
-        cartItem.setCart(cart);
-        cart.addCartItem(cartItem);
+        cart.addCartItem(cartItem); // Here is where addCartItem is called.
         cartRepository.save(cart); // save the Cart in the repository
         cartItemRepository.save(cartItem); // save the CartItem in the repository
         return cart;

@@ -93,7 +93,7 @@ public class UserController implements ErrorController {
                         userCart = cartService.saveCart(userCart);
                     }
 
-                    List<CartItem> items = List.of(userCart.getItems());
+                    List<List<CartItem>> items = List.of(userCart.getItems());
 
                     model.addAttribute("cart", userCart);
                     model.addAttribute("items", items);
@@ -116,7 +116,7 @@ public class UserController implements ErrorController {
                     return "redirect:/user/dashboard";
                 }
 
-                List<CartItem> items = List.of(userCart.getItems());
+                List<List<CartItem>> items = List.of(userCart.getItems());
                 model.addAttribute("cart", userCart);
                 model.addAttribute("items", items);
                 model.addAttribute("user", user);

@@ -22,8 +22,7 @@
         <td th:text="${service.description}"></td>
         <td th:text="${service.cost}"></td>
         <td>
-            <form th:action="@{/cart/add}" method="post">
-                <input type="hidden" th:value="${service.id}" name="userId" />
+            <form th:action="@{/cart/{userId}(userId=${#authentication.principal.id})}" method="post">
                 <input type="hidden" value="1" name="quantity" />
                 <input type="hidden" th:value="${service.serviceName}" name="serviceName" />
                 <button type="submit">Add to Cart</button>

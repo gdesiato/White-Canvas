@@ -23,18 +23,14 @@
     <td th:text="${item.quantity}"></td>
     <td th:text="${item.service.cost}"></td>
     <td>
-      <form th:action="@{/cart/remove}" method="post">
-        <input type="hidden" th:value="${item.service.id}" name="itemId"/>
+      <form th:action="@{/cart/remove/{itemId}(itemId=${item.id})}" method="post">
+        <input type="hidden" th:value="${item.id}" name="itemId"/>
         <button type="submit">Remove from Cart</button>
       </form>
     </td>
   </tr>
   </tbody>
 </table>
-
-<form th:action="@{/cart/remove/{itemId}(itemId=${item.service.id})}" method="post">
-  <button type="submit">Remove from Cart</button>
-</form>
 
 <a href="/services">Continue Shopping</a>
 
