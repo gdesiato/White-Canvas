@@ -103,6 +103,11 @@ public class CartController {
     @PostMapping("/remove/{itemId}")
     @Transactional
     public String removeItemFromCart(@PathVariable Long itemId, @AuthenticationPrincipal User user, Model model) {
+        if (user == null) {
+            // Add logic to handle unauthenticated user. For example, redirect to login page.
+            return "redirect:/login";
+        }
+
         Cart cart = cartService.getShoppingCartForUser(user.getUsername());
         if (cart == null) {
             return "error";
@@ -115,7 +120,7 @@ public class CartController {
 
         cartService.removeItemFromCart(cart, cartItem);
         model.addAttribute("cart", cart);
-        return "redirect:/cart";
+        return "redirect:/cart/" + user.getId();
     }
 
     @PostMapping("/clear")
@@ -128,7 +133,7 @@ public class CartController {
 
         cartService.clearCart(cart);
         model.addAttribute("cart", cart);
-        return "redirect:/cart";
+        return "redirect:/cart" + user.getId();
     }
 
     @GetMapping("/{cartId}/total")
