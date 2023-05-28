@@ -3,18 +3,21 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Home Page</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
 
-    <body>
-        <div layout:fragment="content" th:remove="tag">
+<th:block th:include="fragments/header :: header"/>
 
-            <h1>Welcome to White-Canvas</h1>
+<body>
+<div layout:fragment="content" th:remove="tag">
 
-        </div>
+    <h1>Welcome to White-Canvas</h1>
 
-    </body>
+</div>
+
+
+</body>
 
 </html>

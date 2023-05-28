@@ -4,14 +4,13 @@
       layout:decorate="~{fragments/layout}">
 
     <head>
-
         <meta charset="utf-8"/>
         <title>User List</title>
-
     </head>
 
-    <body>
+    <th:block th:include="fragments/header :: header"/>
 
+    <body>
         <div layout:fragment="content" th:remove="tag">
 
             <div align="center">

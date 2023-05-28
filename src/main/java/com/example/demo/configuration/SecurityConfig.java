@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/home", true);
+                .defaultSuccessUrl("/", true);
         return http.build();
     }
 

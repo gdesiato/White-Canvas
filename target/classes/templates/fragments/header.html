@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="navbar-header">
                     <a class="navbar-brand" th:href="@{/}">
-                        <img th:src="@{/screen.png}" alt="allure logo"/>
+                        <img th:src="@{/white.png}" alt="white-canvas logo" width="300"/>
                     </a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
@@ -19,7 +19,7 @@
                     <nav>
                         <a th:href="@{/}">Home</a>
                         <a th:href="@{/about}">About</a>
-                        <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/explore}">Explore</a>
+                        <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/services}">Explore</a>
                         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">/Admin</a>
                         <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user}">/User</a>
                         <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/cart}">Cart</a>
