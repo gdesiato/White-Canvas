@@ -104,5 +104,4 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException("Password is too short. Must be longer than 6 characters");
         }
     }
-
 }

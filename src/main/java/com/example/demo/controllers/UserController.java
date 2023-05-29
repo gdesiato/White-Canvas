@@ -34,12 +34,6 @@ public class UserController implements ErrorController {
     CartService cartService;
 
 
-    @GetMapping("/list")
-    public String getUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
-        return "user-list";
-    }
 
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
