@@ -4,9 +4,11 @@ import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
@@ -25,8 +27,16 @@ public class DemoApplication {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private UserService userService;
+
+
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+
+		ConfigurableApplicationContext context = SpringApplication.run(DemoApplication.class, args);
+		UserService userService = context.getBean(UserService.class);
+		userService.createAdminUser("Giuliana", "password123");
+		//SpringApplication.run(DemoApplication.class, args);
 	}
 
 	@PostConstruct
@@ -74,6 +84,5 @@ public class DemoApplication {
 					.roles(Collections.singletonList(roleUser))
 					.build());
 		}
-
 	}
 }

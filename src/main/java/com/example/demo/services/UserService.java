@@ -1,10 +1,15 @@
 package com.example.demo.services;
 
+import com.example.demo.models.Role;
 import com.example.demo.models.User;
+import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import org.hibernate.Hibernate;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,17 +18,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
+import java.util.*;
+
+import org.slf4j.Logger;
 
 
 @Service
 public class UserService implements UserDetailsService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     @Lazy
@@ -60,12 +73,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User optionalUser = userRepository.findByUsername(username);
-        if (optionalUser == null) {
-            throw new UsernameNotFoundException(username + " is not a valid username! Check for typos and try again.");
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
         }
-        return (UserDetails) optionalUser;
+
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        for (Role role : user.getRoles()){
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
     @Transactional(readOnly = true)
@@ -104,4 +124,36 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException("Password is too short. Must be longer than 6 characters");
         }
     }
+
+
+    public void printUserRoles(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            Collection<Role> roles = user.getRoles();
+            log.info("User: " + username + " Roles: " + roles);
+        } else {
+            log.info("User " + username + " not found");
+        }
+    }
+
+    @Transactional
+    public void createAdminUser(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            Role roleAdmin;
+            if (roleRepository.existsByName("ADMIN")) {
+                roleAdmin = roleRepository.findRoleByName("ADMIN");
+            } else {
+                roleAdmin = roleRepository.save(new Role("ADMIN"));
+            }
+
+            user = new User();
+            user.setUsername(username);
+            user.setPassword(passwordEncoder.encode(password));
+            user.setRoles(Collections.singletonList(roleAdmin));
+
+            userRepository.save(user);
+        }
+    }
 }
+

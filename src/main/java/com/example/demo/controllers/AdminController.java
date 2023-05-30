@@ -24,7 +24,7 @@ public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public String getUser(Model model, Authentication authentication) {
 
@@ -36,7 +36,7 @@ public class AdminController {
         return "admin-view";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/dashboard")
     public String showAdminDashboard(Model model, String username) {
         User user = userService.getUser(username);
@@ -47,7 +47,7 @@ public class AdminController {
         return "admin-dashboard";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/list")
     public String getUsers(Model model) {
         List<User> users = userService.getAllUsers();

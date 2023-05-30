@@ -20,8 +20,19 @@ public class Role implements GrantedAuthority {
 
     private String name;
 
+    public Role(String admin) {
+    }
+
     @Override
     public String getAuthority() {
         return "ROLE_" + name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
