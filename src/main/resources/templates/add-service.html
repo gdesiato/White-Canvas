@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+
 <head>
     <meta charset="UTF-8">
     <title>Add Service</title>
 </head>
+
+<th:block th:include="fragments/header :: header"/>
+
 <body>
 <h1>Add Service</h1>
 <form action="/services" method="post" th:action="@{/services}" th:object="${service}">

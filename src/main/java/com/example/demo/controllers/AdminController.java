@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,15 @@ public class AdminController {
     public String getUser(Model model, Authentication authentication) {
 
         logger.info("Accessing getUser method");
-        User admin = (User) authentication.getPrincipal();
-        logger.info("Authenticated user: {}", admin.toString());
-        model.addAttribute("username", admin.getUsername());
-        model.addAttribute("roles", admin.getAuthorities());
+
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            logger.info("Authenticated user: {}", userDetails.getUsername());
+
+            model.addAttribute("username", userDetails.getUsername());
+            model.addAttribute("roles", userDetails.getAuthorities());
+        }
+
         return "admin-view";
     }
 

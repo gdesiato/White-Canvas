@@ -23,7 +23,7 @@
                         <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin}">/Admin</a>
                         <a sec:authorize="hasAuthority('USER')" th:href="@{/user}">/User</a>
                         <a sec:authorize="hasAuthority('USER')" th:href="@{/cart}">Cart</a>
-                        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/user/list}">User List</a>
+                        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/list}">User List</a>
                         <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/services/new}">Edit Services</a>
                         <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Log In</a>
                         <a sec:authorize="!isAuthenticated()" th:href="@{/new}">Register</a>

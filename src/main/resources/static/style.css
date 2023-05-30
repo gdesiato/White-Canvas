@@ -11,3 +11,44 @@
     width: 100px;
     height: 100px;
 }
+
+.navbar {
+    background-color: #333;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.navbar-brand {
+    padding: 15px;
+}
+
+.navbar-brand img {
+    width: 150px;
+    height: auto;
+}
+
+.navbar-nav {
+    margin-top: 10px;
+    list-style-type: none; /* Remove default bullet points */
+}
+
+.navbar-nav li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navbar-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-nav a:hover {
+    background-color: #4CAF50;
+}
+
+.navbar-nav .active a {
+    background-color: #4CAF50;
+}
