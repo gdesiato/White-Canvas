@@ -8,7 +8,10 @@ import com.example.demo.services.CartService;
 import com.example.demo.services.ServicesService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +37,21 @@ public class CartController {
 
     @GetMapping
     @Transactional
-    public String getCart(@AuthenticationPrincipal User user, Model model) {
+    public String getCart(@AuthenticationPrincipal UserDetails userPrincipal, Model model) {
+        String username = userPrincipal.getUsername();
+        User user = userService.findByUsername(username);
+
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXX");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXX");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXX");
+        System.out.println("User: " + user);  // print user to console
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication);
+//        if (user == null) {
+//            // Redirect to the error-and-login page if no user is authenticated
+//            return "error-and-login";
+//        }
         Cart cart = cartService.getShoppingCartForUser(user.getUsername());
         model.addAttribute("cart", cart);
         if (cart == null) {

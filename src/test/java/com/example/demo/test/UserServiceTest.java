@@ -17,6 +17,6 @@ public class UserServiceTest {
         // use the username of an existing user
         System.out.println("///////////////////////////////////////////////////////");
         System.out.println("///////////////////////////////////////////////////////");
-        userService.printUserRoles("UserAdmin");
+        userService.printUserRoles("rr");
     }
 }

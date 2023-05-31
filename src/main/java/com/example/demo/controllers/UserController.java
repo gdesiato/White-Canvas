@@ -9,6 +9,8 @@ import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,8 +50,9 @@ public class UserController implements ErrorController {
     }
 
     @GetMapping
-    public String getUser(Model model, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+    public String getUser(Model model, @AuthenticationPrincipal UserDetails userPrincipal) {
+        String username = userPrincipal.getUsername();
+        User user = userService.findByUsername(username);
         model.addAttribute("username", user.getUsername());
         model.addAttribute("roles", user.getAuthorities());
         return "user-view";
