@@ -6,17 +6,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
+
+<body>
 
 <th:block th:include="fragments/header :: header"/>
 
-<body>
 <div layout:fragment="content" th:remove="tag">
 
     <h1>Welcome to White-Canvas</h1>
 
 </div>
-
 
 </body>
 

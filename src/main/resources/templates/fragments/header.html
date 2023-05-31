@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <head>
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
 
     <body>
     <th:block th:fragment="header">
@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="navbar-header">
                     <a class="navbar-brand" th:href="@{/}">
-                        <img th:src="@{/white.png}" alt="white-canvas logo" width="300"/>
+                        <img th:src="@{/white.png}" alt="white-canvas logo"/>
                     </a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
