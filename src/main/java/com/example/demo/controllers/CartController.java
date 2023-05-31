@@ -48,10 +48,10 @@ public class CartController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
-//        if (user == null) {
-//            // Redirect to the error-and-login page if no user is authenticated
-//            return "error-and-login";
-//        }
+////        if (user == null) {
+////            // Redirect to the error-and-login page if no user is authenticated
+////            return "error-and-login";
+////        }
         Cart cart = cartService.getShoppingCartForUser(user.getUsername());
         model.addAttribute("cart", cart);
         if (cart == null) {
@@ -59,6 +59,9 @@ public class CartController {
         }
         return "cart";
     }
+
+
+
 
     @PostMapping("/new/{customerId}")
     @Transactional
