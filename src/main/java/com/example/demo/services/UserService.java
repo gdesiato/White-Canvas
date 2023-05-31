@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.CustomUserDetails;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.repositories.RoleRepository;
@@ -81,11 +82,11 @@ public class UserService implements UserDetailsService {
         }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()){
+        for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
     @Transactional(readOnly = true)
