@@ -139,6 +139,10 @@ public class CartController {
         }
 
         cartService.removeItemFromCart(cart, cartItem);
+
+        System.out.println("/././././././././././././/./././././/./");
+        System.out.println("Removed item with ID: " + itemId + " from cart");
+
         model.addAttribute("cart", cart);
         return "redirect:/cart/" + user.getId();
     }

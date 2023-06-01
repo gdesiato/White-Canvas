@@ -1,6 +1,7 @@
 .navbar {
     background-color: #fff;
     border-bottom: 2px solid #fff;
+    margin-right: 260px;
 }
 
 .navbar .container {
@@ -11,6 +12,8 @@
 
 .navbar-brand {
     color: #000;
+    margin-top: 40px;
+    margin-left: 260px;
     font-size: 30px;
     text-decoration: none;
 }

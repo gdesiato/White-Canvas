@@ -19,6 +19,7 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAuthority("USER")
+                .antMatchers("/cart/**").hasAuthority("USER")
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
