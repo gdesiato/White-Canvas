@@ -122,9 +122,16 @@ public class CartController {
 
     @PostMapping("/remove/{itemId}")
     @Transactional
-    public String removeItemFromCart(@PathVariable Long itemId, @AuthenticationPrincipal User user, Model model) {
+    public String removeItemFromCart(@PathVariable Long itemId,
+                                     @AuthenticationPrincipal UserDetails userDetails,
+                                     Model model) {
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
+        String username = userDetails.getUsername();
+        User user = userService.findByUsername(username);
+
         if (user == null) {
-            // Add logic to handle unauthenticated user. For example, redirect to login page.
             return "redirect:/login";
         }
 

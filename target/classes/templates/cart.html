@@ -31,7 +31,6 @@
     <td>
       <form th:action="@{/cart/remove/{itemId}(itemId=${item.id})}" method="post">
         <input type="hidden" th:value="${item.id}" name="itemId"/>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <button type="submit">Remove from Cart</button>
       </form>
     </td>
