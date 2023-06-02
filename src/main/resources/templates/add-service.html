@@ -12,6 +12,7 @@
 <th:block th:include="fragments/header :: header"/>
 
 <body>
+<div class="layout">
 <h1>Add Service</h1>
 <form action="/services" method="post" th:action="@{/services}" th:object="${service}">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
@@ -28,5 +29,6 @@
 
     <button type="submit">Submit</button>
 </form>
+</div>
 </body>
 </html>

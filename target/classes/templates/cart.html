@@ -12,33 +12,38 @@
 <th:block th:include="fragments/header :: header"/>
 
 <body>
-<h1>Your Shopping Cart</h1>
 
-<table>
-  <thead>
-  <tr>
-    <th>Item</th>
-    <th>Quantity</th>
-    <th>Price</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="item : ${cart.cartItems}" th:if="${cart.cartItems != null}">
-    <td th:text="${item.service.serviceName}"></td>
-    <td th:text="${item.quantity}"></td>
-    <td th:text="${item.service.cost}"></td>
-    <td>
-      <form th:action="@{/cart/remove/{itemId}(itemId=${item.id})}" method="post">
-        <input type="hidden" th:value="${item.id}" name="itemId"/>
-        <button type="submit">Remove from Cart</button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
-</table>
+  <div class="layout">
 
-<a href="/services">Continue Shopping</a>
+    <h1>Your Shopping Cart</h1>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="item : ${cart.cartItems}" th:if="${cart.cartItems != null}">
+        <td th:text="${item.service.serviceName}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.service.cost}"></td>
+        <td>
+          <form th:action="@{/cart/remove/{itemId}(itemId=${item.id})}" method="post">
+            <input type="hidden" th:value="${item.id}" name="itemId"/>
+            <button type="submit">Remove from Cart</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <a href="/services">Continue Shopping</a>
+
+  </div>
 
 </body>
 </html>

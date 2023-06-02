@@ -13,14 +13,18 @@
 
 <body>
 
-    <div layout:fragment="content" th:remove="tag">
+    <div class="layout">
 
-        <h1>Welcome, <span th:text="${username}"></span>!</h1>
-        <h1>This is the USER dashboard</h1>
-        <p>Your roles are:</p>
-        <ul>
-            <li th:each="authority : ${roles}" th:text="${authority.authority}"></li>
-        </ul>
+        <div layout:fragment="content" th:remove="tag">
+
+            <h1>Welcome, <span th:text="${username}"></span>!</h1>
+            <h1>This is the USER dashboard</h1>
+            <p>Your roles are:</p>
+            <ul>
+                <li th:each="authority : ${roles}" th:text="${authority.authority}"></li>
+            </ul>
+
+        </div>
 
     </div>
 

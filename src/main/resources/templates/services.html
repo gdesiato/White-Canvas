@@ -14,32 +14,37 @@
 
 
 <body>
-<h1>Our Services</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Service Name</th>
-        <th>Description</th>
-        <th>Cost</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="service : ${services}">
-        <td th:text="${service.serviceName}"></td>
-        <td th:text="${service.description}"></td>
-        <td th:text="${service.cost}"></td>
-        <td>
-            <form th:action="@{/cart/{userId}(userId=${#authentication.principal.id})}" method="post">
-                <input type="hidden" value="1" name="quantity" />
-                <input type="hidden" th:value="${service.serviceName}" name="serviceName" />
-                <button type="submit">Add to Cart</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
 
-<a href="/services/new" class="button" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add New Service</a>
+    <div class="layout">
+
+        <h1>Our Services</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Service Name</th>
+                <th>Description</th>
+                <th>Cost</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="service : ${services}">
+                <td th:text="${service.serviceName}"></td>
+                <td th:text="${service.description}"></td>
+                <td th:text="${service.cost}"></td>
+                <td>
+                    <form th:action="@{/cart/{userId}(userId=${#authentication.principal.id})}" method="post">
+                        <input type="hidden" value="1" name="quantity" />
+                        <input type="hidden" th:value="${service.serviceName}" name="serviceName" />
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="/services/new" class="button" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add New Service</a>
+
+    </div>
 </body>
 </html>

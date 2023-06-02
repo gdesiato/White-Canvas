@@ -12,6 +12,7 @@
 <th:block th:include="fragments/header :: header"/>
 
 <body>
+<div class="layout">
     <div layout:fragment="content" th:remove="tag">
 
         <h1>Welcome, <span th:text="${username}"></span>!</h1>
@@ -22,5 +23,6 @@
         </ul>
 
     </div>
+</div>
 </body>
 </html>
