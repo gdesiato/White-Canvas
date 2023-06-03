@@ -3,7 +3,6 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 
-
 <head>
     <title>Our Services</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -12,39 +11,57 @@
 
 <th:block th:include="fragments/header :: header"/>
 
-
 <body>
 
-    <div class="layout">
+<div class="layout">
 
-        <h1>Our Services</h1>
-        <table>
-            <thead>
-            <tr>
-                <th>Service Name</th>
-                <th>Description</th>
-                <th>Cost</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="service : ${services}">
-                <td th:text="${service.serviceName}"></td>
-                <td th:text="${service.description}"></td>
-                <td th:text="${service.cost}"></td>
-                <td>
-                    <form th:action="@{/cart/{userId}(userId=${#authentication.principal.id})}" method="post">
-                        <input type="hidden" value="1" name="quantity" />
-                        <input type="hidden" th:value="${service.serviceName}" name="serviceName" />
-                        <button type="submit">Add to Cart</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <h1>Our Services</h1>
 
-        <a href="/services/new" class="button" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add New Service</a>
-
+    <!-- Service 1 -->
+    <div class="card">
+        <img src="/images/image-1.png" class="card-img-top" alt="Image of service">
+        <div class="card-body">
+            <h2 class="card-title">COLOR ANALYSIS</h2>
+            <p class="card-text">${services[0].description}</p>
+            <form th:action="@{/cart/{userId}(userId=${#authentication.principal.id})}" method="post">
+                <input type="hidden" value="1" name="quantity" />
+                <input type="hidden" th:value="${services[1].serviceName}" name="serviceName" />
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
     </div>
+
+    <!-- Service 2 -->
+    <div class="card">
+        <img src="/images/image-2.png" class="card-img-top" alt="Image of service">
+        <div class="card-body">
+            <h2 class="card-title">BODY SHAPE</h2>
+            <p class="card-text">${services[1].description}</p>
+            <form th:action="@{/cart/{userId}(userId=${#authentication.principal.id})}" method="post">
+                <input type="hidden" value="1" name="quantity" />
+                <input type="hidden" th:value="${services[0].serviceName}" name="serviceName" />
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Service 3 -->
+    <div class="card">
+        <img src="/images/image-3.png" class="card-img-top" alt="Image of service">
+        <div class="card-body">
+            <h2 class="card-title">FACIAL SHAPE</h2>
+            <p class="card-text">${services[2].description}</p>
+            <form th:action="@{/cart/{userId}(userId=${#authentication.principal.id})}" method="post">
+                <input type="hidden" value="1" name="quantity" />
+                <input type="hidden" th:value="${services[2].serviceName}" name="serviceName" />
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+
+
+    <a href="/services/new" class="button" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add New Service</a>
+</div>
+
 </body>
 </html>

@@ -58,18 +58,42 @@ public class CartService {
         if (user == null) {
             return null;
         }
+
         Services service = serviceRepository.findByServiceName(serviceName);
         if (service == null) {
             return null;
         }
+
         Cart cart = user.getCart();
         if (cart == null) {
             cart = createCart(userId);
         }
-        CartItem cartItem = new CartItem(service, quantity);
-        cart.addCartItem(cartItem); // Here is where addCartItem is called.
-        cartRepository.save(cart); // save the Cart in the repository
-        cartItemRepository.save(cartItem); // save the CartItem in the repository
+
+        // Check if there's already a CartItem for the same service in the cart
+        CartItem existingCartItem = null;
+        for (CartItem cartItem : cart.getCartItems()) {
+            if (cartItem.getService().equals(service)) {
+                existingCartItem = cartItem;
+                break;
+            }
+        }
+
+        if (existingCartItem == null) {
+            // If there's no existing CartItem for the service, create a new one
+            CartItem cartItem = new CartItem(service, quantity);
+            if (cartItem.getQuantity() <= 0) {
+                return cart;
+            }
+            cart.addCartItem(cartItem);
+            cartItemRepository.save(cartItem);
+        } else {
+            // If there's an existing CartItem for the service, just increase its quantity
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
+            cartItemRepository.save(existingCartItem);
+        }
+
+        cartRepository.save(cart);
+
         return cart;
     }
 

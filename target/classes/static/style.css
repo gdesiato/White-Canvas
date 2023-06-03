@@ -1,59 +1,69 @@
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-    margin: 0 260px;
+  margin: auto 260px;
 }
 
 .layout {
-    margin-left: 260px;
-    margin-right: 260px;
+  margin: auto 260px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  /*margin: auto 260px;*/
 }
 
 .navbar {
-    background-color: #fff;
-    border-bottom: 2px solid #fff;
-    /*margin-right: 260px;*/
+  background-color: #fff;
+  border-bottom: 2px solid #fff;
+  /*margin-right: 260px;*/
 }
 
 .navbar .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .navbar-brand {
-    color: #000;
-    margin-top: 40px;
-    /*margin-left: 260px;*/
-    font-size: 30px;
-    text-decoration: none;
+  color: #000;
+  margin-top: 40px;
+  /*margin-left: 260px;*/
+  font-size: 30px;
+  text-decoration: none;
 }
 
 .navbar-header {
-    margin-right: 20px;  // Reduced margin to 20px
+  margin-right: 20px;  // Reduced margin to 20px
 }
 
 .navbar-header img {
-    height: 150px;
-    width: auto;
+  height: 150px;
+  width: auto;
 }
 
 #navbar {
-    display: flex;
+  display: flex;
 }
 
 #navbar a {
-    color: #000;
-    font-size: 30px;
-    margin-right: 15px;
-    text-decoration: none;
-    transition: color 0.3s ease;
+  color: #000;
+  font-size: 30px;
+  margin-right: 15px;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 #navbar a:hover {
-    color: #ddd;
+  color: #ddd;
 }
+
+
+
+
+
 

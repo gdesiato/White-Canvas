@@ -93,6 +93,10 @@ public class CartController {
                             @RequestParam("quantity") Integer quantity,
                             Model model) {
 
+        if (quantity <= 0) {
+            return "error";
+        }
+
         Cart cart = cartService.addToCart(userId, serviceName, quantity);
 
         if (cart == null) {
@@ -103,22 +107,22 @@ public class CartController {
         return "cart";
     }
 
-    @PostMapping("/{userId}/items")
-    @Transactional
-    public String addItemToCart(@PathVariable("userId") Long userId,
-                                @RequestParam("serviceName") String serviceName,
-                                @RequestParam("quantity") Integer quantity,
-                                Model model) {
-
-        Cart cart = cartService.addToCart(userId, serviceName, quantity);
-
-        if (cart == null) {
-            return "error";
-        }
-
-        model.addAttribute("cart", cart);
-        return "cart";
-    }
+//    @PostMapping("/{userId}/items")
+//    @Transactional
+//    public String addItemToCart(@PathVariable("userId") Long userId,
+//                                @RequestParam("serviceName") String serviceName,
+//                                @RequestParam("quantity") Integer quantity,
+//                                Model model) {
+//
+//        Cart cart = cartService.addToCart(userId, serviceName, quantity);
+//
+//        if (cart == null) {
+//            return "error";
+//        }
+//
+//        model.addAttribute("cart", cart);
+//        return "cart";
+//    }
 
     @PostMapping("/remove/{itemId}")
     @Transactional

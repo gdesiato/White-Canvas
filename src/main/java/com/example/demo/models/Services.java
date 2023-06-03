@@ -22,6 +22,7 @@ public class Services {
     private String serviceName;
     private String description;
     private Double cost;
+    private String image;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
