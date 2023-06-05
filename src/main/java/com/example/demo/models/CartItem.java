@@ -55,4 +55,15 @@ public class CartItem {
         return service;
     }
 
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "id=" + id +
+                ", service=" + service +
+                ", quantity=" + quantity +
+                ", cart=" + cart +
+                ", order=" + order +
+                ", user=" + user +
+                '}';
+    }
 }

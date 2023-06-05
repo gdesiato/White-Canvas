@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 @Controller
@@ -33,6 +34,14 @@ public class CartController {
 
     @Autowired
     private CartItemRepository cartItemRepository;
+
+
+    // Double-check that the cartService is properly injected
+    @PostConstruct
+    public void init() {
+        System.out.println("0000000000000000000000000000");
+        System.out.println("cartService: " + cartService);
+    }
 
 
     @GetMapping
@@ -99,9 +108,15 @@ public class CartController {
 
         Cart cart = cartService.addToCart(userId, serviceName, quantity);
 
+
         if (cart == null) {
             return "error";
         }
+
+        // Debugging code
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        System.out.println("Cart items after addition: " + cart.getCartItems());
 
         model.addAttribute("cart", cart);
         return "cart";

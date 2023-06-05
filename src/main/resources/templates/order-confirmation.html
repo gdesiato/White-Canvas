@@ -28,6 +28,23 @@
         Order Total: <span th:text="${order.totalAmount}"></span>
     </p>
 
+    <table>
+        <thead>
+        <tr>
+            <th>Service</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${order.items}">
+            <td th:text="${item.service.serviceName}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.service.cost}"></td>
+        </tr>
+        </tbody>
+    </table>
+
     <p>
         <a href="/services">Continue Shopping</a>
     </p>
