@@ -43,6 +43,12 @@
 
     <a href="/services">Continue Shopping</a>
 
+    <div class="checkout">
+      <form th:action="@{/order/create}" method="post">
+        <button type="submit">Order Now</button>
+      </form>
+    </div>
+
   </div>
 
 </body>
