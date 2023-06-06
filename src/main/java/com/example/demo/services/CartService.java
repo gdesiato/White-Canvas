@@ -9,8 +9,6 @@ import com.example.demo.repositories.CartRepository;
 import com.example.demo.repositories.ServiceRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -56,20 +54,30 @@ public class CartService {
 
     @Transactional
     public Cart addToCart(Long userId, String serviceName, Integer quantity) {
+        System.out.println("Debugging addToCart:");
+        System.out.println("UserId: " + userId);
+        System.out.println("ServiceName: " + serviceName);
+        System.out.println("Quantity: " + quantity);
+
         User user = userService.getUserById(userId);
         if (user == null) {
+            System.out.println("User is null");
             return null;
         }
 
         Services service = serviceRepository.findByServiceName(serviceName);
         if (service == null) {
+            System.out.println("Service is null");
             return null;
         }
 
         Cart cart = user.getCart();
         if (cart == null) {
+            System.out.println("Cart is null. Creating a new one.");
             cart = createCart(userId);
         }
+
+        System.out.println("Cart before operation: " + cart);
 
         // Check if there's already a CartItem for the same service in the cart
         CartItem existingCartItem = null;
@@ -86,15 +94,21 @@ public class CartService {
             if (cartItem.getQuantity() <= 0) {
                 return cart;
             }
+            System.out.println("Adding a new CartItem: " + cartItem);
             cart.addCartItem(cartItem);
             cartItemRepository.save(cartItem);
         } else {
             // If there's an existing CartItem for the service, just increase its quantity
+            System.out.println("Increasing quantity of existing CartItem: " + existingCartItem);
             existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
             cartItemRepository.save(existingCartItem);
         }
 
-        cartRepository.save(cart);
+        cart = cartRepository.save(cart);
+
+        System.out.println("Cart after operation: " + cart);
+        System.out.println("Cart Items after adding: " + cart.getCartItems());
+
 
         return cart;
     }

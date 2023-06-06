@@ -23,6 +23,7 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+
     @Transactional
     public Order createOrderFromCart(Cart cart) {
         Order order = new Order();
@@ -42,7 +43,13 @@ public class OrderService {
         System.out.println("===========================");
         System.out.println("Order before saving: " + order);
 
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        // Print out the returned Order after saving
+        System.out.println("===========================");
+        System.out.println("Saved Order: " + savedOrder);
+
+        return savedOrder;
     }
 
     @Transactional

@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 @Controller
@@ -100,7 +101,17 @@ public class CartController {
     public String addToCart(@PathVariable("userId") Long userId,
                             @RequestParam("serviceName") String serviceName,
                             @RequestParam("quantity") Integer quantity,
-                            Model model) {
+                            Model model,
+                            HttpSession session) {
+
+        //Checking the session ID
+        System.out.println("----------->>>>>>> Session ID when adding to cart: " + session.getId());
+
+        // Debugging code before the operation
+        System.out.println("Attempting to add to cart with the following parameters:");
+        System.out.println("userId: " + userId);
+        System.out.println("serviceName: " + serviceName);
+        System.out.println("quantity: " + quantity);
 
         if (quantity <= 0) {
             return "error";
@@ -108,15 +119,14 @@ public class CartController {
 
         Cart cart = cartService.addToCart(userId, serviceName, quantity);
 
-
+        // Debugging code after the operation
+        System.out.println("After the operation:");
         if (cart == null) {
+            System.out.println("The cart is null. The operation might have failed.");
             return "error";
+        } else {
+            System.out.println("Cart items: " + cart.getCartItems());
         }
-
-        // Debugging code
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-        System.out.println("Cart items after addition: " + cart.getCartItems());
 
         model.addAttribute("cart", cart);
         return "cart";
