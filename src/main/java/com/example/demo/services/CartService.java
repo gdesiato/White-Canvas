@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class CartService {
@@ -145,5 +146,9 @@ public class CartService {
 
     public Cart saveCart(Cart cart) {
         return cartRepository.save(cart);
+    }
+
+    public Optional<Cart> findById(Long id) {
+        return cartRepository.findById(id);
     }
 }

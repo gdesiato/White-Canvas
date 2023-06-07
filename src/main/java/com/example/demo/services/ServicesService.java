@@ -18,4 +18,8 @@ public class ServicesService {
                 .orElseThrow(() -> new ResourceNotFoundException("Service not found with id " + serviceId));
     }
 
+    public Services save(Services service) {
+        return servicesRepository.save(service);
+    }
+
 }

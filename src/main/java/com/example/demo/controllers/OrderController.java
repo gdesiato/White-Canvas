@@ -65,7 +65,7 @@ public class OrderController {
             System.out.println("Item: " + item);
         }
 
-        Order order = orderService.createOrderFromCart(cart);
+        Order order = orderService.createOrderFromCart(cart.getId());
         cartService.clearCart(cart);
 
         redirectAttributes.addAttribute("orderId", order.getId());

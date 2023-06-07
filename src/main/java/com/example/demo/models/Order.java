@@ -45,4 +45,9 @@ public class Order {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    public void addItem(CartItem item) {
+        items.add(item);
+        item.setOrder(this);
+    }
 }
