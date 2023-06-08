@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,7 +39,11 @@ public class CartService {
         if (user == null) {
             return null;
         }
-        return user.getCart();
+        List<Cart> carts = cartRepository.findByUser(user);
+        if (carts.isEmpty()) {
+            return null;
+        }
+        return carts.get(0);
     }
 
     @Transactional
@@ -141,7 +146,11 @@ public class CartService {
     }
 
     public Cart findCartByUser(User user) {
-        return cartRepository.findByUser(user);
+        List<Cart> carts = cartRepository.findByUser(user);
+        if (carts.isEmpty()) {
+            return null;
+        }
+        return carts.get(0);
     }
 
     public Cart saveCart(Cart cart) {

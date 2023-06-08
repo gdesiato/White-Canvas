@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,9 +15,10 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "orders")
+@Table(name ="orders")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,30 +27,26 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private String address;
-
-    private String city;
-
-    private String state;
-
-    private String zipCode;
-
-    private String country;
-
-    private Double totalAmount;
-
-    private LocalDateTime createdAt;
+    private double totalAmount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItem> items = new HashSet<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        LocalDateTime createdAt = LocalDateTime.now();
     }
 
-    public void addItem(CartItem item) {
-        items.add(item);
-        item.setOrder(this);
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items = new ArrayList<>();
+
+    public List<OrderItem> getItems() {
+        return items;
     }
 }
+

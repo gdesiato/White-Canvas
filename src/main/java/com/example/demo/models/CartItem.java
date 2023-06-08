@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
@@ -33,11 +34,6 @@ public class CartItem {
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
-
-    // Add a reference to the User class
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -62,8 +58,9 @@ public class CartItem {
                 ", service=" + service +
                 ", quantity=" + quantity +
                 ", cart=" + cart +
-                ", order=" + order +
                 ", user=" + user +
                 '}';
     }
 }
+
+

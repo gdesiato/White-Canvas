@@ -50,22 +50,22 @@ public class UserServiceTest {
     public void testOrderSubmission() {
         // Create test user and save to the database
         User user = new User();
-        user.setUsername("TestUsername6");
+        user.setUsername("TestUsername7");
         user.setPassword("TestPassword");
         userRepository.save(user);
 
         // Make sure that the user is saved
-        User savedUser = userRepository.findByUsername("TestUsername6");
+        User savedUser = userRepository.findByUsername("TestUsername7");
         assertNotNull(savedUser);
 
         // Create a service
         Services service = new Services();
-        service.setServiceName("TestService6");
+        service.setServiceName("TestService7");
         service.setCost(100.0);
         serviceRepository.save(service);
 
         // Make sure that the service is saved
-        Services savedService = serviceRepository.findByServiceName("TestService6");
+        Services savedService = serviceRepository.findByServiceName("TestService7");
         assertNotNull(savedService);
 
         // Simulate adding items to a cart
