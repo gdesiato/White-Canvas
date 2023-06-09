@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 @Service
@@ -89,9 +91,11 @@ public class OrderService {
 
         // Instead of clearing the Cart, remove the items from the Cart.
         // This will reuse the same Cart for the next order.
-        for (CartItem item : cart.getCartItems()) {
+        List<CartItem> items = new ArrayList<>(cart.getCartItems());
+        for (CartItem item : items) {
             cartService.removeItemFromCart(cart, item);
         }
+
 
         log.info("Order created successfully. Order ID: {}", savedOrder.getId());
 
