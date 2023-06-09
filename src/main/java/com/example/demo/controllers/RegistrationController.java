@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Cart;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.repositories.RoleRepository;
@@ -53,12 +54,18 @@ public class RegistrationController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        // Create a new Cart for the User
+        Cart cart = new Cart();
+        cart.setUser(user);
+        user.setCart(cart);
+
         userService.saveUser(user);
 
         model.addAttribute("username", user.getUsername());
 
         return "registration-confirmation";
     }
+
 }
 
 

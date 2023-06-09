@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.function.Supplier;
 
 @Service
@@ -36,13 +39,18 @@ public class OrderService {
 
     @Transactional
     public Order createOrderFromCart(Long cartId) {
+        final Logger log = LogManager.getLogger(OrderService.class);
+
+        System.out.println("Service Method CreateOrderFromCart triggered");
+
         Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(new Supplier<ResourceNotFoundException>() {
-                    @Override
-                    public ResourceNotFoundException get() {
-                        return new ResourceNotFoundException("Cart not found");
-                    }
+                .orElseThrow(() -> {
+                    log.error("Cart not found");
+                    return new ResourceNotFoundException("Cart not found");
                 });
+
+        log.info("Creating order from cart with ID: {}", cart.getId());
+        log.info("Cart retrieved: {}", cart);
 
         // Create the order from the cart
         Order order = new Order();
@@ -50,18 +58,28 @@ public class OrderService {
 
         // Calculate total amount and save the order
         double total = 0.0;
-        for (CartItem item : cart.getCartItems()) {
-            // Create a new OrderItem from the CartItem
-            OrderItem orderItem = new OrderItem();
-            orderItem.setService(item.getService());
-            orderItem.setQuantity(item.getQuantity());
+        if (cart.getCartItems().isEmpty()) {
+            log.info("CartItems is empty");
+        } else {
+            for (CartItem item : cart.getCartItems()) {
+                log.info("Processing cart item: {}", item);
+                // Create a new OrderItem from the CartItem
+                OrderItem orderItem = new OrderItem();
+                orderItem.setService(item.getService());
+                orderItem.setQuantity(item.getQuantity());
 
-            total += item.getTotalPrice();
-            addItemToOrder(order, orderItem);
+                total += item.getTotalPrice();
+                addItemToOrder(order, orderItem);
+                log.info("Added item to order: {}", orderItem);
+            }
         }
         order.setTotalAmount(total);
 
+        log.info("Saving order to the database");
+
         Order savedOrder = orderRepository.save(order);
+
+        log.info("Saved order: {}", savedOrder);
 
         // Update the OrderItems to reference the saved order
         for (OrderItem orderItem : order.getOrderItems()) {
@@ -69,17 +87,24 @@ public class OrderService {
             orderItemRepository.save(orderItem);
         }
 
-        // Clear the Cart
-        cartService.clearCart(cart);
+        // Instead of clearing the Cart, remove the items from the Cart.
+        // This will reuse the same Cart for the next order.
+        for (CartItem item : cart.getCartItems()) {
+            cartService.removeItemFromCart(cart, item);
+        }
+
+        log.info("Order created successfully. Order ID: {}", savedOrder.getId());
 
         return savedOrder;
     }
+
 
 
     @Transactional
     public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
+
 
     @Transactional
     public Order addItemToOrder(Order order, OrderItem orderItem) {

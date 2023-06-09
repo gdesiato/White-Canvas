@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.models.CustomUserDetails;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
+import com.example.demo.repositories.CartRepository;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import org.hibernate.Hibernate;
@@ -41,6 +42,9 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
     @Lazy
     private CartService cartService;
 
@@ -54,7 +58,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    @Transactional
     public User saveUser(User user) {
         return userRepository.save(user);
     }

@@ -64,6 +64,10 @@ public class OrderController {
         System.out.println("++++++++++++++++++++++");
         System.out.println("Cart: " + cart);
 
+        // Print the Cart ID
+        if (cart != null) {
+            System.out.println("Cart ID: " + cart.getId());
+        }
 
         // Checking if the cart is attached
         if (entityManager.contains(cart)) {
@@ -73,9 +77,14 @@ public class OrderController {
         }
 
 
-        if (cart == null || cart.getCartItems().isEmpty()) {
+        if (cart == null ) {
+            System.out.println("Cart is null or empty. Redirecting to cart page.");
+            return "redirect:/cart";
+        } else if (cart.getCartItems().isEmpty()) {
+            System.out.println("CartItems list is empty. Redirecting to cart page.");
             return "redirect:/cart";
         }
+
 
         System.out.println("//////////////////////////////////////////// CARTITEM REACHED");
         System.out.println("Cart Items: ");
