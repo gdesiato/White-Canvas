@@ -24,11 +24,7 @@
         You will be receiving an email confirmation shortly.
     </p>
 
-    <p>
-        Order Total: <span th:text="${order.totalAmount}"></span>
-    </p>
-
-    <table>
+    <table class="order-table">
         <thead>
         <tr>
             <th>Service</th>
@@ -44,6 +40,10 @@
         </tr>
         </tbody>
     </table>
+
+    <p style="font-size: larger; font-weight: bold;">
+        Order Total: <span th:text="${order.totalAmount}"></span>
+    </p>
 
     <p>
         <a href="/services">Continue Shopping</a>
