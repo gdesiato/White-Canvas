@@ -70,16 +70,13 @@ public class CartController {
         return "cart";
     }
 
-
-
-
-    @PostMapping("/new/{customerId}")
-    @Transactional
-    public String createNewCart(@PathVariable Long customerId, Model model) {
-        Cart cart = cartService.createCart(customerId);
-        model.addAttribute("cart", cart);
-        return "new-cart";
-    }
+//    @PostMapping("/new/{customerId}")
+//    @Transactional
+//    public String createNewCart(@PathVariable Long customerId, Model model) {
+//        Cart cart = cartService.createCart(customerId);
+//        model.addAttribute("cart", cart);
+//        return "new-cart";
+//    }
 
     @GetMapping("/{userId}")
     public String viewCart(@PathVariable("userId") Long userId, Model model) {
@@ -131,23 +128,6 @@ public class CartController {
         model.addAttribute("cart", cart);
         return "cart";
     }
-
-//    @PostMapping("/{userId}/items")
-//    @Transactional
-//    public String addItemToCart(@PathVariable("userId") Long userId,
-//                                @RequestParam("serviceName") String serviceName,
-//                                @RequestParam("quantity") Integer quantity,
-//                                Model model) {
-//
-//        Cart cart = cartService.addToCart(userId, serviceName, quantity);
-//
-//        if (cart == null) {
-//            return "error";
-//        }
-//
-//        model.addAttribute("cart", cart);
-//        return "cart";
-//    }
 
     @PostMapping("/remove/{itemId}")
     @Transactional
