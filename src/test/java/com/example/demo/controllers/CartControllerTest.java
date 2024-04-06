@@ -51,10 +51,11 @@ public class CartControllerTest {
     private PasswordEncoder passwordEncoder;
 
 
-
+    // Test for retrieving a cart
     @Test
     @WithMockUser(username = "testUser")
     public void testGetCart() throws Exception {
+        // Mock user and cart data
         User testUser = new User();
         testUser.setUsername("testUser");
 
@@ -62,17 +63,22 @@ public class CartControllerTest {
         testCart.setId(1L);
         testCart.setUser(testUser);
 
+        // Configure the mocks
         given(userService.findByUsername("testUser")).willReturn(testUser);
         given(cartService.getShoppingCartForUser("testUser")).willReturn(testCart);
 
+        // Perform the request and assert the response
         mockMvc.perform(get("/cart"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("cart"));
     }
 
+    // Test for removing an item from the cart
     @Test
     @WithMockUser(username = "testUser", authorities = {"USER"})
     public void testRemoveItemFromCart() throws Exception {
+
+        // Mock user, cart, and cart item data
         Long testItemId = 1L;
         String username = "testUser";
 
@@ -86,12 +92,16 @@ public class CartControllerTest {
         CartItem testCartItem = new CartItem();
         testCartItem.setId(testItemId);
 
+        // Configure the mocks
         given(userService.findByUsername(username)).willReturn(testUser);
         given(cartService.getShoppingCartForUser(username)).willReturn(testCart);
         given(cartItemRepository.findById(testItemId)).willReturn(Optional.of(testCartItem));
 
+        // Perform the request and assert the response
+        mockMvc.perform(post("/cart/remove/{itemId}", testItemId))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/cart/" + testUser.getId()));
+
     }
-
-
 }
 
