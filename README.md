@@ -1,5 +1,4 @@
 # White-Canvas
 
-Java-Spring Web Application for an Image Consultant provider
+Project realized in Java-Spring for Image Consultant provider
 
-![white](white.png)
