@@ -44,9 +44,6 @@ public class OrderController {
     @PostMapping("/create")
     public String createOrder(RedirectAttributes redirectAttributes, HttpSession session) {
 
-        //Checking if the method is called
-        System.out.println("//////////////////////////////////////////// /order/create ENDPOINT REACHED");
-
         //Checking the session ID
         System.out.println("----------->>>>>>> Session ID when adding to cart: " + session.getId());
 
@@ -83,8 +80,6 @@ public class OrderController {
             return "redirect:/cart";
         }
 
-
-        System.out.println("//////////////////////////////////////////// CARTITEM REACHED");
         System.out.println("Cart Items: ");
         for (CartItem item : cart.getCartItems()) {
             System.out.println("Item: " + item);

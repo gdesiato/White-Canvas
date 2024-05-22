@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/services")
-public class ServicesController {
+@RequestMapping("/consultancy")
+public class ConsultancyController {
 
     @Autowired
     private ServiceRepository servicesRepository;

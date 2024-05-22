@@ -5,7 +5,7 @@ import com.example.demo.repository.CartItemRepository;
 import com.example.demo.service.CartService;
 import com.example.demo.model.Cart;
 import com.example.demo.model.User;
-import com.example.demo.service.ServicesService;
+import com.example.demo.service.ConsultancyService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -31,7 +31,7 @@ public class CartController {
     private UserService userService;
 
     @Autowired
-    private ServicesService servicesService;
+    private ConsultancyService servicesService;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -58,10 +58,6 @@ public class CartController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
-////        if (user == null) {
-////            // Redirect to the error-and-login page if no user is authenticated
-////            return "error-and-login";
-////        }
         Cart cart = cartService.getShoppingCartForUser(user.getUsername());
         model.addAttribute("cart", cart);
         if (cart == null) {
@@ -69,14 +65,6 @@ public class CartController {
         }
         return "cart";
     }
-
-//    @PostMapping("/new/{customerId}")
-//    @Transactional
-//    public String createNewCart(@PathVariable Long customerId, Model model) {
-//        Cart cart = cartService.createCart(customerId);
-//        model.addAttribute("cart", cart);
-//        return "new-cart";
-//    }
 
     @GetMapping("/{userId}")
     public String viewCart(@PathVariable("userId") Long userId, Model model) {
