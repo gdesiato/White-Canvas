@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
-public class DemoApplication {
+public class Application {
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -33,7 +33,7 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 
-		ConfigurableApplicationContext context = SpringApplication.run(DemoApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
 	}
 
 	@PostConstruct
