@@ -14,11 +14,13 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
     UserService userService;
-
-    @Autowired
     CartService cartService;
+
+    public UserController(UserService userService, CartService cartService){
+        this.userService = userService;
+        this.cartService = cartService;
+    }
 
     @GetMapping("/list")
     public List<User> getUsers() {
