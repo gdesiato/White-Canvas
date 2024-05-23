@@ -20,11 +20,7 @@ public class SecurityConfig {
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAuthority("USER")
                 .antMatchers("/cart/**").hasAuthority("USER")
-                .antMatchers("/**").permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true);
+                .antMatchers("/**").permitAll();
         return http.build();
     }
 
