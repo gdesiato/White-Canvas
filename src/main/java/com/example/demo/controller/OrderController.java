@@ -22,11 +22,8 @@ import javax.servlet.http.HttpSession;
 public class OrderController {
 
     private CartService cartService;
-
     private OrderService orderService;
-
     private UserService userService;
-
     private EntityManager entityManager;
 
     public OrderController(CartService cartService, OrderService orderService, UserService userService, EntityManager entityManager) {

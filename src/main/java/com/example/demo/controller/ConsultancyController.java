@@ -13,7 +13,6 @@ import java.util.Optional;
 @RequestMapping("/api/consultancy")
 public class ConsultancyController {
 
-    @Autowired
     private ConsultancyRepository consultancyRepository;
 
     public ConsultancyController(ConsultancyRepository consultancyRepository) {
@@ -59,8 +58,8 @@ public class ConsultancyController {
                     existingConsultancy.setServiceName(updateConsultancy.getServiceName());
                     existingConsultancy.setDescription(updateConsultancy.getDescription());
                     existingConsultancy.setCost(updateConsultancy.getCost());
-                    Consultancy savedConsultancy = consultancyRepository.save(existingConsultancy);
-                    return ResponseEntity.ok(savedConsultancy);
+                    Consultancy savedService = consultancyRepository.save(existingConsultancy);
+                    return ResponseEntity.ok(savedService);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
