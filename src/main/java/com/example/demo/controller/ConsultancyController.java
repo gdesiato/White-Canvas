@@ -1,71 +1,77 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Services;
+import com.example.demo.model.Consultancy;
 import com.example.demo.repository.ConsultancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@Controller
-@RequestMapping("/consultancy")
+@RestController
+@RequestMapping("/api/consultancy")
 public class ConsultancyController {
 
     @Autowired
-    private ConsultancyRepository servicesRepository;
+    private ConsultancyRepository consultancyRepository;
+
+    public ConsultancyController(ConsultancyRepository consultancyRepository) {
+        this.consultancyRepository = consultancyRepository;
+    }
 
     @GetMapping
-    public String getAllServices(Model model) {
-        List<Services> services = servicesRepository.findAll();
-        model.addAttribute("services", services);
-        return "services";
+    public ResponseEntity<List<Consultancy>> getAllConsultancies() {
+        List<Consultancy> listOfConsultancies = consultancyRepository.findAll();
+        return ResponseEntity.ok(listOfConsultancies);
     }
 
     @GetMapping("/new")
-    public String showAddServiceForm(Model model) {
-        Services service = new Services();
-        model.addAttribute("service", service);
-        return "add-service";
+    public ResponseEntity<Consultancy> showAddConsultancyForm() {
+        Consultancy consultancy = new Consultancy();
+        return ResponseEntity.ok(consultancy);
     }
 
     @PostMapping
-    public String addService(@ModelAttribute("service") Services service) {
-        servicesRepository.save(service);
-        return "redirect:/services";
+    public ResponseEntity<Consultancy> addService(@RequestBody Consultancy consultancy) {
+        Consultancy savedConsultancy = consultancyRepository.save(consultancy);
+        return ResponseEntity.ok(savedConsultancy);
     }
 
     @GetMapping("/{id}")
-    public String getService(@PathVariable Long id, Model model) {
-        Services service = servicesRepository.findById(id).orElse(null);
-        model.addAttribute("service", service);
-        return "service";
+    public ResponseEntity<Consultancy> getConsultancy(@PathVariable Long id) {
+        Optional<Consultancy> consultancy = consultancyRepository.findById(id);
+        return consultancy.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     @GetMapping("/{id}/update")
-    public String showUpdateServiceForm(@PathVariable Long id, Model model) {
-        Services service = servicesRepository.findById(id).orElse(null);
-        model.addAttribute("service", service);
-        return "update-service";
+    public ResponseEntity<Consultancy> showUpdateConsultancyForm(@PathVariable Long id) {
+        Optional<Consultancy> service = consultancyRepository.findById(id);
+        return service.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/{id}/update")
-    public String updateService(@PathVariable Long id, @ModelAttribute("service") Services updatedService) {
-        Services service = servicesRepository.findById(id).orElse(null);
-        if (service != null) {
-            service.setServiceName(updatedService.getServiceName());
-            service.setDescription(updatedService.getDescription());
-            service.setCost(updatedService.getCost());
-            servicesRepository.save(service);
-        }
-        return "redirect:/services";
+    public ResponseEntity<Consultancy> updateConsultancy(@PathVariable Long id, @RequestBody Consultancy updateConsultancy) {
+        return consultancyRepository.findById(id)
+                .map(existingConsultancy -> {
+                    existingConsultancy.setServiceName(updateConsultancy.getServiceName());
+                    existingConsultancy.setDescription(updateConsultancy.getDescription());
+                    existingConsultancy.setCost(updateConsultancy.getCost());
+                    Consultancy savedConsultancy = consultancyRepository.save(existingConsultancy);
+                    return ResponseEntity.ok(savedConsultancy);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @RequestMapping(value = "/{id}/delete", method = {RequestMethod.GET, RequestMethod.POST})
-    public String deleteService(@PathVariable Long id) {
-        servicesRepository.deleteById(id);
-        return "redirect:/services";
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteConsultancy(@PathVariable Long id) {
+        try {
+            consultancyRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

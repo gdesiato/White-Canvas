@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class Services {
+public class Consultancy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

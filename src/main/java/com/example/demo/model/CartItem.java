@@ -22,7 +22,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
-    private Services service;
+    private Consultancy service;
 
     private int quantity;
 
@@ -36,7 +36,7 @@ public class CartItem {
     private User user;
 
 
-    public CartItem(Services service, int quantity) {
+    public CartItem(Consultancy service, int quantity) {
         this.service = service;
         this.quantity = quantity;
     }
@@ -45,7 +45,7 @@ public class CartItem {
         return quantity * service.getCost();
     }
 
-    public Services getService() {
+    public Consultancy getService() {
         return service;
     }
 

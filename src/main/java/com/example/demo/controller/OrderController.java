@@ -21,13 +21,12 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/api/order")
 public class OrderController {
 
-    @Autowired
     private CartService cartService;
-    @Autowired
+
     private OrderService orderService;
-    @Autowired
+
     private UserService userService;
-    @Autowired
+
     private EntityManager entityManager;
 
     public OrderController(CartService cartService, OrderService orderService, UserService userService, EntityManager entityManager) {

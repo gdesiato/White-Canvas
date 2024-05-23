@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.Cart;
 import com.example.demo.model.CartItem;
-import com.example.demo.model.Services;
+import com.example.demo.model.Consultancy;
 import com.example.demo.model.User;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.CartRepository;
@@ -77,7 +77,7 @@ public class CartService {
             return null;
         }
 
-        Services service = serviceRepository.findByConsultancyName(serviceName);
+        Consultancy service = serviceRepository.findByConsultancyName(serviceName);
         if (service == null) {
             log.info("Service is null");
             return null;
