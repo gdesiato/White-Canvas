@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Services;
-import com.example.demo.repository.ServiceRepository;
+import com.example.demo.repository.ConsultancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ConsultancyController {
 
     @Autowired
-    private ServiceRepository servicesRepository;
+    private ConsultancyRepository servicesRepository;
 
     @GetMapping
     public String getAllServices(Model model) {

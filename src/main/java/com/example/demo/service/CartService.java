@@ -6,7 +6,7 @@ import com.example.demo.model.Services;
 import com.example.demo.model.User;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.CartRepository;
-import com.example.demo.repository.ServiceRepository;
+import com.example.demo.repository.ConsultancyRepository;
 import com.example.demo.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +29,7 @@ public class CartService {
     private UserRepository userRepository;
 
     @Autowired
-    private ServiceRepository serviceRepository;
+    private ConsultancyRepository serviceRepository;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -77,7 +77,7 @@ public class CartService {
             return null;
         }
 
-        Services service = serviceRepository.findByServiceName(serviceName);
+        Services service = serviceRepository.findByConsultancyName(serviceName);
         if (service == null) {
             log.info("Service is null");
             return null;
