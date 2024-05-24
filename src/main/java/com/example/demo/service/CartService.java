@@ -34,8 +34,8 @@ public class CartService {
     }
 
     @Transactional
-    public Cart getShoppingCartForUser(String username) {
-        User user = userService.findByUsername(username);
+    public Cart getShoppingCartForUser(Long id) {
+        User user = userService.getUserById(id);
         if (user == null) {
             return null;
         }

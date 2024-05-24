@@ -37,17 +37,6 @@ public class CartController {
         System.out.println("Cart service initialized: " + cartService);
     }
 
-    @GetMapping
-    @Transactional
-    public ResponseEntity<Cart> getCart(@AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        Cart cart = cartService.getShoppingCartForUser(username);
-        if (cart == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(cart);
-    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<Cart> viewCart(@PathVariable Long userId) {
         User user = userService.getUserById(userId);

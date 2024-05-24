@@ -7,14 +7,8 @@ import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
@@ -41,10 +35,6 @@ public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -70,8 +60,8 @@ public class UserService {
         return (User) Hibernate.unproxy(user);
     }
 
-    public User getUser(String username) throws EntityNotFoundException  {
-        return userRepository.findByUsername(username);
+    public Optional<User> getUser(Long id){
+        return userRepository.findById(id);
     }
 
     public void updateUser(User user) {
@@ -86,14 +76,5 @@ public class UserService {
         userRepository.save(existingUser);
     }
 
-    public void printUserRoles(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            Collection<Role> roles = user.getRoles();
-            log.info("User: " + username + " Roles: " + roles);
-        } else {
-            log.info("User " + username + " not found");
-        }
-    }
 }
 

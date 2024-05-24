@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Cart;
 import com.example.demo.model.CartItem;
+import com.example.demo.model.User;
 import com.example.demo.service.CartService;
 import com.example.demo.model.Order;
 import com.example.demo.service.OrderService;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order")
@@ -42,24 +44,4 @@ public class OrderController {
         return ResponseEntity.ok(order);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Order> createOrder() {
-        String username = userService.getCurrentUsername();
-        if (username == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        Cart cart = cartService.getShoppingCartForUser(username);
-        if (cart == null || cart.getCartItems().isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        Order order = orderService.createOrderFromCart(cart.getId());
-        if (order == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
-        cartService.clearCart(cart);
-        return ResponseEntity.ok(order);
-    }
 }
