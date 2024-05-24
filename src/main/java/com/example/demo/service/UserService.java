@@ -51,13 +51,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
     public User getUserByUserId(Long userId) throws EntityNotFoundException {
         User user = userRepository.getById(userId);
-        return (User) Hibernate.unproxy(user);
+        return user;
     }
 
     public Optional<User> getUser(Long id){
@@ -75,6 +71,4 @@ public class UserService {
 
         userRepository.save(existingUser);
     }
-
 }
-

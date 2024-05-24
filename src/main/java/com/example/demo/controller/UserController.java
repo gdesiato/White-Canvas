@@ -33,13 +33,13 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public User getUser(@PathVariable String username) {
-        return userService.findByUsername(username);
+    public User getUser(@PathVariable Long id) {
+        return userService.getUserByUserId(id);
     }
 
     @GetMapping("/update/{id}")
     public User showUpdateUserForm(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
+        return userService.getUserByUserId(id);
     }
 
     @PutMapping("/update")
