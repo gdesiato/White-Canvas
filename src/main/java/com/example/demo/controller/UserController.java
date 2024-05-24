@@ -47,24 +47,4 @@ public class UserController {
         userService.updateUser(user);
     }
 
-    @GetMapping("/dashboard")
-    public UserDTO showUserDashboard(@AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        User user = userService.findByUsername(username);
-        Cart userCart = cartService.findCartByUser(user);
-        if (userCart == null) {
-            userCart = new Cart();
-            userCart.setUser(user);
-            cartService.saveCart(userCart);
-        }
-        return new UserDTO(user, userCart.getItems());
-    }
-
-    @GetMapping("/checkout")
-    public CheckoutDTO getCheckoutInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        User user = userService.findByUsername(username);
-        Cart userCart = cartService.findCartByUser(user);
-        return new CheckoutDTO(user, userCart.getItems());
-    }
 }

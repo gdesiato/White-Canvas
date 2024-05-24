@@ -23,23 +23,21 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private CartService cartService;
-
-    @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
     private OrderItemRepository orderItemRepository;
-
-    @Autowired
     private CartRepository cartRepository;
-
-    @Autowired
     private CartItemRepository cartItemRepository;
+
+    public OrderService(UserRepository userRepository, CartService cartService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, CartRepository cartRepository, CartItemRepository cartItemRepository) {
+        this.userRepository = userRepository;
+        this.cartService = cartService;
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+    }
 
 
     @Transactional

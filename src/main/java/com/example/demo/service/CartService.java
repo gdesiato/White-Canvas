@@ -19,20 +19,19 @@ import java.util.Optional;
 @Service
 public class CartService {
 
-    @Autowired
     private CartRepository cartRepository;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private ConsultancyRepository serviceRepository;
-
-    @Autowired
     private CartItemRepository cartItemRepository;
+
+    public CartService(CartRepository cartRepository, UserService userService, UserRepository userRepository, ConsultancyRepository serviceRepository, CartItemRepository cartItemRepository) {
+        this.cartRepository = cartRepository;
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.serviceRepository = serviceRepository;
+        this.cartItemRepository = cartItemRepository;
+    }
 
     @Transactional
     public Cart getShoppingCartForUser(String username) {
@@ -63,11 +62,6 @@ public class CartService {
 
     @Transactional
     public Cart addToCart(Long userId, String serviceName, Integer quantity) {
-
-        System.out.println("////////////");
-        System.out.println("////////////");
-        System.out.println("////////////");
-        System.out.println("addToCart service method triggered");
 
         final Logger log = LogManager.getLogger(CartService.class);
 
@@ -148,13 +142,6 @@ public class CartService {
     @Transactional
     public Cart getCartById(Long cartId) {
         return cartRepository.findById(cartId).orElse(null);
-    }
-
-    @Transactional
-    public Double getTotalPrice(Cart cart) {
-        return cart.getCartItems().stream()
-                .mapToDouble(item -> item.getService().getCost() * item.getQuantity())
-                .sum();
     }
 
     @Transactional

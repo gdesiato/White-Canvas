@@ -72,41 +72,6 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
-    @PostMapping("/remove/{itemId}")
-    @Transactional
-    public ResponseEntity<?> removeItemFromCart(@PathVariable Long itemId,
-                                                @AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        User user = userService.findByUsername(userDetails.getUsername());
-        Cart cart = cartService.getShoppingCartForUser(user.getUsername());
-        CartItem cartItem = cartItemRepository.findById(itemId).orElse(null);
-        if (cartItem == null) {
-            return ResponseEntity.notFound().build();
-        }
-        cartService.removeItemFromCart(cart, cartItem);
-        return ResponseEntity.ok().build();
-    }
 
-    @PostMapping("/clear")
-    @Transactional
-    public ResponseEntity<?> clearCart(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.findByUsername(userDetails.getUsername());
-        Cart cart = cartService.getShoppingCartForUser(user.getUsername());
-        if (cart == null) {
-            return ResponseEntity.notFound().build();
-        }
-        cartService.clearCart(cart);
-        return ResponseEntity.ok().build();
-    }
 
-    @GetMapping("/{cartId}/total")
-    public ResponseEntity<Double> getTotalPrice(@PathVariable Long cartId) {
-        Cart cart = cartService.getCartById(cartId);
-        if (cart == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(cart.getTotalPrice());
-    }
 }

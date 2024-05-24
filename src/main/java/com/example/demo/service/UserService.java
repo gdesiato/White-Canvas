@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.model.CustomUserDetails;
 import com.example.demo.model.Role;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.model.User;
@@ -10,12 +9,9 @@ import org.hibernate.Hibernate;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +23,7 @@ import org.slf4j.Logger;
 
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -75,22 +71,6 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
-    }
-
-    @Transactional
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-
-        return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
     @Transactional(readOnly = true)
