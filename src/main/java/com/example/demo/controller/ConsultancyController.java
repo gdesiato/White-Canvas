@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Consultancy;
 import com.example.demo.repository.ConsultancyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +54,7 @@ public class ConsultancyController {
     public ResponseEntity<Consultancy> updateConsultancy(@PathVariable Long id, @RequestBody Consultancy updateConsultancy) {
         return consultancyRepository.findById(id)
                 .map(existingConsultancy -> {
-                    existingConsultancy.setServiceName(updateConsultancy.getServiceName());
+                    existingConsultancy.setConsultancyName(updateConsultancy.getConsultancyName());
                     existingConsultancy.setDescription(updateConsultancy.getDescription());
                     existingConsultancy.setCost(updateConsultancy.getCost());
                     Consultancy savedService = consultancyRepository.save(existingConsultancy);

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConsultancyRepository extends JpaRepository<Consultancy, Long> {
-    Consultancy findByConsultancyName(String serviceName);
+    Consultancy findByConsultancyName(String consultancyName);
 }

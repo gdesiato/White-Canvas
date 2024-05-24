@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -25,7 +26,8 @@ public class CartController {
     private ConsultancyService consultancyService;
     private CartItemRepository cartItemRepository;
 
-    public CartController(CartService cartService, UserService userService, ConsultancyService consultancyService, CartItemRepository cartItemRepository){
+    public CartController(CartService cartService, UserService userService,
+                          ConsultancyService consultancyService, CartItemRepository cartItemRepository){
         this.cartService = cartService;
         this.userService = userService;
         this.consultancyService = consultancyService;
@@ -38,29 +40,38 @@ public class CartController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Cart> viewCart(@PathVariable Long userId) {
-        User user = userService.getUserById(userId);
+    public ResponseEntity<Cart> viewCart(@PathVariable Long id) {
+        User user = userService.getUserByUserId(id);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user.getCart());
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/{userId}/addToCart")
     @Transactional
     public ResponseEntity<Cart> addToCart(@PathVariable Long userId,
-                                          @RequestParam("serviceName") String serviceName,
+                                          @RequestParam("consultancyName") String consultancyName,
                                           @RequestParam("quantity") Integer quantity) {
         if (quantity <= 0) {
             return ResponseEntity.badRequest().build();
         }
-        Cart cart = cartService.addToCart(userId, serviceName, quantity);
-        if (cart == null) {
-            return ResponseEntity.badRequest().build();
+        // Fetch the user and check if the user and cart exist
+        Optional<User> userOptional = userService.getUser(userId);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(cart);
+
+        User user = userOptional.get();
+        Cart cart = user.getCart();
+        if (cart == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        try {
+            Cart updatedCart = cartService.addToCart(cart, consultancyName, quantity);
+            return ResponseEntity.ok(updatedCart);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
-
-
-
 }
