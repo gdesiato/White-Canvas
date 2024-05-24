@@ -64,11 +64,11 @@ public class Application {
 		// USERS
 
 		User userAdmin = userRepository.findByUsername("UserAdmin");
-		// if it is not there we create it
+
 		if (userAdmin == null) {
 			userAdmin = userRepository.save(User.builder()
-					.username("UserAdmin")
-					.password(passwordEncoder.encode("useradmin")) //encoding password
+					.email("UserAdmin")
+					.password(passwordEncoder.encode("useradmin"))
 					.roles(Arrays.asList(roleAdmin, roleUser))
 					.build());
 		}
@@ -76,8 +76,8 @@ public class Application {
 		User userUser = userRepository.findByUsername("UserUser");
 		if (userUser == null) {
 			userUser = userRepository.save(User.builder()
-					.username("UserUser")
-					.password(passwordEncoder.encode("useruser")) //encoding password
+					.email("UserUser")
+					.password(passwordEncoder.encode("useruser"))
 					.roles(Collections.singletonList(roleUser))
 					.build());
 		}
