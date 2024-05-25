@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.CartItem;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.service.CartService;
 import com.example.demo.model.Cart;
@@ -9,12 +8,8 @@ import com.example.demo.service.ConsultancyService;
 import com.example.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RestController
@@ -34,11 +29,6 @@ public class CartController {
         this.cartItemRepository = cartItemRepository;
     }
 
-    @PostConstruct
-    public void init() {
-        System.out.println("Cart service initialized: " + cartService);
-    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<Cart> viewCart(@PathVariable Long id) {
         User user = userService.getUserByUserId(id);
@@ -49,7 +39,6 @@ public class CartController {
     }
 
     @PostMapping("/{userId}/addToCart")
-    @Transactional
     public ResponseEntity<Cart> addToCart(@PathVariable Long userId,
                                           @RequestParam("consultancyName") String consultancyName,
                                           @RequestParam("quantity") Integer quantity) {

@@ -1,16 +1,13 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Role;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.model.User;
-import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
-import org.hibernate.Hibernate;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -21,19 +18,25 @@ public class UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private RoleRepository roleRepository;
     private CartRepository cartRepository;
     private CartService cartService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, CartRepository cartRepository, CartService cartService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CartRepository cartRepository, CartService cartService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
         this.cartRepository = cartRepository;
         this.cartService = cartService;
     }
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
+    public User createUser(String email, String password) {
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setPassword(passwordEncoder.encode(password));
+        userRepository.save(newUser);
+        return newUser;
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -60,15 +63,16 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public void updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+    public User updateUser(User user) {
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         existingUser.setEmail(user.getEmail());
 
-        // Update the password only if it has been changed
-        if (!existingUser.getPassword().equals(user.getPassword())) {
+        // Check if the password has changed, and update if necessary
+        if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        userRepository.save(existingUser);
+        return userRepository.save(existingUser);
     }
 }

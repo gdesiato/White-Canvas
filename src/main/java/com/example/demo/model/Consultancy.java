@@ -1,18 +1,14 @@
 package com.example.demo.model;
 
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "services")
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Getter
-@Setter
 public class Consultancy {
 
     @Id

@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -91,7 +90,6 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    @Transactional
     public void clearCart(Cart cart) {
         for (CartItem item : cart.getCartItems()) {
             cartItemRepository.delete(item);
