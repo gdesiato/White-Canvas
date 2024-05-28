@@ -1,4 +1,4 @@
 # White-Canvas
 
-Project realized in Java-Spring for Image Consultant provider
+Image Consulting website built for an image consultant client.
 
