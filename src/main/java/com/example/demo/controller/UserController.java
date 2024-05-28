@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.UserRequestDto;
+import com.example.demo.dto.UserResponseDto;
 import com.example.demo.model.*;
 import com.example.demo.service.CartService;
 import com.example.demo.service.UserService;
@@ -21,25 +23,26 @@ public class UserController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/list")
-    public List<User> getUsers() {
-        return userService.getAllUsers();
-    }
-
-    @PostMapping("")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        user = userService.createUser(user.getEmail(), user.getPassword());
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
+    @PostMapping
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {
+        User newUser = userService.createUser(userRequestDto.email(), userRequestDto.password());
+        UserResponseDto userResponseDto = new UserResponseDto(newUser.getId(), newUser.getEmail());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getUserByUserId(id);
+    }
+
+    @GetMapping("/list")
+    public List<User> getUsers() {
+        return userService.getAllUsers();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
     }
 
     @PutMapping("/update/{id}")

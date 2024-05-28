@@ -45,7 +45,7 @@ public class CartController {
         if (quantity <= 0) {
             return ResponseEntity.badRequest().build();
         }
-        // Fetch the user and check if the user and cart exist
+
         Optional<User> userOptional = userService.getUser(userId);
         if (!userOptional.isPresent()) {
             return ResponseEntity.notFound().build();

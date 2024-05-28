@@ -22,6 +22,8 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
+    public OrderItem(){}
+
     public OrderItem(Consultancy service, int quantity, Order order) {
         this.service = service;
         this.quantity = quantity;
