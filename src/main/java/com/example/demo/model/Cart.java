@@ -1,16 +1,15 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class Cart {
 
     @Id
@@ -24,6 +23,16 @@ public class Cart {
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CartItem> cartItems;
 
+
+    private BigDecimal totalPrice;  // Use BigDecimal for monetary values
+
+    public void recalculateTotalPrice() {
+        BigDecimal total = cartItems.stream()
+                .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        setTotalPrice(total);
+    }
+
     public Cart() {
         this.cartItems = new ArrayList<>();
     }
@@ -33,12 +42,8 @@ public class Cart {
         this.cartItems = new ArrayList<>();
     }
 
-    public List<CartItem> getCartItems() {
-        return cartItems;
-    }
-
     public List<CartItem> getItems() {
-        return new ArrayList<>(this.cartItems); // make a copy of the list to prevent modification
+        return new ArrayList<>(this.cartItems);
     }
 
     public void addCartItem(CartItem cartItem) {

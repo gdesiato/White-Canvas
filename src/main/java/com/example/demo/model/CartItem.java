@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 public class CartItem {
@@ -19,6 +21,8 @@ public class CartItem {
 
     private int quantity;
 
+    private BigDecimal price;
+
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
     @JsonIgnore
@@ -28,6 +32,7 @@ public class CartItem {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public CartItem(){}
 
     public CartItem(Consultancy service, int quantity) {
         this.service = service;

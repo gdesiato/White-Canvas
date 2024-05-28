@@ -63,4 +63,25 @@ public class CartController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @DeleteMapping("/{userId}/emptyCart")
+    public ResponseEntity<Void> emptyCart(@PathVariable Long userId) {
+        Optional<User> userOptional = userService.getUser(userId);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOptional.get();
+        Cart cart = user.getCart();
+        if (cart == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            cartService.clearCart(cart);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

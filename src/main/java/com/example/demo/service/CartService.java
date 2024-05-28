@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -91,10 +94,12 @@ public class CartService {
     }
 
     public void clearCart(Cart cart) {
-        for (CartItem item : cart.getCartItems()) {
+        List<CartItem> itemsToRemove = new ArrayList<>(cart.getCartItems());
+        for (CartItem item : itemsToRemove) {
             cartItemRepository.delete(item);
         }
         cart.getCartItems().clear();
+        cart.setTotalPrice(BigDecimal.ZERO);
         cartRepository.save(cart);
     }
 
