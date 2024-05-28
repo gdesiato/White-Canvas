@@ -24,12 +24,6 @@ public class ConsultancyController {
         return ResponseEntity.ok(listOfConsultancies);
     }
 
-    @GetMapping("/new")
-    public ResponseEntity<Consultancy> showAddConsultancyForm() {
-        Consultancy consultancy = new Consultancy();
-        return ResponseEntity.ok(consultancy);
-    }
-
     @PostMapping
     public ResponseEntity<Consultancy> addService(@RequestBody Consultancy consultancy) {
         Consultancy savedConsultancy = consultancyRepository.save(consultancy);
@@ -40,13 +34,6 @@ public class ConsultancyController {
     public ResponseEntity<Consultancy> getConsultancy(@PathVariable Long id) {
         Optional<Consultancy> consultancy = consultancyRepository.findById(id);
         return consultancy.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/{id}/update")
-    public ResponseEntity<Consultancy> showUpdateConsultancyForm(@PathVariable Long id) {
-        Optional<Consultancy> service = consultancyRepository.findById(id);
-        return service.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
