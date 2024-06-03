@@ -16,12 +16,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/user").permitAll()
-//                        .requestMatchers("/api/user/**").permitAll()
-//                        .requestMatchers("/api/order/**").permitAll()
-//                        .requestMatchers("/api/consultancy/**").permitAll()
-//                        .requestMatchers("/api/cart/**").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/user").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/api/order/**").permitAll()
+                        .requestMatchers("/api/consultancy/**").permitAll()
+                        .requestMatchers("/api/cart/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable());
 
