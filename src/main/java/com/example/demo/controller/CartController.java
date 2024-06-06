@@ -16,17 +16,11 @@ import java.util.Optional;
 @RequestMapping("/api/cart")
 public class CartController {
 
-    private CartService cartService;
-    private UserService userService;
-    private ConsultancyService consultancyService;
-    private CartItemRepository cartItemRepository;
-
-    public CartController(CartService cartService, UserService userService,
-                          ConsultancyService consultancyService, CartItemRepository cartItemRepository){
+    private final CartService cartService;
+    private final UserService userService;
+    public CartController(CartService cartService, UserService userService){
         this.cartService = cartService;
         this.userService = userService;
-        this.consultancyService = consultancyService;
-        this.cartItemRepository = cartItemRepository;
     }
 
     @GetMapping("/{userId}")

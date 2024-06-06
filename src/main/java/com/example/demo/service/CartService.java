@@ -20,10 +20,10 @@ import java.util.Optional;
 @Service
 public class CartService {
 
-    private CartRepository cartRepository;
-    private UserRepository userRepository;
-    private ConsultancyRepository consultancyRepository;
-    private CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
+    private final UserRepository userRepository;
+    private final ConsultancyRepository consultancyRepository;
+    private final CartItemRepository cartItemRepository;
 
     public CartService(CartRepository cartRepository, UserRepository userRepository, ConsultancyRepository consultancyRepository, CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;

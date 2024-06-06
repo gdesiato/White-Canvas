@@ -11,14 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/order")
 public class OrderController {
 
-    private CartService cartService;
-    private OrderService orderService;
-    private UserService userService;
+    private final OrderService orderService;
 
-    public OrderController(CartService cartService, OrderService orderService, UserService userService) {
-        this.cartService = cartService;
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.userService = userService;
     }
 
     @GetMapping("/order-confirmation")

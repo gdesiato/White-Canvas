@@ -16,10 +16,10 @@ import org.slf4j.Logger;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private CartRepository cartRepository;
-    private CartService cartService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
+    private final CartService cartService;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CartRepository cartRepository, CartService cartService) {
         this.userRepository = userRepository;

@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderService {
 
-    private UserRepository userRepository;
-    private CartService cartService;
-    private OrderRepository orderRepository;
-    private OrderItemRepository orderItemRepository;
-    private CartRepository cartRepository;
-    private CartItemRepository cartItemRepository;
+    private final UserRepository userRepository;
+    private final CartService cartService;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
     public OrderService(UserRepository userRepository, CartService cartService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, CartRepository cartRepository, CartItemRepository cartItemRepository) {
         this.userRepository = userRepository;

@@ -15,8 +15,8 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
 
-    UserService userService;
-    CartService cartService;
+    private final UserService userService;
+    private final CartService cartService;
 
     public UserController(UserService userService, CartService cartService) {
         this.userService = userService;

@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequestMapping("/api/consultancy")
 public class ConsultancyController {
 
-    private ConsultancyRepository consultancyRepository;
+    private final ConsultancyRepository consultancyRepository;
 
     public ConsultancyController(ConsultancyRepository consultancyRepository) {
         this.consultancyRepository = consultancyRepository;
