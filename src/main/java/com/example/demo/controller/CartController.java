@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.repository.CartItemRepository;
 import com.example.demo.service.CartService;
 import com.example.demo.model.Cart;
 import com.example.demo.model.User;
-import com.example.demo.service.ConsultancyService;
 import com.example.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
