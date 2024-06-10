@@ -1,14 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.CartItemRepository;
-import com.example.demo.repository.CartRepository;
+import com.example.demo.repository.*;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderItem;
-import com.example.demo.repository.OrderItemRepository;
-import com.example.demo.repository.OrderRepository;
-import com.example.demo.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class OrderService {
 
@@ -17,16 +15,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
-
-    public OrderService(UserRepository userRepository, CartService cartService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, CartRepository cartRepository, CartItemRepository cartItemRepository) {
-        this.userRepository = userRepository;
-        this.cartService = cartService;
-        this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
-        this.cartRepository = cartRepository;
-        this.cartItemRepository = cartItemRepository;
-    }
+    private final CartItermRepository cartItemRepository;
 
     public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);

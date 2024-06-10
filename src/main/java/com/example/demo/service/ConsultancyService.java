@@ -3,16 +3,14 @@ package com.example.demo.service;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Consultancy;
 import com.example.demo.repository.ConsultancyRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class ConsultancyService {
 
     private ConsultancyRepository consultancyRepository;
-
-    public ConsultancyService(ConsultancyRepository consultancyRepository) {
-        this.consultancyRepository = consultancyRepository;
-    }
 
     public Consultancy getServiceById(Long serviceId) {
         return consultancyRepository.findById(serviceId)

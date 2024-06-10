@@ -5,23 +5,20 @@ import com.example.demo.dto.UserResponseDto;
 import com.example.demo.model.*;
 import com.example.demo.service.CartService;
 import com.example.demo.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
     private final CartService cartService;
-
-    public UserController(UserService userService, CartService cartService) {
-        this.userService = userService;
-        this.cartService = cartService;
-    }
 
     @PostMapping
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {

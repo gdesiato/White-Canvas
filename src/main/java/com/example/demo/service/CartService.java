@@ -4,10 +4,11 @@ import com.example.demo.model.Cart;
 import com.example.demo.model.CartItem;
 import com.example.demo.model.Consultancy;
 import com.example.demo.model.User;
-import com.example.demo.repository.CartItemRepository;
+import com.example.demo.repository.CartItermRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.ConsultancyRepository;
 import com.example.demo.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,20 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class CartService {
 
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
     private final ConsultancyRepository consultancyRepository;
-    private final CartItemRepository cartItemRepository;
-
-    public CartService(CartRepository cartRepository, UserRepository userRepository, ConsultancyRepository consultancyRepository, CartItemRepository cartItemRepository) {
-        this.cartRepository = cartRepository;
-        this.userRepository = userRepository;
-        this.consultancyRepository = consultancyRepository;
-        this.cartItemRepository = cartItemRepository;
-    }
+    private final CartItermRepository cartItermRepository;
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -77,11 +72,11 @@ public class CartService {
             // No existing cart item, create a new one
             CartItem newCartItem = new CartItem(service, quantity);
             cart.addCartItem(newCartItem);
-            cartItemRepository.save(newCartItem);
+            cartItermRepository.save(newCartItem);
         } else {
             // Existing cart item found, increase quantity
             existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
-            cartItemRepository.save(existingCartItem);
+            cartItermRepository.save(existingCartItem);
         }
 
         return cartRepository.save(cart);
@@ -89,14 +84,14 @@ public class CartService {
 
     public void removeItemFromCart(Cart cart, CartItem cartItem) {
         cart.getCartItems().remove(cartItem);
-        cartItemRepository.delete(cartItem);
+        cartItermRepository.delete(cartItem);
         cartRepository.save(cart);
     }
 
     public void clearCart(Cart cart) {
         List<CartItem> itemsToRemove = new ArrayList<>(cart.getCartItems());
         for (CartItem item : itemsToRemove) {
-            cartItemRepository.delete(item);
+            cartItermRepository.delete(item);
         }
         cart.getCartItems().clear();
         cart.setTotalPrice(BigDecimal.ZERO);

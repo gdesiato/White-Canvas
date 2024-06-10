@@ -2,21 +2,19 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Consultancy;
 import com.example.demo.repository.ConsultancyRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/consultancy")
 public class ConsultancyController {
 
     private final ConsultancyRepository consultancyRepository;
-
-    public ConsultancyController(ConsultancyRepository consultancyRepository) {
-        this.consultancyRepository = consultancyRepository;
-    }
 
     @GetMapping
     public ResponseEntity<List<Consultancy>> getAllConsultancies() {

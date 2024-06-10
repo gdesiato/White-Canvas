@@ -4,22 +4,20 @@ import com.example.demo.service.CartService;
 import com.example.demo.model.Cart;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
 
     private final CartService cartService;
     private final UserService userService;
-    public CartController(CartService cartService, UserService userService){
-        this.cartService = cartService;
-        this.userService = userService;
-    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<Cart> viewCart(@PathVariable Long id) {
