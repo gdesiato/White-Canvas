@@ -19,8 +19,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CartRepository cartRepository;
-    private final CartService cartService;
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
