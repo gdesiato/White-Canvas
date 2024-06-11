@@ -9,8 +9,6 @@ import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.ConsultancyRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,8 +24,6 @@ public class CartService {
     private final UserRepository userRepository;
     private final ConsultancyRepository consultancyRepository;
     private final CartItermRepository cartItermRepository;
-
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     public Cart getShoppingCartForUser(User user) {
         Cart cart = cartRepository.findByUser(user);

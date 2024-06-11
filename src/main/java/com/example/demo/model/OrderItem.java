@@ -3,7 +3,6 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Data
 public class OrderItem {
@@ -34,4 +33,3 @@ public class OrderItem {
         return quantity * service.getCost();
     }
 }
-

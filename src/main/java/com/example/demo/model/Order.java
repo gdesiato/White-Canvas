@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @Table(name ="orders")
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,4 +42,3 @@ public class Order {
         return items;
     }
 }
-

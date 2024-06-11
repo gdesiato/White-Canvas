@@ -1,17 +1,13 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.CartRepository;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
-import org.slf4j.Logger;
 
 @AllArgsConstructor
 @Service
@@ -19,8 +15,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     public User createUser(String email, String password) {
         User newUser = new User();
