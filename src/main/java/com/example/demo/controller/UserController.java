@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.UserRequestDto;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.model.*;
-import com.example.demo.service.CartService;
 import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final CartService cartService;
 
     @PostMapping
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {
