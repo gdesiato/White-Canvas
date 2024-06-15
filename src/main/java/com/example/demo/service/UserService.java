@@ -40,9 +40,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserByUserId(Long userId) throws EntityNotFoundException {
+    public Optional<User> getUserById(Long userId) throws EntityNotFoundException {
         User user = userRepository.getById(userId);
-        return user;
+        return Optional.of(user);
     }
 
     public Optional<User> getUser(Long id){

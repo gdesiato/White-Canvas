@@ -25,27 +25,21 @@ public class CartService {
     private final ConsultancyRepository consultancyRepository;
     private final CartItermRepository cartItermRepository;
 
-    public Cart getShoppingCartForUser(User user) {
-        Cart cart = cartRepository.findByUser(user);
-        if (user == null) {
-            return null;
-        }
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUser(user);
-            cartRepository.save(cart);
-        }
-        return cart;
+    public Optional<Cart> getShoppingCartForUser(Long userId) {
+        return Optional.ofNullable(cartRepository.findByUserId(userId))
+                .or(() -> createCart(userId));
     }
 
-    public Cart createCart(User user) {
-        if (user == null) {
-            return null;
-        }
-        Cart cart = new Cart(user);
-        user.setCart(cart);
-        cartRepository.save(cart);
-        return cart;
+    public Optional<Cart> createCart(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        return userOptional.flatMap(user -> {
+            Cart cart = new Cart();
+            cart.setUser(user);  // Set the user to the newly created cart
+            user.setCart(cart);  // Set the cart to the user
+            cartRepository.save(cart);  // Save the new cart
+            return Optional.of(cart);   // Return the newly created cart wrapped in an Optional
+        });
     }
 
     public Cart addToCart(Cart cart, String serviceName, Integer quantity) throws Exception {
@@ -94,12 +88,9 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public Cart findCartByUser(User user) {
-        Cart cart = cartRepository.findByUser(user);
-        if (cart == null) {
-            return null;
-        }
-        return cart;
+    public Optional<Cart> findCartByUserId(Long userId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        return Optional.ofNullable(cart);  // Convert the cart to an Optional, handling null automatically
     }
 
     public Cart saveCart(Cart cart) {
