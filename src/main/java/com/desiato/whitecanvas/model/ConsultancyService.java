@@ -8,12 +8,12 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "services")
-public class Consultancy {
+public class ConsultancyService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String consultancyName;
+    private String name;
     private String description;
     private Double cost;
     private String image;
@@ -24,5 +24,4 @@ public class Consultancy {
     public Long getId() {
         return id;
     }
-
 }

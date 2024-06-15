@@ -51,7 +51,7 @@ public class Cart {
         cartItem.setCart(this); // to establish the bidirectional relationship
     }
 
-    public List<Consultancy> getServices() {
+    public List<ConsultancyService> getServices() {
         return cartItems.stream()
                 .map(CartItem::getService)
                 .collect(Collectors.toList());

@@ -13,7 +13,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
-    private Consultancy service;
+    private ConsultancyService service;
 
     private int quantity;
 
@@ -23,7 +23,7 @@ public class OrderItem {
 
     public OrderItem(){}
 
-    public OrderItem(Consultancy service, int quantity, Order order) {
+    public OrderItem(ConsultancyService service, int quantity, Order order) {
         this.service = service;
         this.quantity = quantity;
         this.order = order;

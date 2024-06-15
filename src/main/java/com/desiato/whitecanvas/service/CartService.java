@@ -2,11 +2,11 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.CartItem;
-import com.desiato.whitecanvas.model.Consultancy;
+import com.desiato.whitecanvas.model.ConsultancyService;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartItermRepository;
 import com.desiato.whitecanvas.repository.CartRepository;
-import com.desiato.whitecanvas.repository.ConsultancyRepository;
+import com.desiato.whitecanvas.repository.ConsultancyServiceRepository;
 import com.desiato.whitecanvas.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
-    private final ConsultancyRepository consultancyRepository;
+    private final ConsultancyServiceRepository consultancyServiceRepository;
     private final CartItermRepository cartItermRepository;
 
     public Optional<Cart> getShoppingCartForUser(Long userId) {
@@ -47,7 +47,7 @@ public class CartService {
             throw new IllegalArgumentException("Invalid cart, service name, or quantity");
         }
 
-        Consultancy service = consultancyRepository.findByConsultancyName(serviceName);
+        ConsultancyService service = consultancyServiceRepository.findByConsultancyName(serviceName);
         if (service == null) {
             throw new Exception("Service not found");
         }
