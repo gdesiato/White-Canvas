@@ -48,4 +48,5 @@ public class UserControllerTest extends BaseTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("testuser@example.com"));
     }
+
 }

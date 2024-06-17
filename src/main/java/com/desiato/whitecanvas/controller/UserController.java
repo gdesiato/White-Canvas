@@ -1,13 +1,11 @@
 package com.desiato.whitecanvas.controller;
 
-import com.desiato.whitecanvas.dto.UserRequestDto;
-import com.desiato.whitecanvas.dto.UserResponseDto;
 import com.desiato.whitecanvas.model.User;
-import com.example.demo.model.*;
 import com.desiato.whitecanvas.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +16,18 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {
-        User newUser = userService.createUser(userRequestDto.email(), userRequestDto.password());
-        UserResponseDto userResponseDto = new UserResponseDto(newUser.getId(), newUser.getEmail());
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
+    public ResponseEntity<Object> createUser(@RequestBody User newUser) {
+        if (userService.findByEmail(newUser.getEmail()).isPresent()) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("User already exists");
+        }
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        User createdUser = userService.saveUser(newUser);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
