@@ -2,7 +2,6 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.repository.*;
-import com.example.demo.repository.*;
 import com.desiato.whitecanvas.model.OrderItem;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
