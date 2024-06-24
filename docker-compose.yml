@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:8.0.23
+    volumes:
+      - db-data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: whitecanvas
+      MYSQL_USER: whitecanvas
+      MYSQL_PASSWORD: whitecanvas
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3308:3306"
+
+volumes:
+  db-data:

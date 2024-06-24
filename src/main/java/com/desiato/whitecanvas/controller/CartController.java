@@ -19,20 +19,11 @@ public class CartController {
     private final CartService cartService;
     private final UserService userService;
 
-
     @GetMapping("/{userId}")
     public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
         Optional<Cart> cart = cartService.findCartByUserId(userId);
         return cart.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<Cart> viewCart(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .map(User::getCart) // Maps the user to their cart if present
-                .map(ResponseEntity::ok) // Wraps the cart in a ResponseEntity if it's not null
-                .orElse(ResponseEntity.notFound().build()); // Returns 404 if the user or cart is not present
     }
 
     @PostMapping("/{userId}/addToCart")

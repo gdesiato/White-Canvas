@@ -2,6 +2,8 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.dto.AuthenticationRequestDto;
 import com.desiato.whitecanvas.dto.UserToken;
+import com.desiato.whitecanvas.dto.WhiteCanvasToken;
+import com.desiato.whitecanvas.model.CustomUserDetails;
 import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.UserRepository;
@@ -11,6 +13,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @AllArgsConstructor
 @Service
@@ -19,7 +23,6 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SessionService sessionService;
-
 
     public UserToken authenticate(AuthenticationRequestDto request) {
 
@@ -31,6 +34,11 @@ public class AuthenticationService {
         String tokenValue = session.getToken();
 
         return new UserToken(tokenValue);
+    }
+
+    public Optional<CustomUserDetails> createUserDetails(WhiteCanvasToken whiteCanvasToken) {
+        return sessionService.findUserByToken(whiteCanvasToken)
+                .map(CustomUserDetails::new);
     }
 
     private void validatePassword(AuthenticationRequestDto request, User user) {
@@ -46,6 +54,4 @@ public class AuthenticationService {
                     return new AuthenticationException("Authentication failed: No user found.") {};
                 });
     }
-
-
 }
