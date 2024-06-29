@@ -3,7 +3,7 @@ package com.desiato.whitecanvas.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -11,17 +11,10 @@ import java.util.List;
 public class ConsultancyService {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private Double cost;
-    private String image;
 
-    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
-    private List<CartItem> cartItems;
+    private String serviceName;
 
-    public Long getId() {
-        return id;
-    }
+    private BigDecimal price;
 }

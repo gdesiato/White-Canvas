@@ -3,6 +3,8 @@ package com.desiato.whitecanvas.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 public class OrderItem {
@@ -12,24 +14,11 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
-    private ConsultancyService service;
-
-    private int quantity;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    public OrderItem(){}
+    @ManyToOne
+    private ConsultancyService service;
 
-    public OrderItem(ConsultancyService service, int quantity, Order order) {
-        this.service = service;
-        this.quantity = quantity;
-        this.order = order;
-    }
+    private BigDecimal price;
 
-    public double getTotalPrice() {
-        return quantity * service.getCost();
-    }
 }
