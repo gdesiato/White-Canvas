@@ -1,6 +1,7 @@
 package com.desiato.whitecanvas.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "user_session")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Session {
 
     @Id
@@ -19,9 +21,4 @@ public class Session {
 
     @Column(nullable = false)
     private Long userId;
-
-    public Session(String token, Long userId) {
-        this.token = token;
-        this.userId = userId;
-    }
 }
