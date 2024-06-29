@@ -19,6 +19,4 @@ public class OrderItem {
     @ManyToOne
     private ConsultancyService service;
 
-    private BigDecimal price;
-
 }
