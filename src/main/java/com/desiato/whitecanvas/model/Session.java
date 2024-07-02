@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "user_session")
+@Table(name = "session")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Session {

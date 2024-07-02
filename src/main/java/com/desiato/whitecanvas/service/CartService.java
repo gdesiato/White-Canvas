@@ -47,7 +47,7 @@ public class CartService {
             throw new IllegalArgumentException("Invalid cart, service name, or quantity");
         }
 
-        ConsultancyService service = consultancyServiceRepository.findByDescription(serviceName);
+        ConsultancyService service = consultancyServiceRepository.findByServiceName(serviceName);
         if (service == null) {
             throw new Exception("Service not found");
         }

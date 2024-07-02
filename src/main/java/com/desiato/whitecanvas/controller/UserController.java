@@ -20,11 +20,18 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody User newUser) {
+        if (newUser.getPassword() == null || newUser.getPassword().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Password cannot be null or empty");
+        }
+
         if (userService.findByEmail(newUser.getEmail()).isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("User already exists");
         }
+
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         User createdUser = userService.saveUser(newUser);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
