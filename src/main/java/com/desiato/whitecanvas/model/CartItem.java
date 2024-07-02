@@ -1,6 +1,5 @@
 package com.desiato.whitecanvas.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,17 +7,16 @@ import java.math.BigDecimal;
 
 @Entity
 @Data
+@AllArgsConstructor
 @Table(name = "cart_item")
-@NoArgsConstructor
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
-    @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ConsultancyService service;
 
     @ManyToOne
@@ -29,12 +27,24 @@ public class CartItem {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
     private Integer quantity;
+
+    public CartItem() {
+    }
 
     public CartItem(ConsultancyService service, Integer quantity) {
         this.service = service;
         this.quantity = quantity;
     }
 
+    public CartItem(ConsultancyService service, Cart cart, User user, Integer quantity) {
+        this.service = service;
+        this.cart = cart;
+        this.user = user;
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return service.getPrice().multiply(new BigDecimal(quantity));
+    }
 }

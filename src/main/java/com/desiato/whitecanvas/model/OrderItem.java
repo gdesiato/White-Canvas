@@ -16,7 +16,8 @@ public class OrderItem {
     @ManyToOne
     private Order order;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ConsultancyService service;
 
 }

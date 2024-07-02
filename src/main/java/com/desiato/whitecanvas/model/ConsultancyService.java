@@ -1,20 +1,25 @@
 package com.desiato.whitecanvas.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 
-@Entity
-@Data
-@Table(name = "consultancy_service")
-public class ConsultancyService {
+public enum ConsultancyService {
+    COLOR_ANALYSIS("Color Analysis", new BigDecimal("150.00")),
+    BODY_SHAPE("Body Shape", new BigDecimal("100.00")),
+    FACIAL_SHAPE("Facial Shape", new BigDecimal("300.00"));
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final String serviceName;
+    private final BigDecimal price;
 
-    private String serviceName;
+    ConsultancyService(String serviceName, BigDecimal price) {
+        this.serviceName = serviceName;
+        this.price = price;
+    }
 
-    private BigDecimal price;
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
 }

@@ -3,11 +3,8 @@ package com.desiato.whitecanvas.service;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.CartItem;
 import com.desiato.whitecanvas.model.ConsultancyService;
-import com.desiato.whitecanvas.model.User;
-import com.desiato.whitecanvas.repository.CartItermRepository;
+import com.desiato.whitecanvas.repository.CartItemRepository;
 import com.desiato.whitecanvas.repository.CartRepository;
-import com.desiato.whitecanvas.repository.ConsultancyServiceRepository;
-import com.desiato.whitecanvas.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,35 +18,18 @@ import java.util.Optional;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final UserRepository userRepository;
-    private final ConsultancyServiceRepository consultancyServiceRepository;
-    private final CartItermRepository cartItermRepository;
+    private final CartItemRepository cartItemRepository;
 
-    public Optional<Cart> getShoppingCartForUser(Long userId) {
-        return Optional.ofNullable(cartRepository.findByUserId(userId))
-                .or(() -> createCart(userId));
-    }
-
-    public Optional<Cart> createCart(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-
-        return userOptional.flatMap(user -> {
-            Cart cart = new Cart();
-            cart.setUser(user);  // Set the user to the newly created cart
-            user.setCart(cart);  // Set the cart to the user
-            cartRepository.save(cart);  // Save the new cart
-            return Optional.of(cart);   // Return the newly created cart wrapped in an Optional
-        });
-    }
-
-    public Cart addToCart(Cart cart, String serviceName, Integer quantity) throws Exception {
+    public Cart addToCart(Cart cart, String serviceName, Integer quantity) {
         if (cart == null || serviceName == null || quantity == null || quantity <= 0) {
             throw new IllegalArgumentException("Invalid cart, service name, or quantity");
         }
 
-        ConsultancyService service = consultancyServiceRepository.findByServiceName(serviceName);
-        if (service == null) {
-            throw new Exception("Service not found");
+        ConsultancyService service;
+        try {
+            service = ConsultancyService.valueOf(serviceName.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Service not found: " + serviceName);
         }
 
         // Find existing cart item for the same service
@@ -60,13 +40,16 @@ public class CartService {
 
         if (existingCartItem == null) {
             // No existing cart item, create a new one
-            CartItem newCartItem = new CartItem(service, quantity);
+            CartItem newCartItem = new CartItem();
+            newCartItem.setService(service);
+            newCartItem.setQuantity(quantity);
+            newCartItem.setCart(cart);
             cart.addCartItem(newCartItem);
-            cartItermRepository.save(newCartItem);
+            cartItemRepository.save(newCartItem);
         } else {
             // Existing cart item found, increase quantity
             existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
-            cartItermRepository.save(existingCartItem);
+            cartItemRepository.save(existingCartItem);
         }
 
         return cartRepository.save(cart);
@@ -74,14 +57,16 @@ public class CartService {
 
     public void removeItemFromCart(Cart cart, CartItem cartItem) {
         cart.getCartItems().remove(cartItem);
-        cartItermRepository.delete(cartItem);
+        cartItem.setCart(null);
+
+        cartItemRepository.delete(cartItem);
         cartRepository.save(cart);
     }
 
     public void clearCart(Cart cart) {
         List<CartItem> itemsToRemove = new ArrayList<>(cart.getCartItems());
         for (CartItem item : itemsToRemove) {
-            cartItermRepository.delete(item);
+            cartItemRepository.delete(item);
         }
         cart.getCartItems().clear();
         cart.setTotalPrice(BigDecimal.ZERO);
@@ -90,7 +75,7 @@ public class CartService {
 
     public Optional<Cart> findCartByUserId(Long userId) {
         Cart cart = cartRepository.findByUserId(userId);
-        return Optional.ofNullable(cart);  // Convert the cart to an Optional, handling null automatically
+        return Optional.ofNullable(cart);
     }
 
     public Cart saveCart(Cart cart) {

@@ -1,58 +1,26 @@
 package com.desiato.whitecanvas.controller;
 
 import com.desiato.whitecanvas.model.ConsultancyService;
-import com.desiato.whitecanvas.repository.ConsultancyServiceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/consultancy")
 public class ConsultancyController {
 
-    private final ConsultancyServiceRepository consultancyServiceRepository;
-
-    @GetMapping
-    public ResponseEntity<List<ConsultancyService>> getAllConsultancies() {
-        List<ConsultancyService> listOfConsultancies = consultancyServiceRepository.findAll();
-        return ResponseEntity.ok(listOfConsultancies);
+    @GetMapping("/all")
+    public ResponseEntity<ConsultancyService[]> getAllConsultancyServices() {
+        return ResponseEntity.ok(ConsultancyService.values());
     }
 
-    @PostMapping
-    public ResponseEntity<ConsultancyService> addService(@RequestBody ConsultancyService consultancyService) {
-        ConsultancyService savedConsultancyService = consultancyServiceRepository.save(consultancyService);
-        return ResponseEntity.ok(savedConsultancyService);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ConsultancyService> getConsultancy(@PathVariable Long id) {
-        Optional<ConsultancyService> consultancy = consultancyServiceRepository.findById(id);
-        return consultancy.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/{id}/update")
-    public ResponseEntity<ConsultancyService> updateConsultancy(@PathVariable Long id, @RequestBody ConsultancyService updateConsultancyService) {
-        return consultancyServiceRepository.findById(id)
-                .map(existingConsultancy -> {
-                    existingConsultancy.setServiceName(updateConsultancyService.getServiceName());
-                    existingConsultancy.setPrice(updateConsultancyService.getPrice());
-                    ConsultancyService savedService = consultancyServiceRepository.save(existingConsultancy);
-                    return ResponseEntity.ok(savedService);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Void> deleteConsultancy(@PathVariable Long id) {
+    @GetMapping("/{name}")
+    public ResponseEntity<ConsultancyService> getConsultancyService(@PathVariable String name) {
         try {
-            consultancyServiceRepository.deleteById(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
+            ConsultancyService consultancyService = ConsultancyService.valueOf(name.toUpperCase());
+            return ResponseEntity.ok(consultancyService);
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }

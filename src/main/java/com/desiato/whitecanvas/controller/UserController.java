@@ -32,8 +32,8 @@ public class UserController {
                     .body("User already exists");
         }
 
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        User createdUser = userService.saveUser(newUser);
+        // Create user and associated cart
+        User createdUser = userService.createUser(newUser.getEmail(), newUser.getPassword());
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

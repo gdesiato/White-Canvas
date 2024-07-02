@@ -6,7 +6,6 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 @Data
 @Table(name = "user")
@@ -25,6 +24,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
 }
