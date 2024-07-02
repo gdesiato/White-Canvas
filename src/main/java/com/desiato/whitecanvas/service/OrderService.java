@@ -10,19 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderService {
 
-    private final UserRepository userRepository;
-    private final CartService cartService;
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final CartRepository cartRepository;
-    private final CartItermRepository cartItemRepository;
 
     public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
 
     public Order addItemToOrder(Order order, OrderItem orderItem) {
-        order.getOrderItems().add(orderItem);
+        order.getItems().add(orderItem);
         orderItem.setOrder(order);
         return order;
     }

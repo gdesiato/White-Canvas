@@ -39,9 +39,8 @@ public class ConsultancyController {
     public ResponseEntity<ConsultancyService> updateConsultancy(@PathVariable Long id, @RequestBody ConsultancyService updateConsultancyService) {
         return consultancyServiceRepository.findById(id)
                 .map(existingConsultancy -> {
-                    existingConsultancy.setName(updateConsultancyService.getName());
-                    existingConsultancy.setDescription(updateConsultancyService.getDescription());
-                    existingConsultancy.setCost(updateConsultancyService.getCost());
+                    existingConsultancy.setServiceName(updateConsultancyService.getServiceName());
+                    existingConsultancy.setPrice(updateConsultancyService.getPrice());
                     ConsultancyService savedService = consultancyServiceRepository.save(existingConsultancy);
                     return ResponseEntity.ok(savedService);
                 })

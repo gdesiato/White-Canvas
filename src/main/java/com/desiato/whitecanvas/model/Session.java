@@ -21,4 +21,9 @@ public class Session {
 
     @Column(nullable = false)
     private Long userId;
+
+    public Session(String token, Long userId) {
+        this.token = token;
+        this.userId = userId;
+    }
 }
