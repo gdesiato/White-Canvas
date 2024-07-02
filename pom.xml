@@ -82,6 +82,7 @@
 					<url>jdbc:mysql://localhost:3308/whitecanvas</url>
 					<user>whitecanvas</user>
 					<password>whitecanvas</password>
+					<cleanDisabled>false</cleanDisabled>
 				</configuration>
 			</plugin>
 		</plugins>

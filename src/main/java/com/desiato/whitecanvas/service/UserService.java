@@ -1,5 +1,7 @@
 package com.desiato.whitecanvas.service;
 
+import com.desiato.whitecanvas.dto.CartDTO;
+import com.desiato.whitecanvas.dto.UserDTO;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartRepository;
@@ -7,12 +9,14 @@ import com.desiato.whitecanvas.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @AllArgsConstructor
+@Slf4j
 @Service
 public class UserService {
 
@@ -22,11 +26,17 @@ public class UserService {
 
     @Transactional
     public User createUser(String email, String password) {
+        log.info("Encoding password for email: {}", email);
+        String encodedPassword = passwordEncoder.encode(password);
+
         // Create and save the user
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPassword(passwordEncoder.encode(password));
+        newUser.setPassword(encodedPassword); // Set the encoded password
         userRepository.save(newUser);
+
+        // Log the encoded password after saving
+        log.info("User saved with encoded password: {}", newUser.getPassword());
 
         // Create and save the cart associated with the user
         Cart cart = new Cart();

@@ -1,6 +1,6 @@
 package com.desiato.whitecanvas.configuration;
 
-import com.desiato.whitecanvas.dto.WhiteCanvasToken;
+import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,8 +44,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-            WhiteCanvasToken whiteCanvasToken = new WhiteCanvasToken(tokenValue);
-            var authenticationDetails = authenticationService.createUserDetails(whiteCanvasToken)
+            UserToken userToken = new UserToken(tokenValue);
+            var authenticationDetails = authenticationService.createUserDetails(userToken)
                     .map(userDetails -> new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
             if (authenticationDetails.isPresent()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticationDetails.get());

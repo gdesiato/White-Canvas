@@ -2,7 +2,6 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.dto.AuthenticationRequestDto;
 import com.desiato.whitecanvas.dto.UserToken;
-import com.desiato.whitecanvas.dto.WhiteCanvasToken;
 import com.desiato.whitecanvas.model.CustomUserDetails;
 import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
@@ -36,12 +35,16 @@ public class AuthenticationService {
         return new UserToken(tokenValue);
     }
 
-    public Optional<CustomUserDetails> createUserDetails(WhiteCanvasToken whiteCanvasToken) {
-        return sessionService.findUserByToken(whiteCanvasToken)
+    public Optional<CustomUserDetails> createUserDetails(UserToken userToken) {
+        return sessionService.findUserByToken(userToken)
                 .map(CustomUserDetails::new);
     }
 
     private void validatePassword(AuthenticationRequestDto request, User user) {
+        log.info("Validating password for email: {}", request.email());
+        log.info("Raw password from request: {}", request.password());
+        log.info("Encoded password from user: {}", user.getPassword());
+
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             log.warn("Authentication failed: Incorrect password for email: {}", request.email());
             throw new AuthenticationException("Authentication failed: Incorrect password.") {};

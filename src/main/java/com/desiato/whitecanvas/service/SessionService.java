@@ -1,6 +1,6 @@
 package com.desiato.whitecanvas.service;
 
-import com.desiato.whitecanvas.dto.WhiteCanvasToken;
+import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.SessionRepository;
@@ -25,8 +25,8 @@ public class SessionService {
         return newSession;
     }
 
-    public Optional<User> findUserByToken(WhiteCanvasToken whiteCanvasToken) {
-        return sessionRepository.findById(whiteCanvasToken.toString())
+    public Optional<User> findUserByToken(UserToken userToken) {
+        return sessionRepository.findByToken(userToken.value())
                 .map(Session::getUserId)
                 .flatMap(userRepository::findById);
     }

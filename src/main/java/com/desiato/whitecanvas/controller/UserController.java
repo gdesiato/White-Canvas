@@ -1,5 +1,6 @@
 package com.desiato.whitecanvas.controller;
 
+import com.desiato.whitecanvas.dto.UserDTO;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.service.UserService;
 import lombok.AllArgsConstructor;
@@ -32,9 +33,9 @@ public class UserController {
                     .body("User already exists");
         }
 
-        // Create user and associated cart
         User createdUser = userService.createUser(newUser.getEmail(), newUser.getPassword());
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        UserDTO createdUserDTO = new UserDTO(createdUser.getId(), createdUser.getEmail());
+        return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

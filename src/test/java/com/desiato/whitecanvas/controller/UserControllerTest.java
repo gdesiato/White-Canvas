@@ -1,6 +1,7 @@
 package com.desiato.whitecanvas.controller;
 
 import com.desiato.whitecanvas.BaseTest;
+import com.desiato.whitecanvas.dto.AuthenticatedUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -27,26 +28,14 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
-    public void createUserAndRetrieveUser_ShouldCreateAndReturnUser() throws Exception {
-        String userJson = """
-        {
-            "email": "testuser@example.com",
-            "password": "password123"
-        }
-        """;
+    public void getUser_ShouldReturnUser() throws Exception {
+        AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
-        // Create user via POST request
-        mockMvc.perform(post("/api/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(userJson))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.email").value("testuser@example.com"));
-
-        // Retrieve the created user via GET request
-        mockMvc.perform(get("/api/user/1")  // Assuming the created user gets ID 1
-                        .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/user/" + authenticatedUser.user().getId())
+                        .header("authToken", authenticatedUser.userToken().value()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("testuser@example.com"));
+                .andExpect(jsonPath("$.id").value(authenticatedUser.user().getId()))
+                .andExpect(jsonPath("$.email").value(authenticatedUser.user().getEmail()));
     }
 
 }

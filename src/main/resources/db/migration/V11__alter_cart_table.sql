@@ -1,0 +1,2 @@
+ALTER TABLE cart DROP FOREIGN KEY cart_ibfk_1;
+ALTER TABLE cart DROP COLUMN user_id;
