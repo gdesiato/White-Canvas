@@ -40,9 +40,11 @@ public class UserService {
 
         // Create and save the cart associated with the user
         Cart cart = new Cart();
-        cart.setUser(newUser);
         newUser.setCart(cart);
         cartRepository.save(cart);
+
+        newUser.setCart(cart);
+        userRepository.save(newUser);
 
         return newUser;
     }

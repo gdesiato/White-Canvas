@@ -19,11 +19,11 @@ public class CartController {
     private final CartService cartService;
     private final UserService userService;
 
-    @GetMapping("/{userId}")
+
+    @GetMapping("/user/{userId}")
     public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
-        Optional<Cart> cart = cartService.findCartByUserId(userId);
-        return cart.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Cart cart = cartService.getCartByUserId(userId);
+        return ResponseEntity.ok(cart);
     }
 
     @PostMapping("/{userId}/addToCart")

@@ -3,8 +3,10 @@ package com.desiato.whitecanvas.service;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.CartItem;
 import com.desiato.whitecanvas.model.ConsultancyService;
+import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartItemRepository;
 import com.desiato.whitecanvas.repository.CartRepository;
+import com.desiato.whitecanvas.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final UserRepository userRepository;
 
     public Cart addToCart(Cart cart, String serviceName, Integer quantity) {
         if (cart == null || serviceName == null || quantity == null || quantity <= 0) {
@@ -73,9 +76,13 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public Optional<Cart> findCartByUserId(Long userId) {
-        Cart cart = cartRepository.findByUserId(userId);
-        return Optional.ofNullable(cart);
+    public Cart getCartByUserId(Long userId) {
+        // Find the user by userId
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Return the user's cart
+        return user.getCart();
     }
 
     public Cart saveCart(Cart cart) {

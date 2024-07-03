@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "cart")
 public class Cart {
 
     @Id
@@ -20,4 +21,20 @@ public class Cart {
 
     private BigDecimal totalPrice;
 
+    public void addCartItem(CartItem cartItem) {
+        cartItems.add(cartItem);
+        updateTotalPrice();
+    }
+
+    public void removeCartItem(CartItem cartItem) {
+        cartItems.remove(cartItem);
+        updateTotalPrice();
+    }
+
+    private void updateTotalPrice() {
+        totalPrice = BigDecimal.ZERO;
+        for (CartItem item : cartItems) {
+            totalPrice = totalPrice.add(item.getTotalPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+        }
+    }
 }
