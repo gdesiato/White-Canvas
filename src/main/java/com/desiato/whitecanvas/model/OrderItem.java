@@ -3,8 +3,6 @@ package com.desiato.whitecanvas.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Entity
 @Data
 public class OrderItem {
@@ -18,6 +16,6 @@ public class OrderItem {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ConsultancyService service;
+    private ConsultancyProduct service;
 
 }

@@ -14,15 +14,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final AuthTokenFilter authTokenFilter;
+
     @Autowired
-    private AuthTokenFilter authTokenFilter;
+    public SecurityConfig(AuthTokenFilter authTokenFilter) {
+        this.authTokenFilter = authTokenFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login").permitAll()
-                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/api/user").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)

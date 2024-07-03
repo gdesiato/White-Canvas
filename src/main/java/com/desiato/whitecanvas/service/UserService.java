@@ -1,10 +1,7 @@
 package com.desiato.whitecanvas.service;
 
-import com.desiato.whitecanvas.dto.CartDTO;
-import com.desiato.whitecanvas.dto.UserDTO;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.User;
-import com.desiato.whitecanvas.repository.CartRepository;
 import com.desiato.whitecanvas.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -22,29 +19,27 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CartRepository cartRepository;
+    private final CartService cartService;
+
 
     @Transactional
     public User createUser(String email, String password) {
         log.info("Encoding password for email: {}", email);
         String encodedPassword = passwordEncoder.encode(password);
 
-        // Create and save the user
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPassword(encodedPassword); // Set the encoded password
-        userRepository.save(newUser);
+        newUser.setPassword(encodedPassword);
+
+        Cart cart = new Cart();
+        cartService.saveCart(cart); // Save the cart first
+
+        // Associate the cart with the user and save the user
+        newUser.setCart(cart);
+        saveUser(newUser);
 
         // Log the encoded password after saving
         log.info("User saved with encoded password: {}", newUser.getPassword());
-
-        // Create and save the cart associated with the user
-        Cart cart = new Cart();
-        newUser.setCart(cart);
-        cartRepository.save(cart);
-
-        newUser.setCart(cart);
-        userRepository.save(newUser);
 
         return newUser;
     }

@@ -2,7 +2,7 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.CartItem;
-import com.desiato.whitecanvas.model.ConsultancyService;
+import com.desiato.whitecanvas.model.ConsultancyProduct;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartItemRepository;
 import com.desiato.whitecanvas.repository.CartRepository;
@@ -28,9 +28,9 @@ public class CartService {
             throw new IllegalArgumentException("Invalid cart, service name, or quantity");
         }
 
-        ConsultancyService service;
+        ConsultancyProduct service;
         try {
-            service = ConsultancyService.valueOf(serviceName.toUpperCase());
+            service = ConsultancyProduct.valueOf(serviceName.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Service not found: " + serviceName);
         }

@@ -5,6 +5,7 @@ import com.desiato.whitecanvas.dto.AuthenticatedUser;
 import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

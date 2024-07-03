@@ -17,7 +17,7 @@ public class CartItem {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ConsultancyService service;
+    private ConsultancyProduct service;
 
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
@@ -32,12 +32,12 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(ConsultancyService service, Integer quantity) {
+    public CartItem(ConsultancyProduct service, Integer quantity) {
         this.service = service;
         this.quantity = quantity;
     }
 
-    public CartItem(ConsultancyService service, Cart cart, User user, Integer quantity) {
+    public CartItem(ConsultancyProduct service, Cart cart, User user, Integer quantity) {
         this.service = service;
         this.cart = cart;
         this.user = user;

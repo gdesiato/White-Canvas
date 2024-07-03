@@ -2,7 +2,7 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.CartItem;
-import com.desiato.whitecanvas.model.ConsultancyService;
+import com.desiato.whitecanvas.model.ConsultancyProduct;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartItemRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class CartItemService {
     }
 
     public CartItem createCartItem(String serviceName, Integer quantity, Cart cart, User user) {
-        ConsultancyService service = ConsultancyService.valueOf(serviceName.toUpperCase());
+        ConsultancyProduct service = ConsultancyProduct.valueOf(serviceName.toUpperCase());
         CartItem cartItem = new CartItem(service, cart, user, quantity);
         return cartItemRepository.save(cartItem);
     }
