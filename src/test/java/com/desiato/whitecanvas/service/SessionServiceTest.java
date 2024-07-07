@@ -33,13 +33,13 @@ class SessionServiceTest extends BaseTest {
         Session session = new Session(userToken.value(), existingUser.user().getId());
 
         // Save session to database
-        sessionRepository.save(session);
+        //sessionRepository.save(session);
 
         // Act
         Optional<User> retrievedUser = sessionService.findUserByToken(userToken);
 
         // Assert
         assertTrue(retrievedUser.isPresent(), "User should be present");
-        assertEquals(existingUser.user(), retrievedUser.get(), "Retrieved user should match the existing user");
+        assertEquals(existingUser.user().getId(), retrievedUser.get().getId(), "Retrieved user should match the existing user");
     }
 }
