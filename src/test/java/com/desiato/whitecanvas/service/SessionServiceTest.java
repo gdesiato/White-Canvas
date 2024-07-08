@@ -27,18 +27,12 @@ class SessionServiceTest extends BaseTest {
 
     @Test
     void findUserByToken_ShouldReturnUser() throws Exception {
-        // Arrange
         AuthenticatedUser existingUser = testAuthenticationHelper.createAndAuthenticateUser();
         UserToken userToken = existingUser.userToken();
         Session session = new Session(userToken.value(), existingUser.user().getId());
 
-        // Save session to database
-        //sessionRepository.save(session);
-
-        // Act
         Optional<User> retrievedUser = sessionService.findUserByToken(userToken);
 
-        // Assert
         assertTrue(retrievedUser.isPresent(), "User should be present");
         assertEquals(existingUser.user().getId(), retrievedUser.get().getId(), "Retrieved user should match the existing user");
     }
