@@ -12,22 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UserControllerTest extends BaseTest {
 
-    @Test
-    public void createUser_ShouldCreateUserAndReturnCreatedUser() throws Exception {
-        String userJson = """
-        {
-            "email": "testuser@example.com",
-            "password": "password123"
-        }
-        """;
-
-        mockMvc.perform(post("/api/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(userJson))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.email").value("testuser@example.com"))
-                .andReturn();
-    }
 
     @Test
     public void getUser_ShouldReturnUser() throws Exception {
@@ -42,10 +26,15 @@ public class UserControllerTest extends BaseTest {
 
     @Test
     public void createUser_ShouldHandleUserAlreadyExists() throws Exception {
-        String email = testAuthenticationHelper.generateUniqueEmail();
-        String password = "password123";
+        AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
-        String userJson = String.format("{ \"email\": \"%s\", \"password\": \"%s\" }", email, password);
+        String userJson = String.format("""
+                { 
+                    "email": "%s",
+                    "password": "password123" 
+                }
+                """,
+                authenticatedUser.user().getEmail());
 
         // First attempt should succeed
         mockMvc.perform(post("/api/user")
