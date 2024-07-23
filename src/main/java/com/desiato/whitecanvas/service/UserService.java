@@ -23,10 +23,14 @@ public class UserService {
 
 
     @Transactional
-    public User createUser(String email, String password) {
-        log.info("Encoding password for email: {}", email);
-        String encodedPassword = passwordEncoder.encode(password);
+    public User createUser(String email, String password) throws Exception {
+        log.info("Creating user with email: {}", email);
 
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new Exception("User already exists");
+        }
+
+        String encodedPassword = passwordEncoder.encode(password);
         User newUser = new User();
         newUser.setEmail(email);
         newUser.setPassword(encodedPassword);

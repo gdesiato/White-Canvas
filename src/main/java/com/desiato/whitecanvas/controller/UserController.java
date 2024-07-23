@@ -20,7 +20,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody User newUser) {
+    public ResponseEntity<Object> createUser(@RequestBody User newUser) throws Exception {
         if (newUser.getPassword() == null || newUser.getPassword().isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
