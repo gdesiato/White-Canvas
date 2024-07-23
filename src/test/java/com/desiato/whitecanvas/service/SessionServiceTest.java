@@ -5,13 +5,11 @@ import com.desiato.whitecanvas.dto.AuthenticatedUser;
 import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 class SessionServiceTest extends BaseTest {
 
@@ -29,7 +27,6 @@ class SessionServiceTest extends BaseTest {
     void findUserByToken_ShouldReturnUser() throws Exception {
         AuthenticatedUser existingUser = testAuthenticationHelper.createAndAuthenticateUser();
         UserToken userToken = existingUser.userToken();
-        Session session = new Session(userToken.value(), existingUser.user().getId());
 
         Optional<User> retrievedUser = sessionService.findUserByToken(userToken);
 
