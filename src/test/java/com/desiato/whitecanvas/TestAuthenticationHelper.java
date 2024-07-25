@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-@Slf4j
 @AllArgsConstructor
 public class TestAuthenticationHelper {
     private final UserService userService;
@@ -27,15 +26,8 @@ public class TestAuthenticationHelper {
         String rawPassword = "password123"; // Raw password
         String encodedPassword = passwordEncoder.encode(rawPassword);
 
-        log.info("Creating user with email: {}", email);
-        log.info("Raw password: {}", rawPassword);
-        log.info("Encoded password: {}", encodedPassword);
-
         // Create user with raw password, which will be encoded inside createUser
-        User existingUser = userService.createUser(email, rawPassword); // Pass raw password here to be encoded inside createUser
-
-        // Log the encoded password saved in the user object
-        log.info("User saved with encoded password: {}", existingUser.getPassword());
+        User existingUser = userService.createUser(email, rawPassword);
 
         // Authenticate user with raw password
         AuthenticationRequestDto request = new AuthenticationRequestDto(email, rawPassword);

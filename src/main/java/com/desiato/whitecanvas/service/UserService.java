@@ -6,14 +6,12 @@ import com.desiato.whitecanvas.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @AllArgsConstructor
-@Slf4j
 @Service
 public class UserService {
 
@@ -24,7 +22,6 @@ public class UserService {
 
     @Transactional
     public User createUser(String email, String password) throws Exception {
-        log.info("Creating user with email: {}", email);
 
         if (userRepository.findByEmail(email).isPresent()) {
             throw new Exception("User already exists");
@@ -41,9 +38,6 @@ public class UserService {
         // Associate the cart with the user and save the user
         newUser.setCart(cart);
         saveUser(newUser);
-
-        // Log the encoded password after saving
-        log.info("User saved with encoded password: {}", newUser.getPassword());
 
         return newUser;
     }
