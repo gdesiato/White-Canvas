@@ -2,9 +2,14 @@ package com.desiato.whitecanvas.controller;
 
 import com.desiato.whitecanvas.BaseTest;
 import com.desiato.whitecanvas.dto.AuthenticatedUser;
+import com.desiato.whitecanvas.model.Session;
+import com.desiato.whitecanvas.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -21,6 +26,16 @@ public class UserControllerTest extends BaseTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(authenticatedUser.user().getId()))
                 .andExpect(jsonPath("$.email").value(authenticatedUser.user().getEmail()));
+    }
+
+    @Test
+    public void testGetUsers_ShouldReturnListOfUsers() throws Exception {
+        AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
+
+        mockMvc.perform(get("/api/user/list")
+                        .header("authToken", authenticatedUser.userToken().value())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -52,5 +67,21 @@ public class UserControllerTest extends BaseTest {
         assertNotNull(authenticatedUser.user());
         assertNotNull(authenticatedUser.userToken());
         assertEquals("user_", authenticatedUser.user().getEmail().substring(0, 5));
+    }
+
+    @Test
+    public void deleteUser_ShouldDeleteUserAndReturnNoContent() throws Exception {
+        AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
+        AuthenticatedUser authenticatedUser2 = testAuthenticationHelper.createAndAuthenticateUser();
+
+        mockMvc.perform(delete("/api/user/" + authenticatedUser2.user().getId())
+                        .header("authToken", authenticatedUser.userToken().value()))
+                .andExpect(status().isNoContent());
+
+        Optional<User> deletedUser = userRepository.findById(authenticatedUser2.user().getId());
+        Optional<Session> deletedSession = sessionRepository.findByToken(authenticatedUser2.userToken().value());
+
+        assertThat(deletedUser.isPresent()).isFalse();
+        assertThat(deletedSession.isPresent()).isFalse();
     }
 }

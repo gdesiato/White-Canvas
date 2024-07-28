@@ -1,6 +1,7 @@
 package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.model.Cart;
+import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CartService cartService;
+    private final SessionService sessionService;
 
 
     @Transactional
@@ -54,8 +56,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        if (userRepository.existsById(id)) {
+            sessionService.deleteUserSessions(id);
+            userRepository.deleteById(id);
+        }
     }
 
     public List<User> findAll() {
