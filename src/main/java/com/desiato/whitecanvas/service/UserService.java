@@ -1,5 +1,6 @@
 package com.desiato.whitecanvas.service;
 
+import com.desiato.whitecanvas.exception.UserNotFoundException;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
@@ -79,11 +80,13 @@ public class UserService {
 
     public User updateUser(User user) {
         User existingUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        existingUser.setEmail(user.getEmail());
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        // Check if the password has changed, and update if necessary
-        if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+        if (user.getEmail() != null) {
+            existingUser.setEmail(user.getEmail());
+        }
+        if (user.getPassword() != null && !passwordEncoder.matches(
+                user.getPassword(), existingUser.getPassword())) {
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 

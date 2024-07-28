@@ -84,4 +84,23 @@ public class UserControllerTest extends BaseTest {
         assertThat(deletedUser.isPresent()).isFalse();
         assertThat(deletedSession.isPresent()).isFalse();
     }
+
+    @Test
+    public void updateUser_ShouldUpdateUserAndReturnUpdatedInfo() throws Exception {
+        AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
+        AuthenticatedUser authenticatedUser2 = testAuthenticationHelper.createAndAuthenticateUser();
+
+        String userJson = """
+            { 
+                "email": "updated@example.com"
+            }
+            """;
+
+        mockMvc.perform(put("/api/user/update/{id}", authenticatedUser2.user().getId())
+                        .header("authToken", authenticatedUser.userToken().value())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("updated@example.com"));
+    }
 }
