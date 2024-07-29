@@ -90,17 +90,19 @@ public class UserControllerTest extends BaseTest {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
         AuthenticatedUser authenticatedUser2 = testAuthenticationHelper.createAndAuthenticateUser();
 
-        String userJson = """
+        String email = testAuthenticationHelper.generateUniqueEmail();
+
+        String userJson = String.format("""
             { 
-                "email": "updated@example.com"
+                "email": "%s"
             }
-            """;
+            """, email);
 
         mockMvc.perform(put("/api/user/update/{id}", authenticatedUser2.user().getId())
                         .header("authToken", authenticatedUser.userToken().value())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("updated@example.com"));
+                .andExpect(jsonPath("$.email").value(email));
     }
 }

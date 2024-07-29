@@ -2,7 +2,6 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.exception.UserNotFoundException;
 import com.desiato.whitecanvas.model.Cart;
-import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
