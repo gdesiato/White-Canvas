@@ -1,9 +1,11 @@
 package com.desiato.whitecanvas;
 
+import com.desiato.whitecanvas.repository.CartRepository;
 import com.desiato.whitecanvas.repository.SessionRepository;
 import com.desiato.whitecanvas.repository.UserRepository;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import com.desiato.whitecanvas.service.SessionService;
+import com.desiato.whitecanvas.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,10 +24,16 @@ public class BaseTest {
     public SessionService sessionService;
 
     @Autowired
+    public UserService userService;
+
+    @Autowired
     public SessionRepository sessionRepository;
 
     @Autowired
     public UserRepository userRepository;
+
+    @Autowired
+    public CartRepository cartRepository;
 
     @Autowired
     public TestAuthenticationHelper testAuthenticationHelper;

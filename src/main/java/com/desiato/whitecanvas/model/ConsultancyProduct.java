@@ -17,4 +17,13 @@ public enum ConsultancyProduct {
         this.serviceName = serviceName;
         this.price = price;
     }
+
+    public static ConsultancyProduct fromServiceName(String serviceName) {
+        for (ConsultancyProduct product : values()) {
+            if (product.getServiceName().equalsIgnoreCase(serviceName)) {
+                return product;
+            }
+        }
+        throw new IllegalArgumentException("Service not found: " + serviceName);
+    }
 }

@@ -23,11 +23,13 @@ public class Cart {
 
     public void addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
+        cartItem.setCart(this);  // Set the bidirectional relationship
         updateTotalPrice();
     }
 
     public void removeCartItem(CartItem cartItem) {
         cartItems.remove(cartItem);
+        cartItem.setCart(null);  // Break the bidirectional relationship
         updateTotalPrice();
     }
 

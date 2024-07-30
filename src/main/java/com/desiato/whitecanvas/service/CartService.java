@@ -7,6 +7,7 @@ import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartItemRepository;
 import com.desiato.whitecanvas.repository.CartRepository;
 import com.desiato.whitecanvas.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +29,7 @@ public class CartService {
             throw new IllegalArgumentException("Invalid cart, service name, or quantity");
         }
 
-        ConsultancyProduct service;
-        try {
-            service = ConsultancyProduct.valueOf(serviceName.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Service not found: " + serviceName);
-        }
+        ConsultancyProduct service = ConsultancyProduct.fromServiceName(serviceName);
 
         // Find existing cart item for the same service
         CartItem existingCartItem = cart.getCartItems().stream()
@@ -66,9 +62,13 @@ public class CartService {
         cartRepository.save(cart);
     }
 
+    @Transactional
     public void clearCart(Cart cart) {
         List<CartItem> itemsToRemove = new ArrayList<>(cart.getCartItems());
+
         for (CartItem item : itemsToRemove) {
+            // Break the bidirectional relationship
+            item.setCart(null);
             cartItemRepository.delete(item);
         }
         cart.getCartItems().clear();

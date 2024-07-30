@@ -3,7 +3,9 @@ package com.desiato.whitecanvas;
 import com.desiato.whitecanvas.dto.AuthenticatedUser;
 import com.desiato.whitecanvas.dto.AuthenticationRequestDto;
 import com.desiato.whitecanvas.dto.UserToken;
+import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.User;
+import com.desiato.whitecanvas.repository.UserRepository;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import com.desiato.whitecanvas.service.UserService;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ public class TestAuthenticationHelper {
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
 
     public AuthenticatedUser createAndAuthenticateUser() throws Exception {
