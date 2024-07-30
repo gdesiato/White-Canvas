@@ -21,6 +21,11 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
+    @GetMapping
+    public ResponseEntity<String> getUserMessage() {
+        return ResponseEntity.ok("Hello, this is a message from the UserController!");
+    }
+
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody User newUser) throws Exception {
         if (newUser.getPassword() == null || newUser.getPassword().isEmpty()) {
