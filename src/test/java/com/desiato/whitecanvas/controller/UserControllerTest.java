@@ -29,7 +29,7 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
-    public void testGetUsers_ShouldReturnListOfUsers() throws Exception {
+    public void GetUsers_ShouldReturnListOfUsers() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
         mockMvc.perform(get("/api/user/list")
