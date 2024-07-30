@@ -93,10 +93,10 @@ public class UserControllerTest extends BaseTest {
         String email = testAuthenticationHelper.generateUniqueEmail();
 
         String userJson = String.format("""
-            { 
-                "email": "%s"
-            }
-            """, email);
+        { 
+            "email": "%s"
+        }
+        """, email);
 
         mockMvc.perform(put("/api/user/update/{id}", authenticatedUser2.user().getId())
                         .header("authToken", authenticatedUser.userToken().value())

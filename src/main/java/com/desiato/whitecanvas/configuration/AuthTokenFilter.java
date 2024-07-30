@@ -62,7 +62,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private boolean isPublicEndpoint(String requestURI) {
         boolean isPublic = antPathMatcher.match("/api/login", requestURI) ||
-                antPathMatcher.match("/api/user", requestURI);
+                antPathMatcher.match("/api/user", requestURI) ||
+                antPathMatcher.match("/v3/api-docs/**", requestURI) ||
+                antPathMatcher.match("/swagger-ui/**", requestURI) ||
+                antPathMatcher.match("/swagger-ui.html", requestURI);
         logger.debug("Request URI: " + requestURI + " isPublic: " + isPublic);
         return isPublic;
     }
