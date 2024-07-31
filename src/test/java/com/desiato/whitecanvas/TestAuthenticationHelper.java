@@ -3,8 +3,8 @@ package com.desiato.whitecanvas;
 import com.desiato.whitecanvas.dto.AuthenticatedUser;
 import com.desiato.whitecanvas.dto.AuthenticationRequestDto;
 import com.desiato.whitecanvas.dto.UserToken;
-import com.desiato.whitecanvas.model.Cart;
-import com.desiato.whitecanvas.model.User;
+import com.desiato.whitecanvas.model.*;
+import com.desiato.whitecanvas.repository.CartItemRepository;
 import com.desiato.whitecanvas.repository.UserRepository;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import com.desiato.whitecanvas.service.UserService;
@@ -21,7 +21,7 @@ public class TestAuthenticationHelper {
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final CartItemRepository cartItemRepository;
 
 
     public AuthenticatedUser createAndAuthenticateUser() throws Exception {
@@ -45,6 +45,22 @@ public class TestAuthenticationHelper {
         String encodedPassword = passwordEncoder.encode(password);
 
         return userService.createUser(email, encodedPassword);
+    }
+
+    public CartItem createCartItem(Cart cart, ConsultancyProduct service, int quantity) {
+        CartItem cartItem = new CartItem();
+        cartItem.setCart(cart);
+        cartItem.setService(service);
+        cartItem.setQuantity(quantity);
+        return cartItemRepository.save(cartItem);
+    }
+
+    public OrderItem createOrderItem(Order order, CartItem cartItem) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        orderItem.setCartItem(cartItem);
+        orderItem.setService(cartItem.getService());
+        return orderItem;
     }
 
     public String generateUniqueEmail() {

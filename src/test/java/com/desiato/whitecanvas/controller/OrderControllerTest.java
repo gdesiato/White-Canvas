@@ -32,35 +32,24 @@ class OrderControllerTest extends BaseTest {
     public void setUp() throws Exception {
         authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
-        // Create CartItems
-        cartItem1 = new CartItem();
-        cartItem1.setCart(authenticatedUser.user().getCart());
-        cartItem1.setService(ConsultancyProduct.COLOR_ANALYSIS);
-        cartItem1.setQuantity(1);
-        cartItem1 = cartItemRepository.save(cartItem1);
-
-        cartItem2 = new CartItem();
-        cartItem2.setCart(authenticatedUser.user().getCart());
-        cartItem2.setService(ConsultancyProduct.BODY_SHAPE);
-        cartItem2.setQuantity(2);
-        cartItem2 = cartItemRepository.save(cartItem2);
+        // Create CartItems using helper method
+        cartItem1 = testAuthenticationHelper.createCartItem(
+                authenticatedUser.user().getCart(),
+                ConsultancyProduct.COLOR_ANALYSIS, 1);
+        cartItem2 = testAuthenticationHelper.createCartItem(
+                authenticatedUser.user().getCart(),
+                ConsultancyProduct.BODY_SHAPE, 2);
 
         // Create Order
         testOrder = new Order();
         testOrder.setUser(authenticatedUser.user());
         testOrder.setItems(new ArrayList<>());
 
-        // Create OrderItems
-        OrderItem orderItem1 = new OrderItem();
-        orderItem1.setOrder(testOrder);
-        orderItem1.setCartItem(cartItem1);
-        orderItem1.setService(cartItem1.getService());
-        testOrder.getItems().add(orderItem1);
+        // Create OrderItems using helper method
+        OrderItem orderItem1 = testAuthenticationHelper.createOrderItem(testOrder, cartItem1);
+        OrderItem orderItem2 = testAuthenticationHelper.createOrderItem(testOrder, cartItem2);
 
-        OrderItem orderItem2 = new OrderItem();
-        orderItem2.setOrder(testOrder);
-        orderItem2.setCartItem(cartItem2);
-        orderItem2.setService(cartItem2.getService());
+        testOrder.getItems().add(orderItem1);
         testOrder.getItems().add(orderItem2);
 
         // Set Order Details
