@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Data
@@ -49,6 +50,9 @@ public class CartItem {
     }
 
     public BigDecimal getTotalPrice() {
-        return service.getPrice().multiply(new BigDecimal(quantity));
+        return service.getPrice()
+                .multiply(BigDecimal.valueOf(quantity))
+                .setScale(2, RoundingMode.HALF_UP);
+
     }
 }

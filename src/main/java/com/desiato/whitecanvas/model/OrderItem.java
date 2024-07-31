@@ -14,8 +14,11 @@ public class OrderItem {
     @ManyToOne
     private Order order;
 
+    @OneToOne
+    @JoinColumn(name = "cart_item_id")
+    private CartItem cartItem;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ConsultancyProduct service;
-
 }

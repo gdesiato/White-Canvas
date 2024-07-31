@@ -1,9 +1,11 @@
 package com.desiato.whitecanvas.service;
 
+import com.desiato.whitecanvas.dto.OrderDTO;
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.repository.*;
 import com.desiato.whitecanvas.model.OrderItem;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -12,8 +14,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id).orElse(null);
+    public Order getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return null;
+        }
+        return order;
     }
 
     public Order addItemToOrder(Order order, OrderItem orderItem) {

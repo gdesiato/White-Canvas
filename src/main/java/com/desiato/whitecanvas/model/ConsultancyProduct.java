@@ -1,5 +1,8 @@
 package com.desiato.whitecanvas.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -11,6 +14,7 @@ public enum ConsultancyProduct {
     FACIAL_SHAPE("Facial Shape", new BigDecimal("100.00"));
 
     private final String serviceName;
+
     private final BigDecimal price;
 
     ConsultancyProduct(String serviceName, BigDecimal price) {

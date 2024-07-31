@@ -21,10 +21,20 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<OrderItem> items = new ArrayList<>();
 
     private LocalDateTime orderDate;
 
     private BigDecimal totalAmount;
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderDate=" + orderDate +
+                ", totalAmount=" + totalAmount +
+                '}';
+    }
 
 }

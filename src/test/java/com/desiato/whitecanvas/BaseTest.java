@@ -1,9 +1,8 @@
 package com.desiato.whitecanvas;
 
-import com.desiato.whitecanvas.repository.CartRepository;
-import com.desiato.whitecanvas.repository.SessionRepository;
-import com.desiato.whitecanvas.repository.UserRepository;
+import com.desiato.whitecanvas.repository.*;
 import com.desiato.whitecanvas.service.AuthenticationService;
+import com.desiato.whitecanvas.service.OrderService;
 import com.desiato.whitecanvas.service.SessionService;
 import com.desiato.whitecanvas.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,10 +26,19 @@ public class BaseTest {
     public UserService userService;
 
     @Autowired
+    public OrderService orderService;
+
+    @Autowired
+    public OrderRepository orderRepository;
+
+    @Autowired
     public SessionRepository sessionRepository;
 
     @Autowired
     public UserRepository userRepository;
+
+    @Autowired
+    public CartItemRepository cartItemRepository;
 
     @Autowired
     public CartRepository cartRepository;
