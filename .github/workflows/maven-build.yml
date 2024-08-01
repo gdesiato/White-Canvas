@@ -17,6 +17,7 @@ jobs :
         uses: actions/setup-java@v3
         with:
           java-version: '17'
+          distribution: 'temurin'
           cache: Maven
       - name: Build and test with Maven
         run: mvn --batch-mode package
