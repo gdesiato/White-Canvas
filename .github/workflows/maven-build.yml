@@ -1,32 +1,49 @@
-name: Java CI with Maven
+name: Run tests
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
-jobs :
-  build:
-
+jobs:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          distribution: 'corretto'
+          java-version: 17
 
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Set up Docker Compose
+        run: sudo apt-get -y install docker-compose
 
-      - name: Build and test with Maven
-        run: mvn --batch-mode package
+      - name: Start Docker Compose services
+        run: docker-compose -f docker-compose.yml up -d
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if docker-compose exec db mysqladmin ping -h 127.0.0.1 -u whitecanvas --password=whitecanvas &> /dev/null; then
+              echo "MySQL is up and running"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
+      - name: Tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3308/whitecanvas
+          SPRING_DATASOURCE_USERNAME: whitecanvas
+          SPRING_DATASOURCE_PASSWORD: whitecanvas
+        run: mvn -B test --file pom.xml
+
+      - name: Stop Docker Compose services
+        run: docker-compose -f docker-compose.yml down
+
+
