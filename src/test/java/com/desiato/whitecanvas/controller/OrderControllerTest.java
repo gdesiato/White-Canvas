@@ -32,7 +32,7 @@ class OrderControllerTest extends BaseTest {
     public void setUp() throws Exception {
         authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
-        // Create CartItems using helper method
+        // Create CartItems
         cartItem1 = testAuthenticationHelper.createCartItem(
                 authenticatedUser.user().getCart(),
                 ConsultancyProduct.COLOR_ANALYSIS, 1);
