@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest extends BaseTest {
 
     @Test
-    public void getUser_ShouldReturnUser() throws Exception {
+    void getUser_ShouldReturnUser() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
         mockMvc.perform(get("/api/user/" + authenticatedUser.user().getId())
@@ -29,7 +29,7 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
-    public void GetUsers_ShouldReturnListOfUsers() throws Exception {
+    void GetUsers_ShouldReturnListOfUsers() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
         mockMvc.perform(get("/api/user/list")
@@ -39,16 +39,16 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
-    public void createUser_ShouldReturnCreatedUser() throws Exception {
+    void createUser_ShouldReturnCreatedUser() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
         String email = testAuthenticationHelper.generateUniqueEmail();
         String password = "password123";
 
         String userJson = String.format("""
-                { 
+                {\s
                     "email": "%s",
-                    "password": "%s" 
+                    "password": "%s"\s
                 }
                 """, email, password);
 
@@ -60,7 +60,7 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
-    public void createAndAuthenticateUser_ShouldReturnAuthenticatedUser() throws Exception {
+    void createAndAuthenticateUser_ShouldReturnAuthenticatedUser() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
         assertNotNull(authenticatedUser);
@@ -70,7 +70,7 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
-    public void deleteUser_ShouldDeleteUserAndReturnNoContent() throws Exception {
+    void deleteUser_ShouldDeleteUserAndReturnNoContent() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
         AuthenticatedUser authenticatedUser2 = testAuthenticationHelper.createAndAuthenticateUser();
 
@@ -86,7 +86,7 @@ public class UserControllerTest extends BaseTest {
     }
 
     @Test
-    public void updateUser_ShouldUpdateUserAndReturnUpdatedInfo() throws Exception {
+    void updateUser_ShouldUpdateUserAndReturnUpdatedInfo() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
         AuthenticatedUser authenticatedUser2 = testAuthenticationHelper.createAndAuthenticateUser();
 

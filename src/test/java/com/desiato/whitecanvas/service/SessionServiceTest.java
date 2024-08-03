@@ -5,6 +5,7 @@ import com.desiato.whitecanvas.dto.AuthenticatedUser;
 import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.model.Session;
 import com.desiato.whitecanvas.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -13,11 +14,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionServiceTest extends BaseTest {
 
-    @Test
-    void createSession_ShouldReturnCreatedSession() throws Exception {
+    private User createdAndPersistedUser;
 
-        User existingUser = testAuthenticationHelper.createAndPersistUser();
-        Session createdSession = sessionService.createSession(existingUser);
+    @BeforeEach
+    void setup() throws Exception {
+        createdAndPersistedUser = testAuthenticationHelper.createAndPersistUser();
+    }
+
+    @Test
+    void createSession_ShouldReturnCreatedSession() {
+
+        Session createdSession = sessionService.createSession(createdAndPersistedUser);
 
         assertNotNull(createdSession, "Session is not be null");
         assertNotNull(createdSession.getId(), "Session ID should be set after saving");

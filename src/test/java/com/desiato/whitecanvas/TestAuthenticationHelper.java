@@ -5,11 +5,9 @@ import com.desiato.whitecanvas.dto.AuthenticationRequestDto;
 import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.model.*;
 import com.desiato.whitecanvas.repository.CartItemRepository;
-import com.desiato.whitecanvas.repository.UserRepository;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import com.desiato.whitecanvas.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +25,6 @@ public class TestAuthenticationHelper {
     public AuthenticatedUser createAndAuthenticateUser() throws Exception {
         String email = generateUniqueEmail();
         String rawPassword = "password123"; // Raw password
-        String encodedPassword = passwordEncoder.encode(rawPassword);
 
         // Create user with raw password, which will be encoded inside createUser
         User existingUser = userService.createUser(email, rawPassword);
