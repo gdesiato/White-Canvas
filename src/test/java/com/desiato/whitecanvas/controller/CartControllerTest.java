@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CartControllerTest extends BaseTest {
+class CartControllerTest extends BaseTest {
 
     private AuthenticatedUser authenticatedUser;
     private Cart testCart;
@@ -25,7 +25,7 @@ public class CartControllerTest extends BaseTest {
     }
 
     @Test
-    public void GetCartByUserId_ShouldReturnCartId() throws Exception {
+    void GetCartByUserId_ShouldReturnCartId() throws Exception {
         Long userId = authenticatedUser.user().getId();
 
         mockMvc.perform(get("/api/cart/user/{userId}", userId)
@@ -35,7 +35,7 @@ public class CartControllerTest extends BaseTest {
     }
 
     @Test
-    public void addToCart_ShouldVerifyTheAddedItemsInTheCart() throws Exception {
+    void addToCart_ShouldVerifyTheAddedItemsInTheCart() throws Exception {
         Long userId = authenticatedUser.user().getId();
         String consultancyName = ConsultancyProduct.COLOR_ANALYSIS.getServiceName();
         Integer quantity = 2;
@@ -63,7 +63,7 @@ public class CartControllerTest extends BaseTest {
     }
 
     @Test
-    public void testEmptyCart() throws Exception {
+    void testEmptyCart() throws Exception {
         Long userId = authenticatedUser.user().getId();
 
         // Add an item to the cart first

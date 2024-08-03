@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class ConsultancyControllerTest extends BaseTest {
+class ConsultancyControllerTest extends BaseTest {
 
     private String authToken;
 
@@ -23,7 +23,7 @@ public class ConsultancyControllerTest extends BaseTest {
     }
 
     @Test
-    public void getAllConsultancyServices_ShouldReturnListOfServices() throws Exception {
+    void getAllConsultancyServices_ShouldReturnListOfServices() throws Exception {
         ConsultancyProductDTO[] expectedServices = {
                 new ConsultancyProductDTO("Color Analysis", new BigDecimal("150.00")),
                 new ConsultancyProductDTO("Body Shape", new BigDecimal("100.00")),

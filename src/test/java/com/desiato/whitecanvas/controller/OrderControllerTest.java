@@ -25,18 +25,16 @@ class OrderControllerTest extends BaseTest {
 
     private Order testOrder;
     private AuthenticatedUser authenticatedUser;
-    private CartItem cartItem1;
-    private CartItem cartItem2;
 
     @BeforeEach
     public void setUp() throws Exception {
         authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
         // Create CartItems
-        cartItem1 = testAuthenticationHelper.createCartItem(
+        CartItem cartItem1 = testAuthenticationHelper.createCartItem(
                 authenticatedUser.user().getCart(),
                 ConsultancyProduct.COLOR_ANALYSIS, 1);
-        cartItem2 = testAuthenticationHelper.createCartItem(
+        CartItem cartItem2 = testAuthenticationHelper.createCartItem(
                 authenticatedUser.user().getCart(),
                 ConsultancyProduct.BODY_SHAPE, 2);
 
@@ -73,7 +71,7 @@ class OrderControllerTest extends BaseTest {
     }
 
     @Test
-    public void showOrderConfirmation_ShouldReturnOrder() throws Exception {
+    void showOrderConfirmation_ShouldReturnOrder() throws Exception {
         mockMvc.perform(get("/api/order/order-confirmation")
                         .header("authToken", authenticatedUser.userToken().value())
                         .param("orderId", testOrder.getId().toString())
@@ -94,7 +92,7 @@ class OrderControllerTest extends BaseTest {
     }
 
     @Test
-    public void showOrderConfirmation_OrderNotFound_ShouldReturn404() throws Exception {
+    void showOrderConfirmation_OrderNotFound_ShouldReturn404() throws Exception {
         mockMvc.perform(get("/api/order/order-confirmation")
                         .header("authToken", authenticatedUser.userToken().value())
                         .param("orderId", "9999")  // not existing ID
