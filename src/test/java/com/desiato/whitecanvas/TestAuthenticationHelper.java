@@ -16,6 +16,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class TestAuthenticationHelper {
+
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
