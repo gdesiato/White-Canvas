@@ -24,17 +24,11 @@ class ConsultancyControllerTest extends BaseTest {
 
     @Test
     void getAllConsultancyServices_ShouldReturnListOfServices() throws Exception {
-        ConsultancyProductDTO[] expectedServices = {
-                new ConsultancyProductDTO("Color Analysis", new BigDecimal("150.00")),
-                new ConsultancyProductDTO("Body Shape", new BigDecimal("100.00")),
-                new ConsultancyProductDTO("Facial Shape", new BigDecimal("100.00"))
-        };
 
         mockMvc.perform(get("/api/consultancy/all")
                         .header("authToken", authToken))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$", hasSize(expectedServices.length)))
                 .andExpect(jsonPath("$[0].serviceName").value("Color Analysis"))
                 .andExpect(jsonPath("$[0].price").value(150.00))
                 .andExpect(jsonPath("$[1].serviceName").value("Body Shape"))

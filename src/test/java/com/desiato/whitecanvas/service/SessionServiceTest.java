@@ -1,6 +1,7 @@
 package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.BaseTest;
+import com.desiato.whitecanvas.TestAuthenticationHelper;
 import com.desiato.whitecanvas.dto.AuthenticatedUser;
 import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.model.Session;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionServiceTest extends BaseTest {
 
-    private User createdAndPersistedUser;
+    private  User createdAndPersistedUser;
 
     @BeforeEach
     void setup() throws Exception {
