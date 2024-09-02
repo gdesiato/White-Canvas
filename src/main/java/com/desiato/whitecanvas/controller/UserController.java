@@ -100,7 +100,10 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User updated successfully",
                     content = @Content(schema = @Schema(implementation = UserDTO.class),
-                            examples = @ExampleObject(value = "{ \"id\": 1, \"email\": \"updateduser@example.com\" }"))),
+                            examples = @ExampleObject(value = "{ " +
+                                    "\"id\": 1, " +
+                                    "\"email\": \"updateduser@example.com\" " +
+                                    "}"))),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody User user) {

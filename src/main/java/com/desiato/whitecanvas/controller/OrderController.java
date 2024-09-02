@@ -23,11 +23,18 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @GetMapping("/order-confirmation")
-    @Operation(summary = "Show order confirmation", description = "Retrieves the order confirmation details for the specified order ID")
+    @Operation(summary = "Show order confirmation",
+            description = "Retrieves the order confirmation details for the specified order ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved order confirmation",
+            @ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved order confirmation",
                     content = @Content(schema = @Schema(implementation = OrderDTO.class),
-                            examples = @ExampleObject(value = "{ \"orderId\": 1, \"status\": \"CONFIRMED\", \"total\": 100.0 }"))),
+                            examples = @ExampleObject(value = "{ " +
+                                    "\"orderId\": 1, " +
+                                    "\"status\": " +
+                                    "\"CONFIRMED\", " +
+                                    "\"total\": 100.0 " +
+                                    "}"))),
             @ApiResponse(responseCode = "404", description = "Order not found")
     })
     public ResponseEntity<OrderDTO> showOrderConfirmation(@RequestParam("orderId") Long orderId) {

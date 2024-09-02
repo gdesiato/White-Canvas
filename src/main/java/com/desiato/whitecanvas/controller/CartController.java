@@ -26,7 +26,8 @@ public class CartController {
     private final UserService userService;
 
     @GetMapping("/user/{userId}")
-    @Operation(summary = "Get cart by user ID", description = "Retrieves the cart associated with the specified user ID")
+    @Operation(summary = "Get cart by user ID",
+            description = "Retrieves the cart associated with the specified user ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved cart",
                     content = @Content(schema = @Schema(implementation = Cart.class),
@@ -43,7 +44,11 @@ public class CartController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully added item to cart",
                     content = @Content(schema = @Schema(implementation = Cart.class),
-                            examples = @ExampleObject(value = "{ \"userId\": 1, \"items\": [{ \"name\": \"Body Shape\", \"quantity\": 2 }] }"))),
+                            examples = @ExampleObject(value = "{ " +
+                                    "\"userId\": 1, " +
+                                    "\"items\": [{ \"name\": \"Body Shape\", " +
+                                    "\"quantity\": 2 }] " +
+                                    "}"))),
             @ApiResponse(responseCode = "400", description = "Invalid input, item not added"),
             @ApiResponse(responseCode = "404", description = "User or Cart not found")
     })
