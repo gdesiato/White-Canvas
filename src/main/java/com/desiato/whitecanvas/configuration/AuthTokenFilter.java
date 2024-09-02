@@ -49,7 +49,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try {
             UserToken userToken = new UserToken(tokenValue);
             var authenticationDetails = authenticationService.createUserDetails(userToken)
-                    .map(userDetails -> new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
+                    .map(userDetails -> new UsernamePasswordAuthenticationToken(userDetails,
+                                    null,
+                                    userDetails.getAuthorities()));
             if (authenticationDetails.isPresent()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticationDetails.get());
                 filterChain.doFilter(request, response);
