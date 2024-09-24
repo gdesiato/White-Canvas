@@ -36,5 +36,4 @@ public class Order {
                 ", totalAmount=" + totalAmount +
                 '}';
     }
-
 }

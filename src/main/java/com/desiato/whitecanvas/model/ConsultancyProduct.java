@@ -1,8 +1,5 @@
 package com.desiato.whitecanvas.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Getter;
 
 import java.math.BigDecimal;

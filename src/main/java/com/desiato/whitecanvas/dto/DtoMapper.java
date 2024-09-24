@@ -26,9 +26,9 @@ public class DtoMapper {
     public OrderItemDTO toOrderItemDTO(OrderItem orderItem) {
         return new OrderItemDTO(
                 orderItem.getId(),
-                orderItem.getService().getServiceName(),
+                orderItem.getService(),
                 orderItem.getCartItem().getQuantity(),
-                orderItem.getService().getPrice()
+                orderItem.getOrder()
         );
     }
 
@@ -53,5 +53,13 @@ public class DtoMapper {
                 orderResponseDTOList,
                 cartResponseDTO
         );
+    }
+
+    public OrderItem toOrderItem(OrderItemDTO dto) {
+        OrderItem item = new OrderItem();
+        item.setId(dto.id());
+        item.setService(dto.service());
+        item.setOrder(dto.order());
+        return item;
     }
 }
