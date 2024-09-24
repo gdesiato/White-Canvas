@@ -22,17 +22,6 @@ import java.util.stream.Collectors;
 public class ConsultancyController {
 
     @GetMapping("/all")
-    @Operation(summary = "Get all consultancy services",
-            description = "Retrieves a list of all available consultancy services")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of consultancy services",
-                    content = @Content(schema = @Schema(implementation = ConsultancyProductDTO.class),
-                            examples = @ExampleObject(value = "[{ " +
-                                    "\"serviceName\": \"Consulting Service A\", " +
-                                    "\"price\": 100.0 }, " +
-                                    "{ \"serviceName\": \"Consulting Service B\", " +
-                                    "\"price\": 200.0 }]")))
-    })
     public ResponseEntity<List<ConsultancyProductDTO>> getAllConsultancyServices() {
         List<ConsultancyProductDTO> productsDTO = Arrays.stream(ConsultancyProduct.values())
                 .map(service -> new ConsultancyProductDTO(service.getServiceName(), service.getPrice()))
@@ -41,15 +30,6 @@ public class ConsultancyController {
     }
 
     @GetMapping("/{name}")
-    @Operation(summary = "Get consultancy service by name",
-            description = "Retrieves the consultancy service details for the specified name")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved consultancy service",
-                    content = @Content(schema = @Schema(implementation = ConsultancyProduct.class),
-                            examples = @ExampleObject(value = "{ \"serviceName\": \"Consulting Service A\", " +
-                                    "\"price\": 100.0 }"))),
-            @ApiResponse(responseCode = "404", description = "Consultancy service not found")
-    })
     public ResponseEntity<ConsultancyProduct> getConsultancyService(@PathVariable String name) {
         try {
             ConsultancyProduct consultancyProduct = ConsultancyProduct.valueOf(name.toUpperCase());

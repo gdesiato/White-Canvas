@@ -26,32 +26,12 @@ public class CartController {
     private final UserService userService;
 
     @GetMapping("/user/{userId}")
-    @Operation(summary = "Get cart by user ID",
-            description = "Retrieves the cart associated with the specified user ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved cart",
-                    content = @Content(schema = @Schema(implementation = Cart.class),
-                            examples = @ExampleObject(value = "{ \"userId\": 1, \"items\": [] }"))),
-            @ApiResponse(responseCode = "404", description = "User or Cart not found")
-    })
     public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
         Cart cart = cartService.getCartByUserId(userId);
         return ResponseEntity.ok(cart);
     }
 
     @PostMapping("/{userId}/addToCart")
-    @Operation(summary = "Add item to cart", description = "Adds an item to the cart for the specified user ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully added item to cart",
-                    content = @Content(schema = @Schema(implementation = Cart.class),
-                            examples = @ExampleObject(value = "{ " +
-                                    "\"userId\": 1, " +
-                                    "\"items\": [{ \"name\": \"Body Shape\", " +
-                                    "\"quantity\": 2 }] " +
-                                    "}"))),
-            @ApiResponse(responseCode = "400", description = "Invalid input, item not added"),
-            @ApiResponse(responseCode = "404", description = "User or Cart not found")
-    })
     public ResponseEntity<Cart> addToCart(@PathVariable Long userId,
                                           @RequestParam("consultancyName") String consultancyName,
                                           @RequestParam("quantity") Integer quantity) {
@@ -78,12 +58,6 @@ public class CartController {
     }
 
     @DeleteMapping("/{userId}/emptyCart")
-    @Operation(summary = "Empty the cart", description = "Empties the cart for the specified user ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully emptied the cart"),
-            @ApiResponse(responseCode = "404", description = "User or Cart not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
     public ResponseEntity<Void> emptyCart(@PathVariable Long userId) {
         Optional<User> userOptional = userService.getUser(userId);
         if (!userOptional.isPresent()) {

@@ -28,20 +28,11 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping
-    @Operation(summary = "Get user message", description = "Returns a message from the UserController")
     public ResponseEntity<String> getUserMessage() {
         return ResponseEntity.ok("Hello, this is a message from the UserController!");
     }
 
     @PostMapping
-    @Operation(summary = "Create a new user", description = "Creates a new user with the provided details")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User created successfully",
-                    content = @Content(schema = @Schema(implementation = UserDTO.class),
-                            examples = @ExampleObject(value = "{ \"id\": 1, \"email\": \"user@example.com\" }"))),
-            @ApiResponse(responseCode = "400", description = "Invalid input, password cannot be null or empty"),
-            @ApiResponse(responseCode = "409", description = "User already exists")
-    })
     public ResponseEntity<Object> createUser(@RequestBody User newUser) throws Exception {
         if (newUser.getPassword() == null || newUser.getPassword().isEmpty()) {
             return ResponseEntity
@@ -61,13 +52,6 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get user by ID", description = "Returns a user based on their ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User found",
-                    content = @Content(schema = @Schema(implementation = UserDTO.class),
-                            examples = @ExampleObject(value = "{ \"id\": 1, \"email\": \"user@example.com\" }"))),
-            @ApiResponse(responseCode = "404", description = "User not found")
-    })
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(user -> new ResponseEntity<>(new UserDTO(user.getId(), user.getEmail()), HttpStatus.OK))
@@ -75,9 +59,6 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    @Operation(summary = "Get all users", description = "Returns a list of all users")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
-            content = @Content(schema = @Schema(implementation = UserDTO.class)))
     public List<UserDTO> getUsers() {
         return userService.getAllUsers().stream()
                 .map(user -> new UserDTO(user.getId(), user.getEmail()))
@@ -85,27 +66,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete user by ID", description = "Deletes a user based on their ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "User deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found")
-    })
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/update/{id}")
-    @Operation(summary = "Update user", description = "Updates an existing user with the provided details")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User updated successfully",
-                    content = @Content(schema = @Schema(implementation = UserDTO.class),
-                            examples = @ExampleObject(value = "{ " +
-                                    "\"id\": 1, " +
-                                    "\"email\": \"updateduser@example.com\" " +
-                                    "}"))),
-            @ApiResponse(responseCode = "404", description = "User not found")
-    })
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody User user) {
         user.setId(id);
         User updatedUser = userService.updateUser(user);
