@@ -1,4 +1,6 @@
 package com.desiato.whitecanvas.dto;
 
-public record UserResponseDto(Long id, String email) {
+import java.util.List;
+
+public record UserResponseDto(Long id, String email, List<OrderResponseDTO> orders, CartResponseDTO cart) {
 }

@@ -1,10 +1,9 @@
 package com.desiato.whitecanvas;
 
-import com.desiato.whitecanvas.dto.AuthenticatedUser;
-import com.desiato.whitecanvas.dto.AuthenticationRequestDto;
-import com.desiato.whitecanvas.dto.UserToken;
+import com.desiato.whitecanvas.dto.*;
 import com.desiato.whitecanvas.model.*;
 import com.desiato.whitecanvas.repository.CartItemRepository;
+import com.desiato.whitecanvas.repository.UserRepository;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import com.desiato.whitecanvas.service.UserService;
 import lombok.AllArgsConstructor;

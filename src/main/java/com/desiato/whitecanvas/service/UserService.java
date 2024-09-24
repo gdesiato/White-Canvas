@@ -1,5 +1,7 @@
 package com.desiato.whitecanvas.service;
 
+import com.desiato.whitecanvas.dto.UserRequestDto;
+import com.desiato.whitecanvas.exception.UserAlreadyExistsException;
 import com.desiato.whitecanvas.exception.UserNotFoundException;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.User;
@@ -23,10 +25,10 @@ public class UserService {
 
 
     @Transactional
-    public User createUser(String email, String password) throws Exception {
+    public User createUser(String email, String password) {
 
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new Exception("User already exists");
+            throw new UserAlreadyExistsException("User already exists");
         }
 
         String encodedPassword = passwordEncoder.encode(password);
@@ -77,16 +79,15 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId())
+    public User updateUser(Long id, UserRequestDto userRequestDto) {
+        User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        if (user.getEmail() != null) {
-            existingUser.setEmail(user.getEmail());
+        if (userRequestDto.email() != null) {
+            existingUser.setEmail(userRequestDto.email());
         }
-        if (user.getPassword() != null && !passwordEncoder.matches(
-                user.getPassword(), existingUser.getPassword())) {
-            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (userRequestDto.password() != null && !userRequestDto.password().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(userRequestDto.password()));
         }
 
         return userRepository.save(existingUser);

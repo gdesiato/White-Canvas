@@ -1,11 +1,9 @@
 package com.desiato.whitecanvas.service;
 
-import com.desiato.whitecanvas.dto.OrderDTO;
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.repository.*;
 import com.desiato.whitecanvas.model.OrderItem;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
