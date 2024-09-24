@@ -47,7 +47,8 @@ public class OrderService {
                 .map(existingOrder -> {
                     User user = userRepository.findById(orderRequestDto.userId())
                             .orElseThrow(() ->
-                                    new UserNotFoundException("User with id: " + orderRequestDto.userId() + " not found"));
+                                    new UserNotFoundException("User with id: " + 
+                                            orderRequestDto.userId() + " not found"));
                     existingOrder.setUser(user);
                     List<OrderItem> orderItems = orderRequestDto.items().stream()
                             .map(dtoMapper::toOrderItem)
