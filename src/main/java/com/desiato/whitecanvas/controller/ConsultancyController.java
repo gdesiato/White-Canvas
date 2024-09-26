@@ -2,31 +2,28 @@ package com.desiato.whitecanvas.controller;
 
 import com.desiato.whitecanvas.dto.ConsultancyProductDTO;
 import com.desiato.whitecanvas.model.ConsultancyProduct;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/consultancy")
 public class ConsultancyController {
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<ConsultancyProductDTO>> getAllConsultancyServices() {
         List<ConsultancyProductDTO> productsDTO = Arrays.stream(ConsultancyProduct.values())
-                .map(service -> new ConsultancyProductDTO(service.getServiceName(), service.getPrice()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(productsDTO);
+                .map(consultancyProduct ->
+                        new ConsultancyProductDTO(
+                                consultancyProduct.getServiceName(),
+                                consultancyProduct.getPrice()))
+                .toList();
+        return new ResponseEntity<>(productsDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{name}")
