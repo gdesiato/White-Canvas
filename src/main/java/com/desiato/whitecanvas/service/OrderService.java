@@ -1,10 +1,7 @@
 package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.mapper.OrderMapper;
-import com.desiato.whitecanvas.mapper.UserMapper;
 import com.desiato.whitecanvas.dto.OrderRequestDTO;
-import com.desiato.whitecanvas.exception.OrderNotFoundException;
-import com.desiato.whitecanvas.exception.UserNotFoundException;
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.*;

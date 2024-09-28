@@ -5,6 +5,8 @@ import com.desiato.whitecanvas.dto.OrderRequestDTO;
 import com.desiato.whitecanvas.dto.OrderResponseDTO;
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.service.OrderService;
+import com.desiato.whitecanvas.validator.OrderRequestValidator;
+import com.desiato.whitecanvas.validator.UserRequestValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderRequestValidator validator;
     private final OrderMapper orderMapper;
 
     @GetMapping
@@ -41,6 +44,8 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> updateOrder(
             @PathVariable Long id,
             @RequestBody OrderRequestDTO orderRequestDTO) {
+
+        validator.validateOrderRequestDto(orderRequestDTO);
 
         Order order = orderService.updateOrder(id, orderRequestDTO);
         return new ResponseEntity<>(orderMapper.toOrderResponseDTO(order), HttpStatus.OK);

@@ -1,5 +1,6 @@
 package com.desiato.whitecanvas.validator;
 
+import com.desiato.whitecanvas.dto.OrderRequestDTO;
 import com.desiato.whitecanvas.dto.UserRequestDto;
 import com.desiato.whitecanvas.exception.ValidationException;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Validator {
+public class UserRequestValidator {
 
     public void validateUserRequestDto(UserRequestDto userRequestDto) {
         List<String> errorMessages = new ArrayList<>();
