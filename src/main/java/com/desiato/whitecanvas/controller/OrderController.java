@@ -1,6 +1,6 @@
 package com.desiato.whitecanvas.controller;
 
-import com.desiato.whitecanvas.dto.DtoMapper;
+import com.desiato.whitecanvas.mapper.OrderMapper;
 import com.desiato.whitecanvas.dto.OrderRequestDTO;
 import com.desiato.whitecanvas.dto.OrderResponseDTO;
 import com.desiato.whitecanvas.model.Order;
@@ -18,14 +18,14 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final DtoMapper dtoMapper;
+    private final OrderMapper orderMapper;
 
     @GetMapping
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
         List<OrderResponseDTO> orderResponseDTOList = orders
                 .stream()
-                .map(order -> dtoMapper.toOrderResponseDTO(order))
+                .map(orderMapper::toOrderResponseDTO)
                 .toList();
         return new ResponseEntity<>(orderResponseDTOList, HttpStatus.OK);
     }
@@ -33,7 +33,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
         Order order = orderService.getOrderById(id);
-        OrderResponseDTO orderDTO = dtoMapper.toOrderResponseDTO(order);
+        OrderResponseDTO orderDTO = orderMapper.toOrderResponseDTO(order);
         return ResponseEntity.ok(orderDTO);
     }
 
@@ -43,7 +43,7 @@ public class OrderController {
             @RequestBody OrderRequestDTO orderRequestDTO) {
 
         Order order = orderService.updateOrder(id, orderRequestDTO);
-        return new ResponseEntity<>(dtoMapper.toOrderResponseDTO(order), HttpStatus.OK);
+        return new ResponseEntity<>(orderMapper.toOrderResponseDTO(order), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

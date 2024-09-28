@@ -1,6 +1,6 @@
 package com.desiato.whitecanvas.controller;
 
-import com.desiato.whitecanvas.dto.DtoMapper;
+import com.desiato.whitecanvas.mapper.UserMapper;
 import com.desiato.whitecanvas.dto.UserRequestDto;
 import com.desiato.whitecanvas.dto.UserResponseDto;
 import com.desiato.whitecanvas.model.User;
@@ -20,7 +20,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final DtoMapper dtoMapper;
+    private final UserMapper dtoMapper;
 
     @PostMapping
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) throws Exception {

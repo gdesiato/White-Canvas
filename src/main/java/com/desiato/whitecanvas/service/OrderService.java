@@ -1,6 +1,7 @@
 package com.desiato.whitecanvas.service;
 
-import com.desiato.whitecanvas.dto.DtoMapper;
+import com.desiato.whitecanvas.mapper.OrderMapper;
+import com.desiato.whitecanvas.mapper.UserMapper;
 import com.desiato.whitecanvas.dto.OrderRequestDTO;
 import com.desiato.whitecanvas.exception.OrderNotFoundException;
 import com.desiato.whitecanvas.exception.UserNotFoundException;
@@ -20,7 +21,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-    private final DtoMapper dtoMapper;
+    private final OrderMapper orderMapper;
 
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
@@ -51,7 +52,7 @@ public class OrderService {
                                             orderRequestDto.userId() + " not found"));
                     existingOrder.setUser(user);
                     List<OrderItem> orderItems = orderRequestDto.items().stream()
-                            .map(dtoMapper::toOrderItem)
+                            .map(orderMapper::toOrderItem)
                             .toList();
                     existingOrder.setItems(orderItems);
 
