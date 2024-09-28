@@ -4,18 +4,10 @@ import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.service.UserService;
 import com.desiato.whitecanvas.service.CartService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -39,12 +31,7 @@ public class CartController {
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<User> userOptional = userService.getUser(userId);
-        if (!userOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        User user = userOptional.get();
+        User user = userService.getUserById(userId);
         Cart cart = user.getCart();
         if (cart == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -59,12 +46,7 @@ public class CartController {
 
     @DeleteMapping("/{userId}/emptyCart")
     public ResponseEntity<Void> emptyCart(@PathVariable Long userId) {
-        Optional<User> userOptional = userService.getUser(userId);
-        if (!userOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        User user = userOptional.get();
+        User user = userService.getUserById(userId);
         Cart cart = user.getCart();
         if (cart == null) {
             return ResponseEntity.notFound().build();

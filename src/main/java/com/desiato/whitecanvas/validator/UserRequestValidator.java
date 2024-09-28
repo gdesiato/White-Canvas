@@ -1,6 +1,5 @@
 package com.desiato.whitecanvas.validator;
 
-import com.desiato.whitecanvas.dto.OrderRequestDTO;
 import com.desiato.whitecanvas.dto.UserRequestDto;
 import com.desiato.whitecanvas.exception.ValidationException;
 import org.springframework.stereotype.Component;
