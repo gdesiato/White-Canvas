@@ -20,8 +20,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CartService cartService;
-    private final SessionService sessionService;
-
 
     @Transactional
     public User createUser(String email, String password) {
@@ -58,7 +56,6 @@ public class UserService {
         if (!userRepository.existsById(id)) {
             throw new EntityNotFoundException("User not found with ID: " + id);
         }
-        sessionService.deleteUserSessions(id);
         userRepository.deleteById(id);
     }
 

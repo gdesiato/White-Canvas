@@ -1,0 +1,5 @@
+ALTER TABLE cart ADD COLUMN user_id BIGINT;
+
+ALTER TABLE cart ADD CONSTRAINT fk_cart_user
+FOREIGN KEY (user_id)
+REFERENCES user(id);

@@ -6,7 +6,6 @@ import com.desiato.whitecanvas.dto.OrderResponseDTO;
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.service.OrderService;
 import com.desiato.whitecanvas.validator.OrderRequestValidator;
-import com.desiato.whitecanvas.validator.UserRequestValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

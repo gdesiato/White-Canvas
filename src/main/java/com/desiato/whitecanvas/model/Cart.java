@@ -2,6 +2,8 @@ package com.desiato.whitecanvas.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,6 +23,11 @@ public class Cart {
 
     private BigDecimal totalPrice;
 
+    @OneToOne(mappedBy = "cart")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private User user;
+
     public void addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
         cartItem.setCart(this);  // Set the bidirectional relationship
@@ -29,7 +36,7 @@ public class Cart {
 
     public void removeCartItem(CartItem cartItem) {
         cartItems.remove(cartItem);
-        cartItem.setCart(null);  // Break the bidirectional relationship
+        cartItem.setCart(null);
         updateTotalPrice();
     }
 

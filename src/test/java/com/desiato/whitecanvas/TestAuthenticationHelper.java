@@ -3,7 +3,6 @@ package com.desiato.whitecanvas;
 import com.desiato.whitecanvas.dto.*;
 import com.desiato.whitecanvas.model.*;
 import com.desiato.whitecanvas.repository.CartItemRepository;
-import com.desiato.whitecanvas.repository.UserRepository;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import com.desiato.whitecanvas.service.UserService;
 import lombok.AllArgsConstructor;
@@ -21,22 +20,20 @@ public class TestAuthenticationHelper {
     private final PasswordEncoder passwordEncoder;
     private final CartItemRepository cartItemRepository;
 
-
-    public AuthenticatedUser createAndAuthenticateUser() throws Exception {
+    public AuthenticatedUser createAndAuthenticateUser() {
         String email = generateUniqueEmail();
-        String rawPassword = "password123"; // Raw password
+        String rawPassword = "password123";
 
-        // Create user with raw password, which will be encoded inside createUser
-        User existingUser = userService.createUser(email, rawPassword);
+        User newUser = userService.createUser(email, rawPassword);
 
-        // Authenticate user with raw password
         AuthenticationRequestDto request = new AuthenticationRequestDto(email, rawPassword);
-        UserToken userToken = authenticationService.authenticate(request);
 
-        return new AuthenticatedUser(existingUser, userToken);
+        String userToken = authenticationService.authenticateAndGenerateToken(request);
+
+        return new AuthenticatedUser(newUser, new UserToken(userToken));
     }
 
-    public User createAndPersistUser() throws Exception {
+    public User createAndPersistUser() {
         String email = generateUniqueEmail();
         String password = "password123";
         String encodedPassword = passwordEncoder.encode(password);

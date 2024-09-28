@@ -2,7 +2,6 @@ package com.desiato.whitecanvas.controller;
 
 import com.desiato.whitecanvas.dto.AuthenticationRequestDto;
 import com.desiato.whitecanvas.dto.LoginResponseDTO;
-import com.desiato.whitecanvas.dto.UserToken;
 import com.desiato.whitecanvas.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +19,9 @@ public class LoginController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> authenticateUser(@RequestBody AuthenticationRequestDto requestDTO) {
-        UserToken userToken = authenticationService.authenticate(requestDTO);
-        return ResponseEntity.ok(new LoginResponseDTO(userToken.value(), "success"));
+        String token = authenticationService.authenticateAndGenerateToken(requestDTO);
+        return ResponseEntity.ok(new LoginResponseDTO(token, "success"));
     }
 }

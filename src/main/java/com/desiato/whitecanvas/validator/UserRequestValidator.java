@@ -13,14 +13,20 @@ public class UserRequestValidator {
     public void validateUserRequestDto(UserRequestDto userRequestDto) {
         List<String> errorMessages = new ArrayList<>();
 
-        if (userRequestDto.email() == null || userRequestDto.email().isBlank()) {
-            errorMessages.add("Email is required");
-        } else if (!userRequestDto.email().contains("@")) {
-            errorMessages.add("Invalid email format");
+        // Validate email if it's present
+        if (userRequestDto.email() != null) {
+            if (userRequestDto.email().isBlank()) {
+                errorMessages.add("Email cannot be blank");
+            } else if (!userRequestDto.email().contains("@")) {
+                errorMessages.add("Invalid email format");
+            }
         }
 
-        if (userRequestDto.password() == null || userRequestDto.password().isBlank()) {
-            errorMessages.add("Password is required");
+        // Validate password if it's present
+        if (userRequestDto.password() != null) {
+            if (userRequestDto.password().isBlank()) {
+                errorMessages.add("Password cannot be blank");
+            }
         }
 
         if (!errorMessages.isEmpty()) {

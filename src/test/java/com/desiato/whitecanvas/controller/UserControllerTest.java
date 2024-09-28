@@ -22,7 +22,7 @@ class UserControllerTest extends BaseTest {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
         mockMvc.perform(get("/api/user/" + authenticatedUser.user().getId())
-                        .header("authToken", authenticatedUser.userToken().value()))
+                        .header("Authorization", "Bearer " + authenticatedUser.userToken().value()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(authenticatedUser.user().getId()))
                 .andExpect(jsonPath("$.email").value(authenticatedUser.user().getEmail()));
@@ -32,8 +32,8 @@ class UserControllerTest extends BaseTest {
     void GetUsers_ShouldReturnListOfUsers() throws Exception {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
 
-        mockMvc.perform(get("/api/user/list")
-                        .header("authToken", authenticatedUser.userToken().value())
+        mockMvc.perform(get("/api/user")
+                        .header("Authorization", "Bearer " + authenticatedUser.userToken().value())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -53,7 +53,7 @@ class UserControllerTest extends BaseTest {
                 """, email, password);
 
         mockMvc.perform(post("/api/user")
-                        .header("authToken", authenticatedUser.userToken().value())
+                        .header("Authorization", "Bearer " + authenticatedUser.userToken().value())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
                 .andExpect(status().isCreated());
@@ -75,7 +75,7 @@ class UserControllerTest extends BaseTest {
         AuthenticatedUser authenticatedUser2 = testAuthenticationHelper.createAndAuthenticateUser();
 
         mockMvc.perform(delete("/api/user/" + authenticatedUser2.user().getId())
-                        .header("authToken", authenticatedUser.userToken().value()))
+                        .header("Authorization", "Bearer " + authenticatedUser.userToken().value()))
                 .andExpect(status().isNoContent());
 
         Optional<User> deletedUser = userRepository.findById(authenticatedUser2.user().getId());
@@ -99,7 +99,7 @@ class UserControllerTest extends BaseTest {
         """, email);
 
         mockMvc.perform(put("/api/user/update/{id}", authenticatedUser2.user().getId())
-                        .header("authToken", authenticatedUser.userToken().value())
+                        .header("Authorization", "Bearer " + authenticatedUser.userToken().value())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
                 .andExpect(status().isOk())

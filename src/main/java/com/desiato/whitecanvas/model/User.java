@@ -1,7 +1,5 @@
 package com.desiato.whitecanvas.model;
 
-import com.desiato.whitecanvas.dto.OrderResponseDTO;
-import com.desiato.whitecanvas.dto.UserResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
