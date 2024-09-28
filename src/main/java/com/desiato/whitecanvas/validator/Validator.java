@@ -1,13 +1,16 @@
 package com.desiato.whitecanvas.validator;
 
 import com.desiato.whitecanvas.dto.UserRequestDto;
+import com.desiato.whitecanvas.exception.ValidationException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class Validator {
 
-    public List<String> validateUserRequestDto(UserRequestDto userRequestDto) {
+    public void validateUserRequestDto(UserRequestDto userRequestDto) {
         List<String> errorMessages = new ArrayList<>();
 
         if (userRequestDto.email() == null || userRequestDto.email().isBlank()) {
@@ -20,6 +23,8 @@ public class Validator {
             errorMessages.add("Password is required");
         }
 
-        return errorMessages;
+        if (!errorMessages.isEmpty()) {
+            throw new ValidationException(errorMessages);
+        }
     }
 }

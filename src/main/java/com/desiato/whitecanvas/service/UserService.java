@@ -2,10 +2,10 @@ package com.desiato.whitecanvas.service;
 
 import com.desiato.whitecanvas.dto.UserRequestDto;
 import com.desiato.whitecanvas.exception.UserAlreadyExistsException;
-import com.desiato.whitecanvas.exception.UserNotFoundException;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,7 +56,7 @@ public class UserService {
     @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException("User not found with ID: " + id);
+            throw new EntityNotFoundException("User not found with ID: " + id);
         }
         sessionService.deleteUserSessions(id);
         userRepository.deleteById(id);
@@ -64,12 +64,12 @@ public class UserService {
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
     }
 
     public User updateUser(Long id, UserRequestDto userRequestDto) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         if (userRequestDto.email() != null) {
             existingUser.setEmail(userRequestDto.email());

@@ -9,6 +9,7 @@ import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.*;
 import com.desiato.whitecanvas.model.OrderItem;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class OrderService {
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new OrderNotFoundException("Order with id: " + orderId + " does not exist."));
+                        new EntityNotFoundException("Order with id: " + orderId + " does not exist."));
 
     }
 
@@ -40,7 +41,7 @@ public class OrderService {
         Optional<Order> order = orderRepository.findById(orderId);
         if(order.isPresent()) {
             orderRepository.deleteById(orderId);
-        } throw new OrderNotFoundException("Order with id: " + orderId + "was not found");
+        } throw new EntityNotFoundException("Order with id: " + orderId + "was not found");
     }
 
     public Order updateOrder(Long orderId, OrderRequestDTO orderRequestDto) {
@@ -48,7 +49,7 @@ public class OrderService {
                 .map(existingOrder -> {
                     User user = userRepository.findById(orderRequestDto.userId())
                             .orElseThrow(() ->
-                                    new UserNotFoundException("User with id: " +
+                                    new EntityNotFoundException("User with id: " +
                                             orderRequestDto.userId() + " not found"));
                     existingOrder.setUser(user);
                     List<OrderItem> orderItems = orderRequestDto.items().stream()
@@ -58,7 +59,7 @@ public class OrderService {
 
                     return orderRepository.save(existingOrder);
                 })
-                .orElseThrow(() -> new OrderNotFoundException("Order with id: " + orderId + " was not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Order with id: " + orderId + " was not found"));
     }
 }
 

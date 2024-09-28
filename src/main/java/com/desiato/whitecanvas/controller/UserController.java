@@ -5,6 +5,7 @@ import com.desiato.whitecanvas.dto.UserRequestDto;
 import com.desiato.whitecanvas.dto.UserResponseDto;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.service.UserService;
+import com.desiato.whitecanvas.validator.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final Validator validator;
     private final UserMapper dtoMapper;
 
     @PostMapping
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) throws Exception {
+        validator.validateUserRequestDto(userRequestDto);
         User createdUser = userService.createUser(userRequestDto.email(), userRequestDto.password());
         UserResponseDto userResponseDto = dtoMapper.toUserResponseDTO(createdUser);
         return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
