@@ -39,14 +39,9 @@ public class CartController {
         Cart cart = user.getCart();
 
         for (CartItemRequestDTO item : cartRequestDTO.items()) {
-            // Log the item details before checking
-            log.info("Processing item: Product = {}, Quantity = {}", item.consultancyProduct(), item.quantity());
-
             if (item.consultancyProduct() == null || item.quantity() <= 0) {
-                log.warn("Invalid product or quantity detected: Product = {}, Quantity = {}", item.consultancyProduct(), item.quantity());
                 throw new IllegalArgumentException("in the controller, Invalid product or quantity");
             }
-            // Assuming the price is validated or set in the service
             cartService.addToCart(cart, item);
         }
         Cart updatedCart = cartService.getCartById(cart.getId());

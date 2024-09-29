@@ -13,9 +13,9 @@ public class CartMapper {
     public CartResponseDTO toCartResponseDTO(Cart cart, Long userId) {
         List<CartItemResponseDTO> items = cart.getCartItems().stream()
                 .map(item -> new CartItemResponseDTO(
-                        item.getProduct(),   // ConsultancyProduct from the item
-                        item.getTotalPrice(),  // Total price calculated from the quantity and product price
-                        item.getQuantity())   // Quantity of the product
+                        item.getProduct(),
+                        item.getTotalPrice(),
+                        item.getQuantity())
                 )
                 .toList();
 
@@ -23,7 +23,7 @@ public class CartMapper {
                 cart.getId(),
                 userId,
                 items,
-                cart.getTotalPrice()  // This needs to be calculated in your Cart class, similar to CartItem's getTotalPrice
+                cart.getTotalPrice()
         );
     }
 }
