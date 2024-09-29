@@ -50,9 +50,9 @@ class OrderControllerTest extends BaseTest {
 
         testOrder.setOrderDate(LocalDateTime.now());
 
-        BigDecimal totalAmount = cartItem1.getService().getPrice()
+        BigDecimal totalAmount = cartItem1.getProduct().getPrice()
                 .multiply(BigDecimal.valueOf(cartItem1.getQuantity()))
-                .add(cartItem2.getService().getPrice()
+                .add(cartItem2.getProduct().getPrice()
                         .multiply(BigDecimal.valueOf(cartItem2.getQuantity())));
 
         testOrder.setTotalAmount(totalAmount);

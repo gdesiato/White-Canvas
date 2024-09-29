@@ -1,14 +1,20 @@
 package com.desiato.whitecanvas.controller;
 
+import com.desiato.whitecanvas.dto.CartItemRequestDTO;
+import com.desiato.whitecanvas.dto.CartItemResponseDTO;
+import com.desiato.whitecanvas.dto.CartRequestDTO;
+import com.desiato.whitecanvas.dto.CartResponseDTO;
+import com.desiato.whitecanvas.mapper.CartMapper;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.service.UserService;
 import com.desiato.whitecanvas.service.CartService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/cart")
@@ -16,32 +22,36 @@ public class CartController {
 
     private final CartService cartService;
     private final UserService userService;
+    private final CartMapper toDto;
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
+    public ResponseEntity<CartResponseDTO> getCartByUserId(@PathVariable Long userId) {
         Cart cart = cartService.getCartByUserId(userId);
-        return ResponseEntity.ok(cart);
+        CartResponseDTO cartResponseDTO = toDto.toCartResponseDTO(cart, userId);
+        return ResponseEntity.ok(cartResponseDTO);
     }
 
     @PostMapping("/{userId}/addToCart")
-    public ResponseEntity<Cart> addToCart(@PathVariable Long userId,
-                                          @RequestParam("consultancyName") String consultancyName,
-                                          @RequestParam("quantity") Integer quantity) {
-        if (quantity <= 0) {
-            return ResponseEntity.badRequest().build();
-        }
-
+    public ResponseEntity<CartResponseDTO> addToCart(
+            @PathVariable Long userId,
+            @RequestBody CartRequestDTO cartRequestDTO) {
         User user = userService.getUserById(userId);
         Cart cart = user.getCart();
-        if (cart == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        for (CartItemRequestDTO item : cartRequestDTO.items()) {
+            // Log the item details before checking
+            log.info("Processing item: Product = {}, Quantity = {}", item.consultancyProduct(), item.quantity());
+
+            if (item.consultancyProduct() == null || item.quantity() <= 0) {
+                log.warn("Invalid product or quantity detected: Product = {}, Quantity = {}", item.consultancyProduct(), item.quantity());
+                throw new IllegalArgumentException("in the controller, Invalid product or quantity");
+            }
+            // Assuming the price is validated or set in the service
+            cartService.addToCart(cart, item);
         }
-        try {
-            Cart updatedCart = cartService.addToCart(cart, consultancyName, quantity);
-            return ResponseEntity.ok(updatedCart);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        Cart updatedCart = cartService.getCartById(cart.getId());
+        CartResponseDTO response = toDto.toCartResponseDTO(updatedCart, userId);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{userId}/emptyCart")

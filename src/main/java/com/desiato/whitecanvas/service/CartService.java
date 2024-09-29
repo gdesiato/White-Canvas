@@ -1,5 +1,6 @@
 package com.desiato.whitecanvas.service;
 
+import com.desiato.whitecanvas.dto.CartItemRequestDTO;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.CartItem;
 import com.desiato.whitecanvas.model.ConsultancyProduct;
@@ -7,8 +8,10 @@ import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartItemRepository;
 import com.desiato.whitecanvas.repository.CartRepository;
 import com.desiato.whitecanvas.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class CartService {
@@ -24,30 +28,33 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
 
-    public Cart addToCart(Cart cart, String serviceName, Integer quantity) {
-        if (cart == null || serviceName == null || quantity == null || quantity <= 0) {
-            throw new IllegalArgumentException("Invalid cart, service name, or quantity");
+    @Transactional
+    public Cart addToCart(Cart cart, CartItemRequestDTO cartItemRequestDTO) {
+        log.info("Attempting to add to cart: product={}, quantity={}",
+                cartItemRequestDTO.consultancyProduct(), cartItemRequestDTO.quantity());
+
+        if (cart == null) {
+            throw new IllegalArgumentException("Invalid cart");
+        } else if (cartItemRequestDTO.consultancyProduct() == null) {
+            throw new IllegalArgumentException("Invalid product name");
+        } else if (cartItemRequestDTO.quantity() <= 0) {
+            throw new IllegalArgumentException("Invalid quantity");
         }
 
-        ConsultancyProduct service = ConsultancyProduct.fromServiceName(serviceName);
-
-        // Find existing cart item for the same service
         CartItem existingCartItem = cart.getCartItems().stream()
-                .filter(item -> item.getService().equals(service))
+                .filter(item -> item.getProduct().equals(cartItemRequestDTO.consultancyProduct()))
                 .findFirst()
                 .orElse(null);
 
         if (existingCartItem == null) {
-            // No existing cart item, create a new one
             CartItem newCartItem = new CartItem();
-            newCartItem.setService(service);
-            newCartItem.setQuantity(quantity);
+            newCartItem.setProduct(cartItemRequestDTO.consultancyProduct());
+            newCartItem.setQuantity(cartItemRequestDTO.quantity());
             newCartItem.setCart(cart);
-            cart.addCartItem(newCartItem);
+            cart.getCartItems().add(newCartItem);
             cartItemRepository.save(newCartItem);
         } else {
-            // Existing cart item found, increase quantity
-            existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + cartItemRequestDTO.quantity());
             cartItemRepository.save(existingCartItem);
         }
 
@@ -77,12 +84,16 @@ public class CartService {
     }
 
     public Cart getCartByUserId(Long userId) {
-        // Find the user by userId
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found"));
 
         // Return the user's cart
         return user.getCart();
+    }
+
+    public Cart getCartById(Long cartId) {
+        return cartRepository.findById(cartId)
+                .orElseThrow(() -> new EntityNotFoundException("Cart with ID: " + cartId + " not found"));
     }
 
     public Cart saveCart(Cart cart) {

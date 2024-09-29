@@ -20,7 +20,7 @@ public class CartItem {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ConsultancyProduct service;
+    private ConsultancyProduct product;
 
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
@@ -37,20 +37,20 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(ConsultancyProduct service, Integer quantity) {
-        this.service = service;
+    public CartItem(ConsultancyProduct product, Integer quantity) {
+        this.product = product;
         this.quantity = quantity;
     }
 
-    public CartItem(ConsultancyProduct service, Cart cart, User user, Integer quantity) {
-        this.service = service;
+    public CartItem(ConsultancyProduct product, Cart cart, User user, Integer quantity) {
+        this.product = product;
         this.cart = cart;
         this.user = user;
         this.quantity = quantity;
     }
 
     public BigDecimal getTotalPrice() {
-        return service.getPrice()
+        return product.getPrice()
                 .multiply(BigDecimal.valueOf(quantity))
                 .setScale(2, RoundingMode.HALF_UP);
 

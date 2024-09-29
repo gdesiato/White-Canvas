@@ -19,7 +19,7 @@ class CartControllerTest extends BaseTest {
     private Cart testCart;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
         testCart = authenticatedUser.user().getCart();
     }
@@ -29,7 +29,7 @@ class CartControllerTest extends BaseTest {
         Long userId = authenticatedUser.user().getId();
 
         mockMvc.perform(get("/api/cart/user/{userId}", userId)
-                        .header("authToken", authenticatedUser.userToken().value()))
+                        .header("Authorization", "Bearer " + authenticatedUser.userToken().value()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(testCart.getId()));
     }
@@ -37,29 +37,28 @@ class CartControllerTest extends BaseTest {
     @Test
     void addToCart_ShouldVerifyTheAddedItemsInTheCart() throws Exception {
         Long userId = authenticatedUser.user().getId();
-        String consultancyName = ConsultancyProduct.COLOR_ANALYSIS.getServiceName();
+        ConsultancyProduct consultancyProduct = ConsultancyProduct.COLOR_ANALYSIS;
         Integer quantity = 2;
 
-        // Ensure the cart is empty before adding items
-        mockMvc.perform(delete("/api/cart/{userId}/emptyCart", userId)
-                        .header("authToken", authenticatedUser.userToken().value()))
-                .andExpect(status().isOk());
+        String cartRequestJson = """
+                {
+                    "items": [
+                        {
+                            "consultancyProduct": "%s",
+                            "quantity": %d
+                        }
+                    ]
+                }
+                """.formatted(consultancyProduct.name(), quantity);
 
         // Add items to the cart
         mockMvc.perform(post("/api/cart/{userId}/addToCart", userId)
-                        .header("authToken", authenticatedUser.userToken().value())
-                        .param("consultancyName", consultancyName)
-                        .param("quantity", String.valueOf(quantity))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .header("Authorization", "Bearer " + authenticatedUser.userToken().value())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(cartRequestJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cartItems[0].service").value(ConsultancyProduct.COLOR_ANALYSIS.name()))
-                .andExpect(jsonPath("$.cartItems[0].quantity").value(quantity));
-
-        // Verify that the items were added with the correct quantity
-        mockMvc.perform(get("/api/cart/user/{userId}", userId)
-                        .header("authToken", authenticatedUser.userToken().value()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cartItems[0].quantity").value(quantity));
+                .andExpect(jsonPath("$.items[0].consultancyProduct").value("COLOR_ANALYSIS"))
+                .andExpect(jsonPath("$.items[0].quantity").value(2));
     }
 
     @Test

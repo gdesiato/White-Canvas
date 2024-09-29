@@ -44,7 +44,7 @@ public class TestAuthenticationHelper {
     public CartItem createCartItem(Cart cart, ConsultancyProduct service, int quantity) {
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
-        cartItem.setService(service);
+        cartItem.setProduct(service);
         cartItem.setQuantity(quantity);
         return cartItemRepository.save(cartItem);
     }
@@ -53,7 +53,7 @@ public class TestAuthenticationHelper {
         OrderItem orderItem = new OrderItem();
         orderItem.setOrder(order);
         orderItem.setCartItem(cartItem);
-        orderItem.setService(cartItem.getService());
+        orderItem.setService(cartItem.getProduct());
         return orderItem;
     }
 
