@@ -1,5 +1,6 @@
 package com.desiato.whitecanvas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +13,7 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Order order;
 
     @OneToOne

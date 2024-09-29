@@ -1,5 +1,6 @@
 package com.desiato.whitecanvas.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonManagedReference
     private List<Order> orders = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)

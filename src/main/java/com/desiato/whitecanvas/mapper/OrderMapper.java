@@ -4,10 +4,13 @@ import com.desiato.whitecanvas.dto.OrderItemDTO;
 import com.desiato.whitecanvas.dto.OrderResponseDTO;
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.model.OrderItem;
+import com.desiato.whitecanvas.service.OrderService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Component
 public class OrderMapper {
 
