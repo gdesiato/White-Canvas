@@ -5,7 +5,6 @@ import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -14,12 +13,11 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
 @Service
-public class AuthenticationService {
+public class TokenService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

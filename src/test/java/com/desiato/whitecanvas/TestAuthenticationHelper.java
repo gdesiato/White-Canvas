@@ -3,7 +3,7 @@ package com.desiato.whitecanvas;
 import com.desiato.whitecanvas.dto.*;
 import com.desiato.whitecanvas.model.*;
 import com.desiato.whitecanvas.repository.CartItemRepository;
-import com.desiato.whitecanvas.service.AuthenticationService;
+import com.desiato.whitecanvas.service.TokenService;
 import com.desiato.whitecanvas.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class TestAuthenticationHelper {
 
     private final UserService userService;
-    private final AuthenticationService authenticationService;
+    private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
     private final CartItemRepository cartItemRepository;
 
@@ -28,7 +28,7 @@ public class TestAuthenticationHelper {
 
         AuthenticationRequestDto request = new AuthenticationRequestDto(email, rawPassword);
 
-        String userToken = authenticationService.authenticateAndGenerateToken(request);
+        String userToken = tokenService.authenticateAndGenerateToken(request);
 
         return new AuthenticatedUser(newUser, new UserToken(userToken));
     }
