@@ -30,15 +30,9 @@ public class CartService {
 
     @Transactional
     public Cart addToCart(Cart cart, CartItemRequestDTO cartItemRequestDTO) {
-        log.info("Attempting to add to cart: product={}, quantity={}",
-                cartItemRequestDTO.consultancyProduct(), cartItemRequestDTO.quantity());
 
         if (cart == null) {
             throw new IllegalArgumentException("Invalid cart");
-        } else if (cartItemRequestDTO.consultancyProduct() == null) {
-            throw new IllegalArgumentException("Invalid product name");
-        } else if (cartItemRequestDTO.quantity() <= 0) {
-            throw new IllegalArgumentException("Invalid quantity");
         }
 
         CartItem existingCartItem = cart.getCartItems().stream()
