@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class TokenControllerTest extends BaseTest {
+class TokenControllerTest extends BaseTest {
 
     @Test
     void authenticateAndGenerateToken_ShouldReturnToken() throws Exception {

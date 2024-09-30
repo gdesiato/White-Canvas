@@ -1,7 +1,6 @@
 package com.desiato.whitecanvas.controller;
 
 import com.desiato.whitecanvas.dto.CartItemRequestDTO;
-import com.desiato.whitecanvas.dto.CartItemResponseDTO;
 import com.desiato.whitecanvas.dto.CartRequestDTO;
 import com.desiato.whitecanvas.dto.CartResponseDTO;
 import com.desiato.whitecanvas.mapper.CartMapper;

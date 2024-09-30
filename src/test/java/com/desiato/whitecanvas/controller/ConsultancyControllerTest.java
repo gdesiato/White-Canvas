@@ -17,7 +17,7 @@ class ConsultancyControllerTest extends BaseTest {
     private String authToken;
 
     @BeforeEach
-    void setup() throws Exception {
+    void setup() {
         AuthenticatedUser authenticatedUser = testAuthenticationHelper.createAndAuthenticateUser();
         authToken = authenticatedUser.userToken().value();
     }
@@ -25,8 +25,8 @@ class ConsultancyControllerTest extends BaseTest {
     @Test
     void getAllConsultancyServices_ShouldReturnListOfServices() throws Exception {
 
-        mockMvc.perform(get("/api/consultancy/all")
-                        .header("authToken", authToken))
+        mockMvc.perform(get("/api/consultancy")
+                        .header("Authorization", "Bearer " + authToken))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$[0].serviceName").value("Color Analysis"))
