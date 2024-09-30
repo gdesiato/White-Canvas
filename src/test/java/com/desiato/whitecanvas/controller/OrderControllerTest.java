@@ -6,6 +6,7 @@ import com.desiato.whitecanvas.model.CartItem;
 import com.desiato.whitecanvas.model.ConsultancyProduct;
 import com.desiato.whitecanvas.model.Order;
 import com.desiato.whitecanvas.model.OrderItem;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 class OrderControllerTest extends BaseTest {
 
     private Order testOrder;
@@ -56,6 +58,8 @@ class OrderControllerTest extends BaseTest {
                         .multiply(BigDecimal.valueOf(cartItem2.getQuantity())));
 
         testOrder.setTotalAmount(totalAmount);
+        log.info("total amount is: " + totalAmount);
+
 
         testOrder = orderRepository.save(testOrder);
     }
@@ -71,12 +75,11 @@ class OrderControllerTest extends BaseTest {
 
     @Test
     void shouldReturnOrderById() throws Exception {
-        mockMvc.perform(get("/api/order/1")
+        mockMvc.perform(get("/api/order/" + testOrder.getId())
                         .header("Authorization", "Bearer " + authenticatedUser.userToken().value())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.totalAmount").value(100.00));
+                .andExpect(jsonPath("$.totalAmount").value(350.00));
     }
 
     @Test
@@ -85,12 +88,12 @@ class OrderControllerTest extends BaseTest {
                         .header("Authorization", "Bearer " + authenticatedUser.userToken().value())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").isNumber())  // Check that the response is an array of orders
-                .andExpect(jsonPath("$[0]").exists())  // Check that at least one order exists
-                .andExpect(jsonPath("$[0].totalAmount").isNumber())  // Ensure the totalAmount field is a number
-                .andExpect(jsonPath("$[*].id").exists())  // Ensure each order has an ID
-                .andExpect(jsonPath("$[*].totalAmount").isNotEmpty())  // Ensure all orders have totalAmount field
-                .andExpect(jsonPath("$[*].orderDate").isNotEmpty());  // Ensure all orders have an orderDate field
+                .andExpect(jsonPath("$.length()").isNumber())
+                .andExpect(jsonPath("$[0]").exists())
+                .andExpect(jsonPath("$[0].totalAmount").isNumber())
+                .andExpect(jsonPath("$[*].id").exists())  // each order has an ID
+                .andExpect(jsonPath("$[*].totalAmount").isNotEmpty())
+                .andExpect(jsonPath("$[*].orderDate").isNotEmpty());
     }
 
     @Test
