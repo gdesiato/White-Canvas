@@ -37,7 +37,7 @@ public class CartController {
             @PathVariable Long userId,
             @RequestBody CartRequestDTO cartRequestDTO) {
 
-        validator.validateCartRequestDto(cartRequestDTO);
+        validator.validate(cartRequestDTO);
 
         User user = userService.getUserById(userId);
         Cart cart = user.getCart();

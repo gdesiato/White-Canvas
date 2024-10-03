@@ -44,7 +44,7 @@ public class OrderController {
             @PathVariable Long id,
             @RequestBody OrderRequestDTO orderRequestDTO) {
 
-        validator.validateOrderRequestDto(orderRequestDTO);
+        validator.validate(orderRequestDTO);
 
         Order order = orderService.updateOrder(id, orderRequestDTO);
         return new ResponseEntity<>(orderMapper.toOrderResponseDTO(order), HttpStatus.OK);

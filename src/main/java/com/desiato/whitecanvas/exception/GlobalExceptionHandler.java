@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,8 +25,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<List<String>> handleValidationException(ValidationException ex) {
-        return new ResponseEntity<>(ex.getErrorMessages(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Map<String, List<ErrorMessage>>> handleValidationException(ValidationException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("errors", ex.getErrorMessages()));
     }
 
     @ExceptionHandler(AuthenticationException.class)

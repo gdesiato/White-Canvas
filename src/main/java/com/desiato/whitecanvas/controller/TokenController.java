@@ -21,7 +21,7 @@ public class TokenController {
     @PostMapping("/token")
     public String authenticateAndGenerateToken(@RequestBody AuthenticationRequestDto request) {
 
-        validator.validateAuthenticationRequestDto(request);
+        validator.validate(request);
 
         return tokenService.authenticateAndGenerateToken(request);
     }
