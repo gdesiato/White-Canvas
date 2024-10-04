@@ -1,0 +1,12 @@
+<p>The User Component</p>
+
+<div>
+  <h2>User List</h2>
+  <p *ngIf="users.length === 0">No users available.</p>
+  <ul>
+    <li *ngFor="let user of users" (click)="selectUser(user.id)">
+      {{ user.email }}
+      <button (click)="deleteUser(user.id); $event.stopPropagation()">Delete</button>
+    </li>
+  </ul>
+</div>
