@@ -2,13 +2,9 @@ package com.desiato.whitecanvas.controller;
 
 import com.desiato.whitecanvas.BaseTest;
 import com.desiato.whitecanvas.dto.AuthenticatedUser;
-import com.desiato.whitecanvas.dto.ConsultancyProductDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

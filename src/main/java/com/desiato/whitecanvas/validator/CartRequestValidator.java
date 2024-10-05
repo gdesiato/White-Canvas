@@ -6,7 +6,6 @@ import com.desiato.whitecanvas.exception.ErrorMessage;
 import com.desiato.whitecanvas.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

@@ -3,7 +3,6 @@ package com.desiato.whitecanvas.service;
 import com.desiato.whitecanvas.dto.CartItemRequestDTO;
 import com.desiato.whitecanvas.model.Cart;
 import com.desiato.whitecanvas.model.CartItem;
-import com.desiato.whitecanvas.model.ConsultancyProduct;
 import com.desiato.whitecanvas.model.User;
 import com.desiato.whitecanvas.repository.CartItemRepository;
 import com.desiato.whitecanvas.repository.CartRepository;
